@@ -1,0 +1,117 @@
+---
+import '../styles/global.css';
+import { Font, fontData } from 'astro:assets';
+import A11yMenu from '../components/layout/A11yMenu.astro';
+import FloatingWhatsApp from '../components/layout/FloatingWhatsApp.astro';
+import Footer from '../components/layout/Footer.astro';
+import Header from '../components/layout/Header.astro';
+import SkipLink from '../components/layout/SkipLink.astro';
+import BrandIconSprite from '../components/ui/BrandIconSprite.astro';
+import { dirOf, getCopy, localizePath, ogLocale, otherLocale, withBase, type Locale } from '../i18n';
+import { launchCheck } from '../lib/launch-check';
+
+interface Props {
+  locale: Locale;
+  /** Locale-neutral path of this page, e.g. "/" or "/tracks/excellence/". */
+  path: string;
+  title: string;
+  description: string;
+  jsonLd?: Record<string, unknown>;
+  noindex?: boolean;
+}
+
+const { locale, path, title, description, jsonLd, noindex = false } = Astro.props;
+const t = getCopy(locale);
+const siteUrl = Astro.site ?? new URL('https://kayaswim.example');
+
+launchCheck(Astro.site);
+
+const canonical = new URL(localizePath(path, locale), siteUrl).href;
+const alternate = {
+  he: new URL(localizePath(path, 'he'), siteUrl).href,
+  en: new URL(localizePath(path, 'en'), siteUrl).href,
+};
+const ogImage = new URL(withBase(`/og/og-${locale}.png`), siteUrl).href;
+const ldJson = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : undefined;
+
+// Preload the font files the first screen needs (Hebrew pages also use the Latin
+// files for digits and dashes). Variants are declared Hebrew first, Latin second
+// in astro.config.mjs.
+const [displayHe, displayLatin] = fontData['--font-karantina'] ?? [];
+const [bodyHe, bodyLatin] = fontData['--font-assistant'] ?? [];
+const preloads = (locale === 'he' ? [displayHe, displayLatin, bodyHe, bodyLatin] : [displayLatin, bodyLatin])
+  .map((font) => font?.src[0]?.url)
+  .filter((url): url is string => Boolean(url));
+---
+
+<!doctype html>
+<html lang={locale} dir={dirOf(locale)}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {
+      noindex ? (
+        <meta name="robots" content="noindex" />
+      ) : (
+        <Fragment>
+          <link rel="canonical" href={canonical} />
+          <link rel="alternate" hreflang="he" href={alternate.he} />
+          <link rel="alternate" hreflang="en" href={alternate.en} />
+          <link rel="alternate" hreflang="x-default" href={alternate.he} />
+        </Fragment>
+      )
+    }
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="KAYA SWIM" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={ogLocale[locale]} />
+    <meta property="og:locale:alternate" content={ogLocale[otherLocale(locale)]} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t.meta.ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="theme-color" content="#f4f8f9" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={withBase('/favicon-32.png')} sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
+
+    {preloads.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
+    <Font cssVariable="--font-karantina" />
+    <Font cssVariable="--font-assistant" />
+
+    <!-- Apply saved accessibility settings before first paint (no flash). -->
+    <script is:inline>
+      (function () {
+        try {
+          var p = JSON.parse(localStorage.getItem('kaya-a11y') || '{}');
+          var d = document.documentElement;
+          if (p.size === '1' || p.size === '2') d.dataset.textSize = p.size;
+          if (p.contrast) d.classList.add('a11y-contrast');
+          if (p.still) d.classList.add('a11y-still');
+          if (p.links) d.classList.add('a11y-links');
+        } catch (e) {}
+      })();
+    </script>
+
+    {ldJson && <script type="application/ld+json" set:html={ldJson} />}
+  </head>
+  <body>
+    <BrandIconSprite />
+    <SkipLink locale={locale} />
+    <Header locale={locale} path={path} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer locale={locale} path={path} />
+    <FloatingWhatsApp locale={locale} />
+    <A11yMenu locale={locale} />
+  </body>
+</html>

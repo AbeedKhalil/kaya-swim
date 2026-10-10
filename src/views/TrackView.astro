@@ -1,0 +1,165 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Faq from '../components/sections/Faq.astro';
+import Journey from '../components/sections/Journey.astro';
+import Register from '../components/sections/Register.astro';
+import Testimonials from '../components/sections/Testimonials.astro';
+import AgeRange from '../components/ui/AgeRange.astro';
+import Icon from '../components/ui/Icon.astro';
+import MediaSlot from '../components/ui/MediaSlot.astro';
+import WhatsAppButton from '../components/ui/WhatsAppButton.astro';
+import { site } from '../config/site';
+import { getTrack, tracks, type TrackSlug } from '../data/tracks';
+import { getCopy, localizePath, type Locale } from '../i18n';
+import { trackJsonLd } from '../lib/schema';
+
+interface Props {
+  locale: Locale;
+  slug: TrackSlug;
+}
+
+const { locale, slug } = Astro.props;
+const t = getCopy(locale);
+const track = getTrack(slug);
+const copy = t.tracks[slug];
+const dark = track.depth === 'deep';
+const others = tracks.filter((other) => other.slug !== slug);
+const siteUrl = Astro.site ?? new URL('https://kayaswim.example');
+const path = `/tracks/${slug}/`;
+---
+
+<BaseLayout locale={locale} path={path} title={copy.meta.title} description={copy.meta.description} jsonLd={trackJsonLd(slug, locale, siteUrl)}>
+  <section class="pt-6 pb-16 lg:pt-10 lg:pb-24" aria-labelledby="track-title">
+    <div class="wrap">
+      <a href={localizePath('/#tracks', locale)} class="inline-flex items-center gap-2 rounded-full py-2 font-semibold text-deep hover:underline">
+        <Icon name="back" size={18} />
+        {t.trackPage.allTracks}
+      </a>
+
+      <div class="mt-5 grid gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-8">
+        <div
+          class:list={[
+            `depth-${track.depth}`,
+            'contrast-border relative isolate flex flex-col overflow-hidden rounded-lane p-7 sm:p-10',
+            dark && 'on-dark',
+          ]}
+          style={`view-transition-name: lane-${slug}; view-transition-class: lane`}
+        >
+          <span class="caustics" aria-hidden="true"></span>
+          <p class="relative">
+            <span class="block text-[0.95rem] font-bold opacity-85">{t.tracksSection.agesPrefix}</span>
+            <span class="lane-ages block font-display text-numeral">
+              <AgeRange min={track.ages[0]} max={track.ages[1]} />
+            </span>
+          </p>
+          <h1 id="track-title" class="relative mt-6 font-display text-display">{copy.name}</h1>
+          <p class:list={['relative mt-3 text-xl font-semibold', dark ? 'text-white/90' : 'text-deep']}>{copy.tagline}</p>
+          <p class:list={['relative mt-4 text-lg', dark ? 'text-white/90' : 'text-ink-soft']}>{copy.pitch}</p>
+          {copy.price && <p class="relative mt-5 text-xl font-bold">{copy.price}</p>}
+          <div class="relative mt-auto flex flex-wrap gap-3 pt-8">
+            <WhatsAppButton locale={locale} message={copy.whatsapp} cta={`track-page-${slug}`} size="lg" />
+            <a href="#register" class="btn btn-outline min-h-14 px-7 text-lg">{t.nav.contact}</a>
+          </div>
+        </div>
+
+        <MediaSlot
+          slot={track.image}
+          alt={copy.imageAlt}
+          aspect="4 / 3"
+          sizes="(min-width: 1024px) 45vw, 100vw"
+          priority
+          depth={dark ? 'shallow' : 'deep'}
+          class="rounded-lane lg:aspect-auto! lg:h-full"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section-pad bg-white" aria-label={copy.name}>
+    <div class="wrap grid gap-12 md:grid-cols-2 md:gap-16">
+      <div>
+        <h2 class="reveal font-display text-display">{t.trackPage.forWhom}</h2>
+        <ul class="mt-8 grid gap-4">
+          {
+            copy.forWhom.map((item, index) => (
+              <li class="reveal flex items-start gap-3 text-lg" style={`--reveal-at: ${index * 8}%`}>
+                <Icon name="circle-check" size={24} strokeWidth={2} class="mt-0.5 text-deep" />
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <h2 class="reveal font-display text-display">{t.trackPage.whatYouGet}</h2>
+        <ul class="mt-8 grid gap-4">
+          {
+            copy.whatYouGet.map((item, index) => (
+              <li class="reveal flex items-start gap-3 text-lg" style={`--reveal-at: ${index * 8}%`}>
+                <Icon name="check" size={24} strokeWidth={2.5} class="mt-0.5 text-deep" />
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="on-dark bg-ink py-16 text-white lg:py-20" aria-labelledby="with-founder-title">
+    <div class="reveal wrap grid items-center gap-8 md:grid-cols-[auto_minmax(0,1fr)] md:gap-12">
+      <span class="grid size-20 place-items-center rounded-full bg-white/10 text-bronze-light ring-2 ring-bronze-light">
+        <Icon name="medal" size={36} strokeWidth={1.75} />
+      </span>
+      <div>
+        <h2 id="with-founder-title" class="font-display text-display">{t.trackPage.withFounder}</h2>
+        <p class="mt-3 max-w-3xl text-lg text-white/85">
+          <strong class="text-white">{site.founder[locale].full}</strong> — {t.trackPage.withFounderText}
+        </p>
+        <a href={localizePath('/#story', locale)} class="mt-5 inline-flex items-center gap-2 font-bold text-pool hover:underline">
+          {t.trackPage.storyLink}
+          <Icon name="forward" size={18} />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Journey locale={locale} />
+  <Testimonials locale={locale} track={slug} title={t.trackPage.testimonials} class="bg-white" />
+  <Faq locale={locale} track={slug} title={t.trackPage.faq} />
+
+  <section class="pb-20 lg:pb-28" aria-labelledby="other-tracks-title">
+    <div class="wrap">
+      <h2 id="other-tracks-title" class="reveal font-display text-display">{t.trackPage.otherTracks}</h2>
+      <ul class="mt-8 grid gap-4 md:grid-cols-2">
+        {
+          others.map((other, index) => (
+            <li class="reveal" style={`--reveal-at: ${index * 10}%`}>
+              <a
+                href={localizePath(`/tracks/${other.slug}/`, locale)}
+                class:list={[
+                  `depth-${other.depth}`,
+                  'lane contrast-border group relative isolate flex items-center justify-between gap-6 overflow-hidden rounded-lane p-6 sm:p-8',
+                  other.depth === 'deep' && 'on-dark',
+                ]}
+                style={`view-transition-name: lane-${other.slug}; view-transition-class: lane`}
+                data-astro-prefetch
+              >
+                <span class="caustics" aria-hidden="true" />
+                <span class="relative">
+                  <span class="lane-ages block font-display text-5xl leading-none">
+                    <AgeRange min={other.ages[0]} max={other.ages[1]} />
+                  </span>
+                  <span class="mt-2 block text-xl font-bold">{t.tracks[other.slug].name}</span>
+                </span>
+                <Icon name="forward" size={26} class="relative transition-transform group-hover:scale-110" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <Register locale={locale} defaultTrack={slug} />
+</BaseLayout>

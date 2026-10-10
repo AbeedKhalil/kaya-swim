@@ -1,0 +1,33 @@
+---
+import LaneRope from '../ui/LaneRope.astro';
+import TrackLane from './TrackLane.astro';
+import { tracks } from '../../data/tracks';
+import { getCopy, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getCopy(locale);
+---
+
+<section id="tracks" class="section-pad" aria-labelledby="tracks-title">
+  <div class="wrap">
+    <div class="reveal max-w-2xl">
+      <h2 id="tracks-title" class="font-display text-display">{t.tracksSection.title}</h2>
+      <p class="mt-4 text-lg text-ink-soft">{t.tracksSection.intro}</p>
+    </div>
+
+    <div class="mt-12 grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-5">
+      {
+        tracks.map((track, index) => (
+          <Fragment>
+            {index > 0 && <LaneRope responsive class="reveal-draw mx-8 lg:mx-0 lg:my-10" />}
+            <TrackLane locale={locale} track={track} index={index} />
+          </Fragment>
+        ))
+      }
+    </div>
+  </div>
+</section>

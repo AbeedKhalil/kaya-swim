@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Credentials from '../components/sections/Credentials.astro';
+import Faq from '../components/sections/Faq.astro';
+import Founder from '../components/sections/Founder.astro';
+import Hero from '../components/sections/Hero.astro';
+import Journey from '../components/sections/Journey.astro';
+import Location from '../components/sections/Location.astro';
+import Register from '../components/sections/Register.astro';
+import Testimonials from '../components/sections/Testimonials.astro';
+import Tracks from '../components/sections/Tracks.astro';
+import Values from '../components/sections/Values.astro';
+import { getCopy, type Locale } from '../i18n';
+import { homeJsonLd } from '../lib/schema';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getCopy(locale);
+const siteUrl = Astro.site ?? new URL('https://kayaswim.example');
+---
+
+<BaseLayout locale={locale} path="/" title={t.meta.title} description={t.meta.description} jsonLd={homeJsonLd(locale, siteUrl)}>
+  <Hero locale={locale} />
+  <Credentials locale={locale} />
+  <Tracks locale={locale} />
+  <Founder locale={locale} />
+  <Values locale={locale} />
+  <Journey locale={locale} />
+  <Testimonials locale={locale} class="bg-white" />
+  <Faq locale={locale} />
+  <Location locale={locale} />
+  <Register locale={locale} />
+</BaseLayout>

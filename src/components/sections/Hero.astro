@@ -1,0 +1,284 @@
+---
+import { Picture } from 'astro:assets';
+import Icon from '../ui/Icon.astro';
+import LogoSlot from '../ui/LogoSlot.astro';
+import MedalEmblem from '../ui/MedalEmblem.astro';
+import WhatsAppButton from '../ui/WhatsAppButton.astro';
+import { site } from '../../config/site';
+import { getCopy, localizePath, type Locale } from '../../i18n';
+import { getPhoto } from '../../lib/media';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getCopy(locale);
+const hero = t.hero;
+const portrait = getPhoto('founder-portrait');
+
+const doors = [
+  { href: '#tracks', logo: 'logo-kids', fallback: undefined, label: 'KIDS', copy: hero.doors.kids },
+  // The adults board shows logo-adults if one is added, otherwise the main logo.
+  { href: localizePath('/tracks/fear-of-water/', locale), logo: 'logo-adults', fallback: 'logo-main', label: 'SWIM', copy: hero.doors.adults },
+] as const;
+---
+
+<section class="hero relative isolate overflow-clip" aria-labelledby="hero-title">
+  <div class="wrap grid pt-8 pb-16 sm:pt-12 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:gap-x-14 lg:pt-14 lg:pb-24">
+    <div class="lg:col-span-2">
+      <p class="eyebrow enter flex items-center gap-2 text-deep">
+        <Icon name="map-pin" size={16} strokeWidth={2.25} />
+        {hero.eyebrow}
+      </p>
+      <h1 id="hero-title" class="hero-title mt-3 font-display text-hero">
+        <span class="enter-rise block">{hero.line1}</span>
+        <span class="waterline" data-text={hero.line2}>
+          <span class="water water-bg" aria-hidden="true">
+            <span class="caustics caustics--live"></span>
+            <span class="surface"></span>
+          </span>
+          <span class="waterline-dry">{hero.line2}</span>
+        </span>
+      </h1>
+    </div>
+
+    <div class="hero-wet mt-8 text-white lg:mt-12">
+      <p class="enter-slide flex items-center gap-3 text-[1.05rem]" style="--enter-delay: 100ms">
+        <span class="grid size-12 shrink-0 place-items-center overflow-hidden rounded-full bg-abyss text-bronze-light ring-2 ring-bronze-light">
+          {
+            portrait ? (
+              <Picture src={portrait} alt="" formats={['avif', 'webp']} widths={[96, 144]} sizes="48px" class="size-full object-cover" />
+            ) : (
+              <Icon name="medal" size={24} strokeWidth={2} />
+            )
+          }
+        </span>
+        <span>
+          <strong class="font-bold">{site.founder[locale].full}</strong>
+          <span class="text-white/90"> · {hero.credential}</span>
+        </span>
+      </p>
+      <p class="enter-slide mt-5 max-w-xl text-lg leading-relaxed text-white/95 md:text-xl" style="--enter-delay: 160ms">{hero.sub}</p>
+      <div class="on-dark enter mt-8 flex flex-wrap gap-3" style="--enter-delay: 220ms">
+        <WhatsAppButton locale={locale} cta="hero" size="lg" class="w-full sm:w-auto" />
+        <a href="#tracks" class="btn btn-outline min-h-14 w-full px-7 text-lg text-white sm:w-auto">{t.cta.seeTracks}</a>
+      </div>
+    </div>
+
+    <ul class="on-dark mt-12 grid grid-cols-2 gap-3 self-end sm:gap-4 lg:mt-12">
+      {
+        doors.map((door, index) => (
+          <li class="enter" style={`--enter-delay: ${280 + index * 60}ms`}>
+            <a href={door.href} class="door group flex h-full flex-col rounded-card p-3 text-white sm:p-4">
+              <span class="board grid h-32 place-items-center rounded-xl bg-white p-2.5 text-ink sm:h-36">
+                <LogoSlot
+                  slot={door.logo}
+                  fallback={door.fallback}
+                  label={door.label}
+                  width={124}
+                  eager
+                  fetchpriority="low"
+                  class="h-full max-h-full w-auto max-w-full text-[0.95rem]"
+                />
+              </span>
+              <span class="mt-4 text-lg leading-tight font-bold">{door.copy.title}</span>
+              <span class="mt-0.5 text-sm text-white/85">{door.copy.meta}</span>
+              <span class="mt-2 text-[0.95rem] leading-snug text-white/95">{door.copy.text}</span>
+              <Icon name="forward" size={20} class="door-arrow mt-auto pt-3" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <!-- Decorative: the medal hanging above the pool, and sunlight that follows the pointer. -->
+  <div class="hero-medal decor" aria-hidden="true">
+    <MedalEmblem class="h-auto w-full" />
+  </div>
+  <span class="hero-sun decor" aria-hidden="true"></span>
+
+  <svg width="0" height="0" class="absolute" aria-hidden="true" focusable="false">
+    <filter id="refract" x="-5%" y="-10%" width="110%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.055" numOctaves="1" seed="4" result="noise"></feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+    </filter>
+  </svg>
+</section>
+
+<style>
+  .hero-title {
+    color: var(--color-ink);
+  }
+
+  /* "a champion" is wider than "אלופה": scale so it fits one line down to 320px. */
+  .hero-title:lang(en) {
+    font-size: clamp(3.5rem, 23vw, 12.5rem);
+  }
+
+  /* Keeps text crisp where it crosses a caustic light line. */
+  .hero-wet p {
+    text-shadow: 0 1px 14px rgb(8 56 74 / 0.55);
+  }
+
+  /* Audience doors: glass panels with a white "kickboard" for the logo. */
+  .door {
+    --nudge: 5px;
+    background: rgb(255 255 255 / 0.08);
+    border: 1px solid rgb(255 255 255 / 0.22);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    transition:
+      background-color 0.35s var(--ease-out),
+      border-color 0.35s var(--ease-out),
+      transform 0.6s var(--ease-spring);
+  }
+
+  :global([dir='rtl']) .door {
+    --nudge: -5px;
+  }
+
+  .door:hover {
+    background: rgb(255 255 255 / 0.15);
+    border-color: rgb(255 255 255 / 0.4);
+  }
+
+  .board {
+    box-shadow: 0 10px 24px -14px rgb(0 0 0 / 0.5);
+    transition: rotate 0.6s var(--ease-spring);
+  }
+
+  .door :global(.door-arrow) {
+    transition: translate 0.5s var(--ease-spring);
+  }
+
+  @media (hover: hover) {
+    .door:hover {
+      transform: translateY(-5px);
+    }
+
+    .door:hover .board {
+      rotate: -2.5deg;
+    }
+
+    :global([dir='rtl']) .door:hover .board {
+      rotate: 2.5deg;
+    }
+
+    .door:hover :global(.door-arrow) {
+      translate: var(--nudge) 0;
+    }
+  }
+
+  :global(html.a11y-contrast) .door {
+    background: var(--color-abyss);
+    border: 2px solid #fff;
+  }
+
+  /* The medal hangs from the top of the hero, in the dry space beside the headline. */
+  .hero-medal {
+    display: none;
+    position: absolute;
+    top: 0;
+    inset-inline-end: clamp(2rem, 13vw, 15rem);
+    width: clamp(7.5rem, 10vw, 9.5rem);
+    transform-origin: 50% 0;
+    translate: calc(var(--mx, 0) * 8px) 0;
+    filter: drop-shadow(0 22px 22px rgb(11 34 48 / 0.22));
+    transition: translate 1.2s var(--ease-out);
+  }
+
+  @media (width >= 64rem) {
+    .hero-medal {
+      display: block;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html:not(.a11y-still)) .hero-medal {
+      animation:
+        medal-in 1.1s var(--ease-spring) 0.1s both,
+        medal-swing 5.5s ease-in-out 1.2s infinite alternate;
+    }
+  }
+
+  @keyframes medal-in {
+    from {
+      opacity: 0;
+      transform: translateY(-3rem) rotate(-7deg);
+    }
+  }
+
+  @keyframes medal-swing {
+    from {
+      rotate: -2.2deg;
+    }
+    to {
+      rotate: 2.2deg;
+    }
+  }
+
+  /* Sunlight on the water, following the pointer (desktop only — see script). */
+  .hero-sun {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 46rem;
+    height: 46rem;
+    margin: -23rem 0 0 -23rem;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgb(255 255 255 / 0.2), rgb(255 255 255 / 0.06) 55%, transparent);
+    pointer-events: none;
+    opacity: var(--sun, 0);
+    translate: var(--px, 50vw) var(--py, 70vh);
+    transition:
+      translate 1s var(--ease-out),
+      opacity 0.8s var(--ease-out);
+  }
+</style>
+
+<script>
+  // Desktop only: the light on the water, the caustic layers and the submerged
+  // word follow the pointer. Off for touch, reduced motion and "stop animations".
+  const hero = document.querySelector<HTMLElement>('.hero');
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (hero) {
+    let frame = 0;
+    let point: { x: number; y: number } | null = null;
+
+    const update = () => {
+      frame = 0;
+      if (!point) return;
+      const rect = hero.getBoundingClientRect();
+      const x = point.x - rect.left;
+      const y = point.y - rect.top;
+      hero.style.setProperty('--px', `${x.toFixed(0)}px`);
+      hero.style.setProperty('--py', `${y.toFixed(0)}px`);
+      hero.style.setProperty('--mx', ((x / rect.width) * 2 - 1).toFixed(3));
+      hero.style.setProperty('--my', ((y / rect.height) * 2 - 1).toFixed(3));
+    };
+
+    hero.addEventListener(
+      'pointermove',
+      (event) => {
+        if (!finePointer.matches || reducedMotion.matches) return;
+        if (document.documentElement.classList.contains('a11y-still')) return;
+        point = { x: event.clientX, y: event.clientY };
+        hero.style.setProperty('--sun', '1');
+        if (!frame) frame = requestAnimationFrame(update);
+      },
+      { passive: true },
+    );
+
+    hero.addEventListener('pointerleave', () => {
+      point = null;
+      hero.style.setProperty('--sun', '0');
+      hero.style.setProperty('--mx', '0');
+      hero.style.setProperty('--my', '0');
+    });
+  }
+</script>

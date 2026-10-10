@@ -1,0 +1,274 @@
+---
+import BrandIcon from '../ui/BrandIcon.astro';
+import Icon from '../ui/Icon.astro';
+import LogoSlot from '../ui/LogoSlot.astro';
+import SiteLinks from '../ui/SiteLinks.astro';
+import { getCopy, localizePath, otherLocale, type Locale } from '../../i18n';
+import { getLogo } from '../../lib/media';
+import { waLink } from '../../lib/whatsapp';
+
+interface Props {
+  locale: Locale;
+  /** Locale-neutral path of the current page, for the language switch. */
+  path: string;
+}
+
+const { locale, path } = Astro.props;
+const t = getCopy(locale);
+const other = otherLocale(locale);
+const otherCopy = getCopy(other);
+
+const links = [
+  { href: localizePath('/#tracks', locale), label: t.nav.tracks },
+  { href: localizePath('/#story', locale), label: t.nav.story },
+  { href: localizePath('/#how', locale), label: t.nav.how },
+  { href: localizePath('/#testimonials', locale), label: t.nav.testimonials },
+  { href: localizePath('/#faq', locale), label: t.nav.faq },
+  { href: localizePath('/#register', locale), label: t.nav.contact },
+];
+const hasMainLogo = Boolean(getLogo('logo-main'));
+const switchHref = localizePath(path, other);
+---
+
+<header class="site-header sticky top-0 z-40">
+  <div class="wrap flex h-16 items-center gap-3 lg:h-[4.5rem]">
+    <a href={localizePath('/', locale)} class="shrink-0 rounded-md" aria-label={t.nav.home}>
+      {
+        hasMainLogo ? (
+          <LogoSlot slot="logo-main" label="SWIM" width={67} eager class="h-14 w-auto lg:h-16" />
+        ) : (
+          <span class="font-display text-[clamp(1.5rem,7.5vw,1.85rem)] leading-none tracking-[0.08em]" dir="ltr">
+            KAYA SWIM
+          </span>
+        )
+      }
+    </a>
+
+    <nav aria-label={t.nav.label} class="ms-auto hidden lg:block">
+      <ul class="flex items-center">
+        {
+          links.map((link) => (
+            <li>
+              <a href={link.href} class="nav-link relative block px-3 py-2 text-[0.95rem] font-semibold">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="ms-auto flex items-center gap-1.5 lg:ms-2">
+      <a
+        href={switchHref}
+        lang={other}
+        hreflang={other}
+        class="rounded-full px-3 py-2 text-[0.95rem] font-semibold transition-colors hover:bg-shallow"
+      >
+        <span class="min-[24rem]:hidden">{otherCopy.languageShort}</span>
+        <span class="max-[24rem]:sr-only">{otherCopy.languageName}</span>
+      </a>
+      <SiteLinks
+        locale={locale}
+        placement="header"
+        variant="icon"
+        class="header-links flex items-center max-[24rem]:hidden"
+        linkClass="site-link-icon grid size-[44px] place-items-center rounded-full"
+      />
+      <a
+        href={waLink(t.whatsapp.general)}
+        target="_blank"
+        rel="noopener"
+        data-cta="header"
+        class="btn btn-wa hidden min-h-11 px-4 text-[0.95rem] sm:inline-flex"
+      >
+        <BrandIcon name="whatsapp" size={18} />
+        <span>{t.cta.whatsapp}</span>
+        <span class="sr-only">{t.cta.opensWhatsapp}</span>
+      </a>
+      <button
+        type="button"
+        popovertarget="site-menu"
+        class="grid size-[44px] place-items-center rounded-full transition-colors hover:bg-shallow lg:hidden"
+        aria-label={t.nav.menuOpen}
+      >
+        <Icon name="menu" size={24} />
+      </button>
+    </div>
+  </div>
+
+  <div id="site-menu" popover class="site-menu">
+    <div class="wrap flex h-16 items-center justify-between">
+      {
+        hasMainLogo ? (
+          <LogoSlot slot="logo-main" label="SWIM" width={67} class="h-14 w-auto" />
+        ) : (
+          <span class="font-display text-[1.85rem] leading-none tracking-[0.08em]" dir="ltr" aria-hidden="true">
+            KAYA SWIM
+          </span>
+        )
+      }
+      <button
+        type="button"
+        popovertarget="site-menu"
+        popovertargetaction="hide"
+        class="grid size-11 place-items-center rounded-full hover:bg-shallow"
+        aria-label={t.nav.menuClose}
+      >
+        <Icon name="x" size={24} />
+      </button>
+    </div>
+    <nav aria-label={t.nav.label} class="wrap mt-4">
+      <ul class="grid">
+        {
+          links.map((link, index) => (
+            <li class="menu-item border-b border-ink/10" style={`--i: ${index}`}>
+              <a href={link.href} class="flex items-center justify-between py-4 text-2xl font-bold">
+                {link.label}
+                <Icon name="forward" size={22} class="text-pool" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <div class="menu-item wrap mt-8 grid gap-4" style={`--i: ${links.length}`}>
+      <a
+        href={waLink(t.whatsapp.general)}
+        target="_blank"
+        rel="noopener"
+        data-cta="menu"
+        class="btn btn-wa min-h-14 text-lg"
+      >
+        <BrandIcon name="whatsapp" size={22} />
+        <span>{t.cta.whatsapp}</span>
+        <span class="sr-only">{t.cta.opensWhatsapp}</span>
+      </a>
+      <a href={switchHref} lang={other} hreflang={other} class="btn btn-outline">
+        {otherCopy.languageName}
+      </a>
+      <SiteLinks
+        locale={locale}
+        placement="menu"
+        variant="list"
+        class="mt-2 flex flex-wrap justify-center gap-x-6 gap-y-2"
+        linkClass="inline-flex items-center gap-2 py-2 font-semibold hover:text-deep"
+      />
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    view-transition-name: site-header;
+    background: color-mix(in oklab, var(--color-tile) 90%, transparent);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .site-header {
+      animation: header-lift linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 5rem;
+    }
+  }
+
+  @keyframes header-lift {
+    to {
+      box-shadow: 0 12px 32px -22px rgb(11 34 48 / 0.6);
+    }
+  }
+
+  .site-menu {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    overflow-y: auto;
+    background: var(--color-tile);
+    color: var(--color-ink);
+    padding-bottom: 2rem;
+    opacity: 0;
+    translate: 0 -0.75rem;
+    transition:
+      opacity 0.22s ease,
+      translate 0.22s ease,
+      overlay 0.22s allow-discrete,
+      display 0.22s allow-discrete;
+  }
+
+  .site-menu:popover-open {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  @starting-style {
+    .site-menu:popover-open {
+      opacity: 0;
+      translate: 0 -0.75rem;
+    }
+  }
+
+  /* Menu items arrive one after another. */
+  .menu-item {
+    opacity: 0;
+    translate: 0 0.75rem;
+    transition:
+      opacity 0.45s var(--ease-out),
+      translate 0.6s var(--ease-out);
+  }
+
+  .site-menu:popover-open .menu-item {
+    opacity: 1;
+    translate: 0 0;
+    transition-delay: calc(var(--i, 0) * 40ms + 60ms);
+  }
+
+  @starting-style {
+    .site-menu:popover-open .menu-item {
+      opacity: 0;
+      translate: 0 0.75rem;
+    }
+  }
+
+  /* Nav links: an underline that grows from the start of the word. */
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0.75rem;
+    bottom: 0.3rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--color-pool);
+    scale: 0 1;
+    transform-origin: left;
+    transition: scale 0.45s var(--ease-out);
+  }
+
+  :global([dir='rtl']) .nav-link::after {
+    transform-origin: right;
+  }
+
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after {
+    scale: 1 1;
+  }
+
+  /* At the largest text size, phones keep the Instagram icon in the menu only. */
+  @media (width < 30rem) {
+    :global(html[data-text-size='2'] .header-links) {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Close the menu when a link inside it is chosen (anchor links stay on the page).
+  const menu = document.getElementById('site-menu');
+  menu?.addEventListener('click', (event) => {
+    if (event.target instanceof Element && event.target.closest('a')) menu.hidePopover();
+  });
+</script>

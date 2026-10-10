@@ -1,0 +1,78 @@
+---
+/**
+ * Lucide icons, imported one by one so the build only loads what we use.
+ * Icons are decorative (aria-hidden) — the text next to them carries the meaning.
+ * "forward" points in the reading direction: left in Hebrew, right in English.
+ */
+import Accessibility from '@lucide/astro/icons/accessibility';
+import ArrowLeft from '@lucide/astro/icons/arrow-left';
+import ArrowRight from '@lucide/astro/icons/arrow-right';
+import Check from '@lucide/astro/icons/check';
+import CircleCheck from '@lucide/astro/icons/circle-check';
+import Contrast from '@lucide/astro/icons/contrast';
+import FileText from '@lucide/astro/icons/file-text';
+import Globe from '@lucide/astro/icons/globe';
+import GraduationCap from '@lucide/astro/icons/graduation-cap';
+import House from '@lucide/astro/icons/house';
+import Link from '@lucide/astro/icons/link';
+import Mail from '@lucide/astro/icons/mail';
+import MapPin from '@lucide/astro/icons/map-pin';
+import Medal from '@lucide/astro/icons/medal';
+import Menu from '@lucide/astro/icons/menu';
+import Pause from '@lucide/astro/icons/pause';
+import Phone from '@lucide/astro/icons/phone';
+import Play from '@lucide/astro/icons/play';
+import Plus from '@lucide/astro/icons/plus';
+import Quote from '@lucide/astro/icons/quote';
+import Receipt from '@lucide/astro/icons/receipt';
+import RotateCcw from '@lucide/astro/icons/rotate-ccw';
+import School from '@lucide/astro/icons/school';
+import Trophy from '@lucide/astro/icons/trophy';
+import Type from '@lucide/astro/icons/type';
+import Video from '@lucide/astro/icons/video';
+import X from '@lucide/astro/icons/x';
+
+const icons = {
+  accessibility: Accessibility,
+  check: Check,
+  'circle-check': CircleCheck,
+  contrast: Contrast,
+  'file-text': FileText,
+  globe: Globe,
+  graduation: GraduationCap,
+  home: House,
+  link: Link,
+  mail: Mail,
+  'map-pin': MapPin,
+  medal: Medal,
+  menu: Menu,
+  pause: Pause,
+  phone: Phone,
+  play: Play,
+  plus: Plus,
+  quote: Quote,
+  receipt: Receipt,
+  reset: RotateCcw,
+  school: School,
+  trophy: Trophy,
+  type: Type,
+  video: Video,
+  x: X,
+} as const;
+
+export type IconName = keyof typeof icons | 'forward' | 'back';
+
+interface Props {
+  name: IconName;
+  size?: number;
+  strokeWidth?: number;
+  class?: string;
+}
+
+const { name, size = 20, strokeWidth = 1.75, class: className } = Astro.props;
+const rtl = Astro.currentLocale === 'he';
+const Component =
+  name === 'forward' ? (rtl ? ArrowLeft : ArrowRight) : name === 'back' ? (rtl ? ArrowRight : ArrowLeft) : icons[name];
+---
+
+<Component size={size} stroke-width={strokeWidth} class:list={['shrink-0', className]} />

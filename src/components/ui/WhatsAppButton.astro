@@ -1,0 +1,32 @@
+---
+import BrandIcon from './BrandIcon.astro';
+import { waLink } from '../../lib/whatsapp';
+import { getCopy, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+  /** Pre-filled message; defaults to the general one. */
+  message?: string;
+  /** Visible label; defaults to "Chat on WhatsApp". */
+  label?: string;
+  /** Where this button sits, for analytics later: data-cta="…". */
+  cta: string;
+  size?: 'md' | 'lg';
+  class?: string;
+}
+
+const { locale, message, label, cta, size = 'md', class: className } = Astro.props;
+const t = getCopy(locale);
+---
+
+<a
+  href={waLink(message ?? t.whatsapp.general)}
+  target="_blank"
+  rel="noopener"
+  data-cta={cta}
+  class:list={['btn btn-wa', size === 'lg' && 'min-h-14 px-7 text-lg', className]}
+>
+  <BrandIcon name="whatsapp" size={size === 'lg' ? 22 : 20} />
+  <span>{label ?? t.cta.whatsapp}</span>
+  <span class="sr-only">{t.cta.opensWhatsapp}</span>
+</a>

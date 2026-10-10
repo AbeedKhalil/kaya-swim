@@ -1,0 +1,53 @@
+---
+import Icon from '../ui/Icon.astro';
+import type { TrackSlug } from '../../data/tracks';
+import { getCopy, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+  /** Show only testimonials about this track. */
+  track?: TrackSlug;
+  title?: string;
+  class?: string;
+}
+
+const { locale, track, title, class: className } = Astro.props;
+const t = getCopy(locale);
+const s = t.testimonials;
+const items = track ? s.items.filter((item) => item.track === track) : s.items;
+const heading = title ?? s.title;
+---
+
+{
+  items.length > 0 && (
+    <section id="testimonials" class:list={['section-pad', className]} aria-labelledby="testimonials-title">
+      <div class="wrap">
+        <h2 id="testimonials-title" class="reveal font-display text-display">
+          {heading}
+        </h2>
+        <div class="testimonial-scroller reveal mt-10" role="region" aria-label={s.regionLabel} tabindex="0">
+          <ul class="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 md:grid md:grid-cols-2 md:gap-5 md:overflow-visible md:pb-0">
+            {items.map((item) => (
+              <li class="w-[85%] shrink-0 snap-start md:w-auto">
+                <figure class="card-lift contrast-border flex h-full flex-col rounded-card bg-tile p-6 sm:p-7">
+                  <Icon name="quote" size={28} strokeWidth={2} class="text-pool" />
+                  <blockquote class="mt-3 text-lg leading-relaxed">{item.quote}</blockquote>
+                  <figcaption class="mt-auto flex flex-wrap items-center gap-2 pt-6 text-sm">
+                    <span class="me-1 font-bold">{item.name}</span>
+                    <span class="rounded-full bg-shallow px-2.5 py-1 font-semibold text-deep">{s.audiences[item.audience]}</span>
+                    <span class="rounded-full bg-shallow px-2.5 py-1 font-semibold text-deep">{t.tracks[item.track].name}</span>
+                    {item.sample && (
+                      <span class="rounded-full border border-dashed border-ink-soft px-2.5 py-0.5 font-semibold text-ink-soft">
+                        {s.sampleBadge}
+                      </span>
+                    )}
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  )
+}

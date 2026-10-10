@@ -1,0 +1,63 @@
+---
+import AgeRange from '../ui/AgeRange.astro';
+import Icon from '../ui/Icon.astro';
+import WhatsAppButton from '../ui/WhatsAppButton.astro';
+import type { Track } from '../../data/tracks';
+import { getCopy, localizePath, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+  track: Track;
+  /** Position in the row, for the staggered reveal. */
+  index?: number;
+}
+
+const { locale, track, index = 0 } = Astro.props;
+const t = getCopy(locale);
+const copy = t.tracks[track.slug];
+const dark = track.depth === 'deep';
+---
+
+<article
+  class:list={[
+    `depth-${track.depth}`,
+    'lane reveal contrast-border relative isolate flex flex-col overflow-hidden rounded-lane p-6 sm:p-8',
+    dark && 'on-dark',
+  ]}
+  style={`--reveal-at: ${index * 9}%; view-transition-name: lane-${track.slug}; view-transition-class: lane`}
+  aria-labelledby={`lane-${track.slug}`}
+>
+  <span class="caustics" aria-hidden="true"></span>
+
+  <p class="relative">
+    <span class="block text-[0.95rem] font-bold opacity-85">{t.tracksSection.agesPrefix}</span>
+    <span class="lane-ages block font-display text-numeral">
+      <AgeRange min={track.ages[0]} max={track.ages[1]} />
+    </span>
+  </p>
+
+  <h3 id={`lane-${track.slug}`} class="relative mt-5 text-2xl leading-tight font-extrabold">{copy.name}</h3>
+  <p class:list={['relative mt-1 font-semibold', dark ? 'text-white/90' : 'text-deep']}>{copy.tagline}</p>
+  <p class:list={['relative mt-4', dark ? 'text-white/90' : 'text-ink-soft']}>{copy.pitch}</p>
+
+  <ul class="relative mt-6 grid gap-2.5">
+    {
+      copy.benefits.map((benefit) => (
+        <li class="flex items-start gap-2.5">
+          <Icon name="check" size={20} strokeWidth={2.5} class:list={['mt-0.5', dark ? 'text-wa' : 'text-deep']} />
+          <span>{benefit}</span>
+        </li>
+      ))
+    }
+  </ul>
+
+  {copy.price && <p class="relative mt-6 text-lg font-bold">{copy.price}</p>}
+
+  <div class="relative mt-auto grid gap-3 pt-8">
+    <WhatsAppButton locale={locale} message={copy.whatsapp} cta={`track-${track.slug}`} class="w-full" />
+    <a href={localizePath(`/tracks/${track.slug}/`, locale)} class="btn btn-outline w-full" data-astro-prefetch>
+      {t.cta.details}
+      <Icon name="forward" size={18} />
+    </a>
+  </div>
+</article>

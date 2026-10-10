@@ -1,0 +1,134 @@
+---
+import Icon from '../ui/Icon.astro';
+import MediaSlot from '../ui/MediaSlot.astro';
+import { site } from '../../config/site';
+import { getCopy, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getCopy(locale);
+const f = t.founder;
+---
+
+<section id="story" class="section-pad bg-white" aria-labelledby="story-title">
+  <div class="wrap grid items-start gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+    <MediaSlot
+      slot="founder-portrait"
+      alt={f.portraitAlt}
+      aspect="4 / 5"
+      sizes="(min-width: 1024px) 34vw, 100vw"
+      depth="deep"
+      class="reveal-wipe rounded-lane lg:sticky lg:top-28"
+    >
+      <span class="absolute inset-x-0 bottom-0 p-6 text-white sm:p-8">
+        <span class="block font-display text-5xl leading-none sm:text-6xl">{site.founder[locale].full}</span>
+        <span class="mt-2 block font-semibold text-white/85">{t.hero.credential}</span>
+      </span>
+    </MediaSlot>
+
+    <div>
+      <h2 id="story-title" class="reveal font-display text-display">{f.title}</h2>
+      <p class="reveal mt-6 text-xl leading-relaxed font-semibold md:text-2xl">{f.lead}</p>
+      {f.paragraphs.map((paragraph) => <p class="reveal mt-4 text-ink-soft">{paragraph}</p>)}
+
+      <ol class="timeline mt-14" aria-label={f.timelineLabel}>
+        {
+          f.timeline.map((item, index) => (
+            <li class="timeline-item reveal" style={`--reveal-at: ${10 + index * 6}%`}>
+              <span class:list={['timeline-marker', item.medal && 'text-bronze']}>
+                {item.age !== undefined ? (
+                  <Fragment>
+                    <span class="block text-sm font-bold text-ink-soft">{f.agePrefix}</span>
+                    <span class="block font-display text-5xl leading-[0.85]">{item.age}</span>
+                  </Fragment>
+                ) : (
+                  <span class="block pt-4 font-display text-4xl leading-[0.85]">{item.label}</span>
+                )}
+              </span>
+              <span class:list={['pt-4 text-[1.05rem]', item.medal && 'font-semibold']}>
+                {item.medal && <Icon name="medal" size={18} strokeWidth={2} class="me-1.5 inline align-[-3px] text-bronze" />}
+                {item.text}
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* The black lane stripe on the pool floor, ending in a T at the wall: today. */
+  .timeline {
+    position: relative;
+    display: grid;
+    gap: 1.5rem;
+    padding-inline-start: 2.25rem;
+  }
+
+  .timeline::before,
+  .timeline::after {
+    content: '';
+    position: absolute;
+    border-radius: 999px;
+    background: var(--color-ink);
+  }
+
+  .timeline::before {
+    inset-inline-start: 0.5rem;
+    top: 0.75rem;
+    bottom: 1.6rem;
+    width: 0.375rem;
+  }
+
+  .timeline::after {
+    inset-inline-start: -0.25rem;
+    bottom: 1.6rem;
+    width: 1.875rem;
+    height: 0.375rem;
+  }
+
+  /* As the timeline scrolls in, the stripe draws down and the T lands at the wall. */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .timeline {
+        view-timeline: --story block;
+      }
+
+      :global(html:not(.a11y-still)) .timeline::before {
+        transform-origin: top;
+        animation: stripe-draw linear both;
+        animation-timeline: --story;
+        animation-range: entry 25% cover 55%;
+      }
+
+      :global(html:not(.a11y-still)) .timeline::after {
+        animation: t-land var(--ease-spring) both;
+        animation-timeline: --story;
+        animation-range: cover 50% cover 62%;
+      }
+    }
+  }
+
+  @keyframes stripe-draw {
+    from {
+      scale: 1 0;
+    }
+  }
+
+  @keyframes t-land {
+    from {
+      scale: 0 1;
+    }
+  }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+  }
+</style>

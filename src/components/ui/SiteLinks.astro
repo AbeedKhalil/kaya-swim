@@ -1,0 +1,86 @@
+---
+/**
+ * Social & external links, driven by `links` in src/config/site.ts.
+ * Add an entry there and it appears in every placement it lists — no layout changes.
+ *   icon – round icon buttons (header)
+ *   list – icon + name (footer, mobile menu)
+ *   row  – contact rows with an optional handle (sign-up section)
+ */
+import BrandIcon from './BrandIcon.astro';
+import Icon from './Icon.astro';
+import { linksFor, type LinkPlacement, type SiteLink } from '../../config/site';
+import { getCopy, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+  placement: LinkPlacement;
+  variant?: 'icon' | 'list' | 'row';
+  /** Classes for the <ul>. */
+  class?: string;
+  /** Classes for each link, replacing the variant's defaults. */
+  linkClass?: string;
+  /** Classes for the icon (e.g. a colour). */
+  iconClass?: string;
+}
+
+const { locale, placement, variant = 'list', class: className, linkClass, iconClass } = Astro.props;
+const t = getCopy(locale);
+const items = linksFor(placement);
+const labelOf = (link: SiteLink) => (typeof link.label === 'string' ? link.label : link.label[locale]);
+
+const defaultLinkClass = {
+  icon: 'site-link-icon grid size-11 place-items-center rounded-full',
+  list: 'inline-flex items-center gap-3 hover:text-wa',
+  row: 'contact-row',
+}[variant];
+---
+
+{
+  items.length > 0 && (
+    <ul class:list={['site-links', className]} aria-label={t.nav.follow}>
+      {items.map((link) => {
+        const label = labelOf(link);
+        return (
+          <li>
+            <a
+              href={link.url}
+              target="_blank"
+              rel="noopener me"
+              data-cta={`link-${link.id}-${placement}`}
+              title={variant === 'icon' ? label : undefined}
+              class={linkClass ?? defaultLinkClass}
+            >
+              {variant === 'row' ? (
+                <span class="contact-icon">
+                  {link.icon === 'link' ? <Icon name="link" size={22} /> : <BrandIcon name={link.icon} size={22} />}
+                </span>
+              ) : link.icon === 'link' ? (
+                <Icon name="link" size={20} class={iconClass} />
+              ) : (
+                <BrandIcon name={link.icon} size={20} class={iconClass} />
+              )}
+              {variant === 'icon' ? (
+                <span class="sr-only">{`${label} ${t.cta.opensNewTab}`}</span>
+              ) : variant === 'row' ? (
+                <span>
+                  <span class="block font-bold">{label}</span>
+                  {link.handle && (
+                    <span class="block opacity-85" dir="ltr">
+                      {link.handle}
+                    </span>
+                  )}
+                  <span class="sr-only">{t.cta.opensNewTab}</span>
+                </span>
+              ) : (
+                <span>
+                  {label}
+                  <span class="sr-only"> {t.cta.opensNewTab}</span>
+                </span>
+              )}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  )
+}

@@ -1,0 +1,60 @@
+---
+/**
+ * A logo slot. Drop logo-kids / logo-adults / logo-main (.svg, .png or .webp)
+ * into src/assets/logos/ and it replaces the typographic placeholder.
+ */
+import { Picture } from 'astro:assets';
+import { getLogo, type LogoSlot } from '../../lib/media';
+
+interface Props {
+  slot: LogoSlot;
+  /** Slot to use when this one is empty (e.g. the adults board falls back to the main logo). */
+  fallback?: LogoSlot;
+  /** Empty when the logo sits inside a link that already names it. */
+  alt?: string;
+  /** Second line of the placeholder lockup, e.g. "KIDS". */
+  label: string;
+  /** Rendered width in CSS pixels, so the browser downloads the right size. */
+  width?: number;
+  /** Logos above the fold should load straight away. */
+  eager?: boolean;
+  /** Decorative logos can yield bandwidth to fonts and text. */
+  fetchpriority?: 'high' | 'low' | 'auto';
+  class?: string;
+}
+
+const { slot, fallback, alt = '', label, width = 160, eager = false, fetchpriority, class: className } = Astro.props;
+const logo = getLogo(slot) ?? (fallback ? getLogo(fallback) : undefined);
+const loading = eager ? 'eager' : 'lazy';
+---
+
+{
+  logo?.kind === 'svg' ? (
+    <img src={logo.src} alt={alt} class:list={['object-contain', className]} loading={loading} decoding="async" />
+  ) : logo?.kind === 'raster' ? (
+    <Picture
+      src={logo.image}
+      alt={alt}
+      formats={['avif', 'webp']}
+      widths={[width, width * 2].filter((w) => w <= logo.image.width)}
+      sizes={`${width}px`}
+      quality={80}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      pictureAttributes={{ class: 'contents' }}
+      class:list={['object-contain', className]}
+    />
+  ) : (
+    <span
+      class:list={['inline-flex flex-col items-center justify-center leading-none', className]}
+      aria-hidden={alt ? undefined : 'true'}
+      role={alt ? 'img' : undefined}
+      aria-label={alt || undefined}
+      dir="ltr"
+    >
+      <span class="font-display text-[1.9em] tracking-[0.06em]">KAYA</span>
+      <span class="mt-[0.35em] text-[0.62em] font-bold tracking-[0.32em] ps-[0.32em]">{label}</span>
+      {import.meta.env.DEV && <span class="mt-2 font-mono text-[10px] opacity-70">{`${slot}.svg`}</span>}
+    </span>
+  )
+}

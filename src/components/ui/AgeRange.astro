@@ -1,0 +1,15 @@
+---
+/**
+ * An age range such as "4–10", isolated as left-to-right text.
+ * Without the isolate, Hebrew text can reorder it to read "10–4".
+ */
+interface Props {
+  min: number;
+  max: number;
+  class?: string;
+}
+
+const { min, max, class: className } = Astro.props;
+---
+
+<span dir="ltr" class={className}>{`${min}–${max}`}</span>

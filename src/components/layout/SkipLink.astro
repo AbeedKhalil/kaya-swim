@@ -1,0 +1,16 @@
+---
+import { getCopy, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const t = getCopy(Astro.props.locale);
+---
+
+<a
+  href="#main"
+  class="sr-only fixed start-4 top-4 z-[60] rounded-full bg-ink px-5 py-3 font-bold text-white focus:not-sr-only"
+>
+  {t.skipLink}
+</a>

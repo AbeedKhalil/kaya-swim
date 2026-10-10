@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WhatsAppButton from '../components/ui/WhatsAppButton.astro';
+import { getCopy, localizePath } from '../i18n';
+
+const he = getCopy('he');
+const en = getCopy('en');
+---
+
+<BaseLayout locale="he" path="/" title={`${he.notFound.title} | KAYA SWIM`} description={he.notFound.text} noindex>
+  <section class="relative isolate overflow-hidden">
+    <div class="wrap grid gap-14 py-20 md:grid-cols-2 lg:py-28">
+      <div>
+        <p class="font-display text-numeral text-pool" aria-hidden="true">404</p>
+        <h1 class="mt-2 font-display text-display">{he.notFound.title}</h1>
+        <p class="mt-4 text-lg text-ink-soft">{he.notFound.text}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href={localizePath('/', 'he')} class="btn btn-outline">{he.notFound.home}</a>
+          <WhatsAppButton locale="he" cta="404" />
+        </div>
+      </div>
+      <div lang="en" dir="ltr">
+        <p class="font-display text-numeral text-pool" aria-hidden="true">404</p>
+        <h2 class="mt-2 font-display text-display">{en.notFound.title}</h2>
+        <p class="mt-4 text-lg text-ink-soft">{en.notFound.text}</p>
+        <div class="mt-8">
+          <a href={localizePath('/', 'en')} class="btn btn-outline">{en.notFound.home}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

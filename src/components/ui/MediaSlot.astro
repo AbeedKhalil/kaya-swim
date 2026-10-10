@@ -1,0 +1,65 @@
+---
+/**
+ * A photo slot. If src/assets/images/<slot>.(jpg|png|webp|avif) exists it is
+ * served as optimized AVIF/WebP; otherwise the slot shows water art, so the
+ * page never looks broken. In dev mode the empty slot shows its file name.
+ */
+import { Picture } from 'astro:assets';
+import { getPhoto, type PhotoSlot } from '../../lib/media';
+import type { Depth } from '../../data/tracks';
+
+interface Props {
+  slot: PhotoSlot;
+  alt: string;
+  /** CSS aspect-ratio, e.g. "4 / 5". */
+  aspect: string;
+  /** The <img sizes> attribute: how wide the image renders. */
+  sizes: string;
+  widths?: number[];
+  priority?: boolean;
+  depth?: Depth;
+  class?: string;
+}
+
+const {
+  slot,
+  alt,
+  aspect,
+  sizes,
+  widths = [480, 800, 1200, 1600],
+  priority = false,
+  depth = 'deep',
+  class: className,
+} = Astro.props;
+
+const photo = getPhoto(slot);
+const usableWidths = photo ? widths.filter((w) => w <= photo.width) : [];
+if (photo && usableWidths.length === 0) usableWidths.push(photo.width);
+---
+
+<div class:list={['relative overflow-hidden', className]} style={`aspect-ratio: ${aspect}`}>
+  {
+    photo ? (
+      <Picture
+        src={photo}
+        alt={alt}
+        formats={['avif', 'webp']}
+        widths={usableWidths}
+        sizes={sizes}
+        priority={priority}
+        pictureAttributes={{ class: 'block h-full w-full' }}
+        class="h-full w-full object-cover"
+      />
+    ) : (
+      <div class:list={['absolute inset-0', `depth-${depth}`]} aria-hidden="true">
+        <span class="caustics" />
+        <slot />
+        {import.meta.env.DEV && (
+          <span class="absolute bottom-3 start-3 rounded-full bg-black/60 px-3 py-1 font-mono text-xs text-white" dir="ltr">
+            {`src/assets/images/${slot}.jpg`}
+          </span>
+        )}
+      </div>
+    )
+  }
+</div>

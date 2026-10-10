@@ -1,0 +1,60 @@
+---
+/**
+ * Katrin's Maccabiah bronze, drawn as a hanging medal (decorative).
+ * Ribbon straps in pool blue with a white stripe; a struck bronze disc.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<svg viewBox="0 0 160 320" class={className} aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="medal-shade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#000" stop-opacity="0"></stop>
+      <stop offset="1" stop-color="#000" stop-opacity="0.22"></stop>
+    </linearGradient>
+    <linearGradient id="medal-rim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f3c896"></stop>
+      <stop offset="0.45" stop-color="#b9783d"></stop>
+      <stop offset="1" stop-color="#5a300f"></stop>
+    </linearGradient>
+    <radialGradient id="medal-face" cx="0.36" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#f6d3a8"></stop>
+      <stop offset="0.4" stop-color="#d39257"></stop>
+      <stop offset="0.78" stop-color="#9a5e2a"></stop>
+      <stop offset="1" stop-color="#6e3d16"></stop>
+    </radialGradient>
+  </defs>
+
+  <!-- Ribbon: two straps meeting at the clasp -->
+  <path d="M20 0h36l34 192H66z" fill="#0f7d9b"></path>
+  <path d="M34.4 0h7.2l38.8 192h-4.8z" fill="#fff" opacity="0.92"></path>
+  <path d="M20 0h36l34 192H66z" fill="url(#medal-shade)"></path>
+  <path d="M104 0h36L94 192H70z" fill="#1497b5"></path>
+  <path d="M118.4 0h7.2L84.4 192h-4.8z" fill="#fff" opacity="0.92"></path>
+  <path d="M104 0h36L94 192H70z" fill="url(#medal-shade)"></path>
+
+  <!-- Clasp and ring -->
+  <rect x="64" y="186" width="32" height="14" rx="4" fill="url(#medal-rim)"></rect>
+  <circle cx="80" cy="207" r="6.5" fill="none" stroke="url(#medal-rim)" stroke-width="3.5"></circle>
+
+  <!-- Disc -->
+  <circle cx="80" cy="264" r="54" fill="url(#medal-rim)"></circle>
+  <circle cx="80" cy="264" r="46" fill="url(#medal-face)"></circle>
+  <circle cx="80" cy="264" r="40.5" fill="none" stroke="#5a300f" stroke-opacity="0.35" stroke-width="1.5"></circle>
+  <text x="80" y="275" text-anchor="middle" class="medal-year" fill="#fbe2c2" fill-opacity="0.55" dy="1">2017</text>
+  <text x="80" y="275" text-anchor="middle" class="medal-year" fill="#5a300f">2017</text>
+  <path d="M58 288q5.5-4 11 0t11 0 11 0 11 0" fill="none" stroke="#5a300f" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round"></path>
+  <ellipse cx="62" cy="238" rx="24" ry="9" fill="#fff" opacity="0.2" transform="rotate(-38 62 238)"></ellipse>
+</svg>
+
+<style>
+  .medal-year {
+    font-family: var(--font-display);
+    font-size: 38px;
+    letter-spacing: 0.02em;
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+import PhoneMockup from './PhoneMockup.astro';
+import WhatsAppButton from '../ui/WhatsAppButton.astro';
+import { getCopy, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+  /** Extra classes for the section, e.g. a background. */
+  class?: string;
+}
+
+const { locale, class: className } = Astro.props;
+const j = getCopy(locale).journey;
+---
+
+<section id="how" class:list={['section-pad', className]} aria-labelledby="how-title">
+  <div class="wrap grid items-center gap-16 lg:grid-cols-2">
+    <div>
+      <h2 id="how-title" class="reveal font-display text-display">{j.title}</h2>
+      <p class="reveal mt-4 text-lg text-ink-soft">{j.intro}</p>
+      <ol class="mt-10 grid gap-7">
+        {
+          j.steps.map((step, index) => (
+            <li class="reveal flex gap-5" style={`--reveal-at: ${index * 9}%`}>
+              <span class="w-8 shrink-0 font-display text-5xl leading-[0.9] text-pool" aria-hidden="true">
+                {index + 1}
+              </span>
+              <span>
+                <span class="block text-xl font-bold">{step.title}</span>
+                <span class="mt-1 block text-ink-soft">{step.text}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+      <WhatsAppButton locale={locale} cta="journey" class="mt-10" />
+    </div>
+    <PhoneMockup locale={locale} />
+  </div>
+</section>

@@ -1,0 +1,244 @@
+---
+import BrandIcon from '../ui/BrandIcon.astro';
+import Icon from '../ui/Icon.astro';
+import SiteLinks from '../ui/SiteLinks.astro';
+import { mailUrl, site, telUrl } from '../../config/site';
+import { tracks, type TrackSlug } from '../../data/tracks';
+import { getCopy, type Locale } from '../../i18n';
+import { waLink } from '../../lib/whatsapp';
+
+interface Props {
+  locale: Locale;
+  /** Preselect this track (on track pages). */
+  defaultTrack?: TrackSlug;
+}
+
+const { locale, defaultTrack } = Astro.props;
+const t = getCopy(locale);
+const r = t.register;
+---
+
+<section id="register" class="on-dark water-bg section-pad relative isolate overflow-hidden text-white" aria-labelledby="register-title">
+  <span class="caustics caustics--live" aria-hidden="true"></span>
+
+  <div class="wrap relative grid gap-12 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:items-start lg:gap-16">
+    <div class="on-light reveal rounded-lane bg-white p-6 text-ink shadow-2xl shadow-abyss/40 sm:p-10">
+      <h2 id="register-title" class="font-display text-display">{r.title}</h2>
+      <p class="mt-3 text-ink-soft">{r.intro}</p>
+
+      <form
+        class="mt-8 grid gap-5"
+        method="get"
+        action={`https://wa.me/${site.whatsapp}`}
+        target="_blank"
+        novalidate
+        data-register
+        data-wa={site.whatsapp}
+        data-greeting={r.message.greeting}
+        data-intro={r.message.intro}
+        data-label-name={r.message.name}
+        data-label-track={r.message.track}
+        data-label-age={r.message.age}
+        data-label-note={r.message.note}
+      >
+        <div class="field">
+          <label for="reg-name" class="field-label">{r.fields.name}</label>
+          <input id="reg-name" name="name" type="text" autocomplete="name" required class="field-input" aria-describedby="reg-name-error" />
+          <p id="reg-name-error" class="field-error" hidden>{r.errors.name}</p>
+        </div>
+
+        <div class="grid gap-5 sm:grid-cols-[minmax(0,1fr)_9rem]">
+          <div class="field">
+            <label for="reg-track" class="field-label">{r.fields.track}</label>
+            <select id="reg-track" name="track" required class="field-input" aria-describedby="reg-track-error">
+              <option value="" disabled selected={!defaultTrack}>{r.fields.trackPlaceholder}</option>
+              {
+                tracks.map((track) => (
+                  <option value={track.slug} selected={track.slug === defaultTrack}>
+                    {t.tracks[track.slug].name}
+                  </option>
+                ))
+              }
+              <option value="not-sure">{r.fields.trackNotSure}</option>
+            </select>
+            <p id="reg-track-error" class="field-error" hidden>{r.errors.track}</p>
+          </div>
+
+          <div class="field">
+            <label for="reg-age" class="field-label">{r.fields.age}</label>
+            <input
+              id="reg-age"
+              name="age"
+              type="number"
+              inputmode="numeric"
+              min="1"
+              max="120"
+              required
+              class="field-input"
+              aria-describedby="reg-age-error"
+            />
+            <p id="reg-age-error" class="field-error" hidden>{r.errors.age}</p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="reg-note" class="field-label">
+            {r.fields.note}
+            <span class="font-normal text-ink-soft">({r.fields.optional})</span>
+          </label>
+          <textarea id="reg-note" name="note" rows="3" class="field-input resize-y"></textarea>
+        </div>
+
+        <div class="mt-1 flex flex-col gap-3">
+          <button type="submit" class="btn btn-wa min-h-14 w-full text-lg sm:w-auto sm:self-start">
+            <BrandIcon name="whatsapp" size={22} />
+            {t.cta.send}
+            <span class="sr-only">{t.cta.opensWhatsapp}</span>
+          </button>
+          <p class="text-sm text-ink-soft">{r.privacy}</p>
+        </div>
+      </form>
+    </div>
+
+    <div class="reveal lg:pt-8" style="--reveal-at: 12%">
+      <h3 class="text-2xl font-bold">{r.direct}</h3>
+      <ul class="mt-6 grid gap-3">
+        <li>
+          <a href={waLink(t.whatsapp.general)} target="_blank" rel="noopener" data-cta="register-direct" class="contact-row">
+            <span class="contact-icon bg-wa text-ink"><BrandIcon name="whatsapp" size={22} /></span>
+            <span>
+              <span class="block font-bold">WhatsApp</span>
+              <span class="block text-white/85" dir="ltr">{site.phone.display}</span>
+            </span>
+            <span class="sr-only">{t.cta.opensWhatsapp}</span>
+          </a>
+        </li>
+        <li>
+          <a href={telUrl} class="contact-row">
+            <span class="contact-icon"><Icon name="phone" size={22} /></span>
+            <span>
+              <span class="block font-bold">{t.cta.call}</span>
+              <span class="block text-white/85" dir="ltr">{site.phone.display}</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href={mailUrl} class="contact-row">
+            <span class="contact-icon"><Icon name="mail" size={22} /></span>
+            <span>
+              <span class="block font-bold">{t.cta.email}</span>
+              <span class="block text-white/85" dir="ltr">{site.email}</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+      <SiteLinks locale={locale} placement="contact" variant="row" class="mt-3 grid gap-3" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .field {
+    display: grid;
+    gap: 0.4rem;
+    align-content: start;
+  }
+
+  .field-label {
+    font-weight: 700;
+  }
+
+  .field-input {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.7rem 1rem;
+    border: 1.5px solid color-mix(in oklab, var(--color-ink) 22%, transparent);
+    border-radius: 0.875rem;
+    background: var(--color-tile);
+    color: var(--color-ink);
+    font: inherit;
+    transition: border-color 0.2s ease;
+  }
+
+  .field-input:hover {
+    border-color: color-mix(in oklab, var(--color-ink) 45%, transparent);
+  }
+
+  .field-input:focus-visible {
+    outline: 3px solid var(--color-pool);
+    outline-offset: 1px;
+    border-color: var(--color-deep);
+  }
+
+  .field-input[aria-invalid='true'] {
+    border-color: #b42318;
+  }
+
+  .field-error {
+    color: #b42318;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+</style>
+
+<script>
+  // Builds a tidy WhatsApp message from the form; nothing is stored on the site.
+  const form = document.querySelector<HTMLFormElement>('form[data-register]');
+
+  if (form) {
+    type Field = HTMLInputElement | HTMLSelectElement;
+    const required = ['name', 'track', 'age'] as const;
+    const field = (name: string) => form.elements.namedItem(name) as Field | HTMLTextAreaElement | null;
+    const isValid = (el: Field) => el.checkValidity() && el.value.trim() !== '';
+
+    const mark = (el: Field, ok: boolean) => {
+      el.setAttribute('aria-invalid', String(!ok));
+      const error = document.getElementById(`${el.id}-error`);
+      if (error) error.hidden = ok;
+    };
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      let firstInvalid: Field | null = null;
+      for (const name of required) {
+        const el = field(name) as Field;
+        const ok = isValid(el);
+        mark(el, ok);
+        if (!ok && !firstInvalid) firstInvalid = el;
+      }
+      if (firstInvalid) {
+        firstInvalid.focus();
+        return;
+      }
+
+      const data = form.dataset;
+      const track = field('track') as HTMLSelectElement;
+      const note = (field('note')?.value ?? '').trim();
+      const lines = [
+        data.greeting,
+        data.intro,
+        `• ${data.labelName}: ${(field('name') as Field).value.trim()}`,
+        `• ${data.labelTrack}: ${track.selectedOptions[0]?.text.trim() ?? ''}`,
+        `• ${data.labelAge}: ${(field('age') as Field).value.trim()}`,
+      ];
+      if (note) lines.push(`• ${data.labelNote}: ${note}`);
+
+      const url = `https://wa.me/${data.wa}?text=${encodeURIComponent(lines.join('\n'))}`;
+      const opened = window.open(url, '_blank');
+      if (opened) opened.opener = null;
+      else window.location.href = url;
+    });
+
+    // Clear an error as soon as the field becomes valid.
+    form.addEventListener('input', (event) => {
+      const el = event.target as Field;
+      if (el.getAttribute?.('aria-invalid') === 'true') mark(el, isValid(el));
+    });
+    form.addEventListener('change', (event) => {
+      const el = event.target as Field;
+      if (el.getAttribute?.('aria-invalid') === 'true') mark(el, isValid(el));
+    });
+  }
+</script>

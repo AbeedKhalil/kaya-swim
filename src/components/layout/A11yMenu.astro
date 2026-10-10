@@ -1,0 +1,186 @@
+---
+import Icon from '../ui/Icon.astro';
+import { getCopy, localizePath, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getCopy(locale).a11yMenu;
+
+const toggles = [
+  { key: 'contrast', label: t.contrast, icon: 'contrast' },
+  { key: 'still', label: t.motion, icon: 'pause' },
+  { key: 'links', label: t.links, icon: 'link' },
+] as const;
+---
+
+<!-- Bottom-left in both languages, clear of the WhatsApp button. -->
+<button
+  type="button"
+  popovertarget="a11y-menu"
+  class="a11y-trigger fixed z-50 grid size-11 place-items-center rounded-full bg-ink text-white transition-transform hover:scale-105"
+  aria-label={t.open}
+>
+  <Icon name="accessibility" size={24} strokeWidth={2} />
+</button>
+
+<div id="a11y-menu" popover role="dialog" aria-labelledby="a11y-menu-title" class="a11y-panel">
+  <div class="flex items-center justify-between">
+    <h2 id="a11y-menu-title" class="text-xl font-bold">{t.title}</h2>
+    <button
+      type="button"
+      popovertarget="a11y-menu"
+      popovertargetaction="hide"
+      class="grid size-10 place-items-center rounded-full hover:bg-shallow"
+      aria-label={t.close}
+    >
+      <Icon name="x" size={22} />
+    </button>
+  </div>
+
+  <div class="mt-4" role="group" aria-labelledby="a11y-size-label">
+    <p id="a11y-size-label" class="mb-2 flex items-center gap-2 font-semibold">
+      <Icon name="type" size={18} />
+      {t.textSize}
+    </p>
+    <div class="grid grid-cols-3 gap-2">
+      {
+        t.sizes.map((label, index) => (
+          <button type="button" class="a11y-option" data-a11y-size={String(index)} aria-pressed={index === 0 ? 'true' : 'false'}>
+            {label}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="mt-4 grid gap-2">
+    {
+      toggles.map((toggle) => (
+        <button type="button" class="a11y-option justify-start" data-a11y-toggle={toggle.key} aria-pressed="false">
+          <Icon name={toggle.icon} size={18} />
+          {toggle.label}
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-ink/10 pt-4 text-[0.95rem]">
+    <button type="button" class="inline-flex items-center gap-2 font-semibold hover:underline" data-a11y-reset>
+      <Icon name="reset" size={16} />
+      {t.reset}
+    </button>
+    <a href={localizePath('/accessibility/', locale)} class="font-semibold text-deep underline underline-offset-4">{t.statement}</a>
+  </div>
+</div>
+
+<style>
+  .a11y-trigger {
+    view-transition-name: a11y-trigger;
+    left: 1rem;
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    box-shadow:
+      0 0 0 3px rgb(255 255 255 / 0.9),
+      0 12px 26px -10px rgb(11 34 48 / 0.6);
+  }
+
+  .a11y-panel {
+    position: fixed;
+    inset: auto auto calc(max(1rem, env(safe-area-inset-bottom)) + 3.75rem) 1rem;
+    width: min(21rem, calc(100vw - 2rem));
+    max-height: calc(100dvh - 6rem);
+    overflow-y: auto;
+    padding: 1.25rem;
+    border-radius: var(--radius-card);
+    background: #fff;
+    color: var(--color-ink);
+    box-shadow: 0 30px 60px -20px rgb(11 34 48 / 0.45);
+  }
+
+  .a11y-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.5rem 0.875rem;
+    border-radius: 0.75rem;
+    border: 1.5px solid color-mix(in oklab, var(--color-ink) 18%, transparent);
+    font-weight: 600;
+    text-align: start;
+  }
+
+  .a11y-option:hover {
+    border-color: var(--color-ink);
+  }
+
+  .a11y-option[aria-pressed='true'] {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+    color: #fff;
+  }
+</style>
+
+<script>
+  type Prefs = { size?: '1' | '2'; contrast?: boolean; still?: boolean; links?: boolean };
+  type ToggleKey = 'contrast' | 'still' | 'links';
+
+  const KEY = 'kaya-a11y';
+  const root = document.documentElement;
+
+  const read = (): Prefs => {
+    try {
+      return JSON.parse(localStorage.getItem(KEY) ?? '{}') as Prefs;
+    } catch {
+      return {};
+    }
+  };
+
+  const save = (prefs: Prefs) => {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(prefs));
+    } catch {
+      // Storage can be unavailable (private mode); settings still apply for this page.
+    }
+  };
+
+  function apply(prefs: Prefs) {
+    if (prefs.size) root.dataset.textSize = prefs.size;
+    else delete root.dataset.textSize;
+    root.classList.toggle('a11y-contrast', Boolean(prefs.contrast));
+    root.classList.toggle('a11y-still', Boolean(prefs.still));
+    root.classList.toggle('a11y-links', Boolean(prefs.links));
+
+    document.querySelectorAll<HTMLButtonElement>('[data-a11y-size]').forEach((button) => {
+      button.setAttribute('aria-pressed', String((prefs.size ?? '0') === button.dataset.a11ySize));
+    });
+    document.querySelectorAll<HTMLButtonElement>('[data-a11y-toggle]').forEach((button) => {
+      button.setAttribute('aria-pressed', String(Boolean(prefs[button.dataset.a11yToggle as ToggleKey])));
+    });
+  }
+
+  let prefs = read();
+  apply(prefs);
+
+  document.getElementById('a11y-menu')?.addEventListener('click', (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    const sizeButton = target?.closest<HTMLButtonElement>('[data-a11y-size]');
+    const toggleButton = target?.closest<HTMLButtonElement>('[data-a11y-toggle]');
+
+    if (sizeButton) {
+      const size = sizeButton.dataset.a11ySize;
+      prefs = { ...prefs, size: size === '1' || size === '2' ? size : undefined };
+    } else if (toggleButton) {
+      const key = toggleButton.dataset.a11yToggle as ToggleKey;
+      prefs = { ...prefs, [key]: !prefs[key] };
+    } else if (target?.closest('[data-a11y-reset]')) {
+      prefs = {};
+    } else {
+      return;
+    }
+    save(prefs);
+    apply(prefs);
+  });
+</script>

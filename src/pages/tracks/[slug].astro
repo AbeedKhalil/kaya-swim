@@ -1,0 +1,12 @@
+---
+import TrackView from '../../views/TrackView.astro';
+import { tracks, type TrackSlug } from '../../data/tracks';
+
+export function getStaticPaths() {
+  return tracks.map((track) => ({ params: { slug: track.slug } }));
+}
+
+const slug = Astro.params.slug as TrackSlug;
+---
+
+<TrackView locale="he" slug={slug} />

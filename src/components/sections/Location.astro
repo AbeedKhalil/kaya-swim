@@ -1,0 +1,40 @@
+---
+import BrandIcon from '../ui/BrandIcon.astro';
+import MediaSlot from '../ui/MediaSlot.astro';
+import { googleMapsUrl, wazeUrl } from '../../config/site';
+import { getCopy, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const l = getCopy(Astro.props.locale).location;
+---
+
+<section id="location" class="section-pad bg-white" aria-labelledby="location-title">
+  <div class="wrap grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+    <MediaSlot
+      slot="pool-givat-ela"
+      alt={l.imageAlt}
+      aspect="3 / 2"
+      sizes="(min-width: 1024px) 50vw, 100vw"
+      depth="shallow"
+      class="reveal-wipe rounded-lane"
+    />
+    <div class="reveal">
+      <p class="eyebrow text-deep">{l.eyebrow}</p>
+      <h2 id="location-title" class="mt-3 font-display text-display">{l.title}</h2>
+      <p class="mt-4 text-lg text-ink-soft">{l.text}</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href={wazeUrl} target="_blank" rel="noopener" class="btn btn-outline" data-cta="waze">
+          <BrandIcon name="waze" size={20} class="text-deep" />
+          {l.waze}
+        </a>
+        <a href={googleMapsUrl} target="_blank" rel="noopener" class="btn btn-outline" data-cta="maps">
+          <BrandIcon name="googlemaps" size={20} class="text-deep" />
+          {l.maps}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

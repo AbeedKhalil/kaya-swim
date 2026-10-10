@@ -1,0 +1,12 @@
+---
+/** Lane-rope floats between swimming lanes (decorative). */
+interface Props {
+  /** Horizontal on small screens, vertical from the lg breakpoint. */
+  responsive?: boolean;
+  class?: string;
+}
+
+const { responsive = false, class: className } = Astro.props;
+---
+
+<div aria-hidden="true" class:list={['lane-rope', responsive && 'lane-rope--responsive', className]}></div>
