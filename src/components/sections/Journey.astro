@@ -13,28 +13,71 @@ const { locale, class: className } = Astro.props;
 const j = getCopy(locale).journey;
 ---
 
-<section id="how" class:list={['section-pad', className]} aria-labelledby="how-title">
-  <div class="wrap grid items-center gap-16 lg:grid-cols-2">
+<!-- Pinned: the WhatsApp thread stays in view while the four steps scroll past it. -->
+<section id="how" class:list={['section-pad bg-paper-2', className]} aria-labelledby="how-title">
+  <div class="wrap journey-grid">
     <div>
-      <h2 id="how-title" class="reveal font-display text-display">{j.title}</h2>
-      <p class="reveal mt-4 text-lg text-ink-soft">{j.intro}</p>
-      <ol class="mt-10 grid gap-7">
+      <h2 id="how-title" class="head-section reveal">{j.title}</h2>
+      <p class="lead reveal mt-4">{j.intro}</p>
+      <ol class="steps mt-12">
         {
           j.steps.map((step, index) => (
-            <li class="reveal flex gap-5" style={`--reveal-at: ${index * 9}%`}>
-              <span class="w-8 shrink-0 font-display text-5xl leading-[0.9] text-pool" aria-hidden="true">
+            <li class="step reveal" style={`--reveal-at: ${index * 6}%`}>
+              <span class="step-num num font-display" aria-hidden="true">
                 {index + 1}
               </span>
               <span>
-                <span class="block text-xl font-bold">{step.title}</span>
-                <span class="mt-1 block text-ink-soft">{step.text}</span>
+                <span class="block font-display text-title leading-tight">{step.title}</span>
+                <span class="mt-2 block max-w-[44ch] text-ink-2">{step.text}</span>
               </span>
             </li>
           ))
         }
       </ol>
-      <WhatsAppButton locale={locale} cta="journey" class="mt-10" />
+      <WhatsAppButton locale={locale} cta="journey" class="mt-10 max-sm:w-full" />
     </div>
-    <PhoneMockup locale={locale} />
+    <div class="journey-chat">
+      <PhoneMockup locale={locale} />
+    </div>
   </div>
 </section>
+
+<style>
+  .journey-grid {
+    display: grid;
+    gap: var(--space-2xl);
+  }
+
+  .steps {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: var(--space-md);
+    padding-block: var(--space-lg);
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .step-num {
+    font-variant-numeric: tabular-nums;
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 0.9;
+    color: var(--color-accent);
+  }
+
+  @media (width >= 64rem) {
+    .journey-grid {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+      gap: var(--space-3xl);
+      align-items: start;
+    }
+
+    .journey-chat {
+      position: sticky;
+      top: calc(var(--header-h) + var(--space-xl));
+    }
+  }
+</style>

@@ -47,29 +47,18 @@ const en: SiteCopy = {
   },
 
   hero: {
-    eyebrow: 'Givat Ela pool',
     line1: 'Swim with',
     line2: 'a champion',
-    credential: 'Israeli champion · Maccabiah bronze 2017',
-    sub: 'Small-group swimming lessons with full personal attention — from first strokes to competitive training. Ages 4 to 90.',
-    doors: {
-      kids: {
-        title: 'Kids & teens',
-        meta: 'Ages 4–18',
-        text: 'The Water Experience and Swimming Excellence',
-      },
-      adults: {
-        title: 'Adults',
-        meta: 'Any age',
-        text: 'Overcoming fear of water, at your own pace',
-      },
-    },
+    credential: 'Israeli champion, Maccabiah bronze 2017',
+    sub: 'Small-group swimming lessons, from first strokes to competitive training.',
+    lanesLabel: 'Three tracks, ages 4 to 90',
+    water: { pause: 'Pause the moving water', play: 'Play the moving water' },
   },
 
   credentials: [
     { icon: 'trophy', text: 'Israeli swimming champion' },
-    { icon: 'medal', text: 'Bronze medal · Maccabiah 2017 · 200 m butterfly', medal: true },
-    { icon: 'school', text: 'Wingate Institute for sports excellence · from age 13' },
+    { icon: 'medal', text: 'Bronze medal, Maccabiah 2017, 200 m butterfly', medal: true },
+    { icon: 'school', text: 'Wingate Institute for sports excellence, from age 13' },
     { icon: 'graduation', text: 'B.Ed in Physical Education' },
     { icon: 'globe', text: 'Hands-on experience in Europe' },
   ],
@@ -84,9 +73,9 @@ const en: SiteCopy = {
     title: "Katrin's story",
     lead: `${full} first got into a pool when she was two. The water has been her home ever since.`,
     paragraphs: [
-      'When she was three, her mother passed away. The water became her safe haven — the place where she felt secure, strong and at home.',
+      'When she was three, her mother passed away. The water became her safe haven: the place where she felt secure, strong and at home.',
       'At 13 she joined the Wingate Institute for sports excellence, and by 17 she was Israeli champion and a bronze medalist in the 200 m butterfly at the 2017 Maccabiah Games.',
-      `Today, with a B.Ed in Physical Education and hands-on experience in Europe, ${first} leads KAYA SWIM — to give children and adults what the water gave her: confidence, independence and discipline, in a supportive, professional environment.`,
+      `Today, with a B.Ed in Physical Education and hands-on experience in Europe, ${first} leads KAYA SWIM, to give children and adults what the water gave her: confidence, independence and discipline, in a supportive, professional environment.`,
     ],
     timelineLabel: `${first}'s timeline`,
     agePrefix: 'Age',
@@ -101,7 +90,6 @@ const en: SiteCopy = {
   },
 
   values: {
-    eyebrow: 'What guides us',
     title: 'Home. Innovation. Professionalism.',
     items: [
       {
@@ -224,7 +212,6 @@ const en: SiteCopy = {
   },
 
   location: {
-    eyebrow: 'Location',
     title: 'Givat Ela pool',
     text: 'All lessons take place here. Get directions:',
     waze: 'Navigate with Waze',
@@ -239,7 +226,7 @@ const en: SiteCopy = {
       name: 'Your name',
       track: 'Track',
       trackPlaceholder: 'Choose a track',
-      trackNotSure: 'Not sure yet — we’d love to advise',
+      trackNotSure: 'Not sure yet? We’d love to advise',
       age: 'Participant’s age',
       note: 'Anything we should know?',
       optional: 'optional',
@@ -249,7 +236,7 @@ const en: SiteCopy = {
       track: 'Choose a track, or “Not sure yet”',
       age: 'Enter an age in numbers, for example 6',
     },
-    privacy: 'Your details aren’t stored on this site — they go straight into your WhatsApp message.',
+    privacy: 'Your details aren’t stored on this site. They go straight into your WhatsApp message.',
     direct: 'Or reach us directly',
     message: {
       greeting: 'Hi KAYA SWIM! 👋',

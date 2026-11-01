@@ -11,30 +11,48 @@ interface Props {
 const l = getCopy(Astro.props.locale).location;
 ---
 
-<section id="location" class="section-pad bg-white" aria-labelledby="location-title">
-  <div class="wrap grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+<!-- Split: the pool itself beside how to get there. -->
+<section id="location" class="section-pad-s" aria-labelledby="location-title">
+  <div class="wrap location-grid">
     <MediaSlot
       slot="pool-givat-ela"
       alt={l.imageAlt}
       aspect="3 / 2"
-      sizes="(min-width: 1024px) 50vw, 100vw"
+      sizes="(min-width: 1024px) 56vw, 100vw"
       depth="shallow"
-      class="reveal-wipe rounded-lane"
-    />
+      class="reveal-wipe rounded-card"
+    >
+      <span class="floor-stripe start-[30%] top-0 bottom-10"></span>
+      <span class="floor-stripe start-[64%] top-0 bottom-10"></span>
+    </MediaSlot>
     <div class="reveal">
-      <p class="eyebrow text-deep">{l.eyebrow}</p>
-      <h2 id="location-title" class="mt-3 font-display text-display">{l.title}</h2>
-      <p class="mt-4 text-lg text-ink-soft">{l.text}</p>
+      <h2 id="location-title" class="head-section">{l.title}</h2>
+      <p class="lead mt-4">{l.text}</p>
       <div class="mt-8 flex flex-wrap gap-3">
-        <a href={wazeUrl} target="_blank" rel="noopener" class="btn btn-outline" data-cta="waze">
-          <BrandIcon name="waze" size={20} class="text-deep" />
+        <a href={wazeUrl} target="_blank" rel="noopener" class="btn btn-clear max-sm:w-full" data-cta="waze">
+          <BrandIcon name="waze" size={20} class="text-accent-hi" />
           {l.waze}
         </a>
-        <a href={googleMapsUrl} target="_blank" rel="noopener" class="btn btn-outline" data-cta="maps">
-          <BrandIcon name="googlemaps" size={20} class="text-deep" />
+        <a href={googleMapsUrl} target="_blank" rel="noopener" class="btn btn-clear max-sm:w-full" data-cta="maps">
+          <BrandIcon name="googlemaps" size={20} class="text-accent-hi" />
           {l.maps}
         </a>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  .location-grid {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  @media (width >= 64rem) {
+    .location-grid {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: var(--space-3xl);
+    }
+  }
+</style>

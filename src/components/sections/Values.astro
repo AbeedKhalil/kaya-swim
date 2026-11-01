@@ -9,49 +9,71 @@ interface Props {
 const v = getCopy(Astro.props.locale).values;
 ---
 
-<section class="on-dark section-pad bg-ink text-white" aria-labelledby="values-title">
-  <div class="wrap">
-    <p class="eyebrow reveal text-pool">{v.eyebrow}</p>
-    <h2 id="values-title" class="reveal mt-3 font-display text-display">{v.title}</h2>
+<!-- Rows: the three words as the head, each one opened in a ruled row beside it. -->
+<section class="section-pad" aria-labelledby="values-title">
+  <div class="wrap values-grid">
+    <div class="values-head">
+      <h2 id="values-title" class="head-section reveal">{v.title}</h2>
+      <ul class="reveal mt-8 grid gap-3" style="--reveal-at: 8%">
+        {
+          v.promises.map((promise) => (
+            <li class="flex items-center gap-3 font-semibold">
+              <Icon name="check" size={18} strokeWidth={2.25} class="text-accent" />
+              {promise}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
 
-    <ul class="mt-14 grid gap-12 md:grid-cols-3 md:gap-10">
+    <dl class="values-rows">
       {
         v.items.map((item, index) => (
-          <li class="reveal" style={`--reveal-at: ${index * 10}%`}>
-            <span class="value-icon grid size-14 place-items-center rounded-2xl bg-white/10 text-pool">
-              <Icon name={item.icon} size={28} strokeWidth={1.75} />
-            </span>
-            <h3 class="mt-5 text-xl font-bold">{item.title}</h3>
-            <p class="mt-2 text-white/80">{item.text}</p>
-          </li>
+          <div class="value-row reveal" style={`--reveal-at: ${index * 6}%`}>
+            <dt class="flex items-center gap-3 font-display text-title">
+              <Icon name={item.icon} size={24} strokeWidth={1.5} class="text-accent" />
+              {item.title}
+            </dt>
+            <dd class="text-ink-2">{item.text}</dd>
+          </div>
         ))
       }
-    </ul>
-
-    <ul class="mt-16 flex flex-wrap gap-3">
-      {
-        v.promises.map((promise, index) => (
-          <li class="reveal-pop flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 font-semibold" style={`--reveal-at: ${index * 7}%`}>
-            <Icon name="check" size={18} strokeWidth={2.5} class="text-wa" />
-            {promise}
-          </li>
-        ))
-      }
-    </ul>
+    </dl>
   </div>
 </section>
 
 <style>
-  .value-icon {
-    transition:
-      background-color 0.4s var(--ease-out),
-      rotate 0.6s var(--ease-spring);
+  .values-grid {
+    display: grid;
+    gap: var(--space-2xl);
   }
 
-  @media (hover: hover) {
-    li:hover > .value-icon {
-      background: rgb(20 151 181 / 0.22);
-      rotate: -6deg;
+  .values-rows {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .value-row {
+    display: grid;
+    gap: var(--space-xs);
+    padding-block: var(--space-lg);
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .value-row dd {
+    max-width: 52ch;
+  }
+
+  @media (width >= 64rem) {
+    .values-grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: var(--space-3xl);
+    }
+
+    .value-row {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      gap: var(--space-xl);
+      align-items: baseline;
+      padding-block: var(--space-xl);
     }
   }
 </style>

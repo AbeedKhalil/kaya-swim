@@ -1,14 +1,16 @@
 ---
 import AgeRange from '../ui/AgeRange.astro';
 import Icon from '../ui/Icon.astro';
+import LogoSlot from '../ui/LogoSlot.astro';
 import WhatsAppButton from '../ui/WhatsAppButton.astro';
-import type { Track } from '../../data/tracks';
+import type { Track, TrackSlug } from '../../data/tracks';
 import { getCopy, localizePath, type Locale } from '../../i18n';
+import { getLogo, type LogoSlot as LogoSlotName } from '../../lib/media';
 
 interface Props {
   locale: Locale;
   track: Track;
-  /** Position in the row, for the staggered reveal. */
+  /** Position in the pool, for the staggered reveal. */
   index?: number;
 }
 
@@ -16,48 +18,160 @@ const { locale, track, index = 0 } = Astro.props;
 const t = getCopy(locale);
 const copy = t.tracks[track.slug];
 const dark = track.depth === 'deep';
+
+/** Each lane carries its own programme's mark where one exists. */
+const laneLogo: Record<TrackSlug, LogoSlotName> = {
+  'water-experience': 'logo-kids',
+  excellence: 'logo-main',
+  'fear-of-water': 'logo-adults',
+};
+const logo = laneLogo[track.slug];
+const hasLogo = Boolean(getLogo(logo));
 ---
 
 <article
-  class:list={[
-    `depth-${track.depth}`,
-    'lane reveal contrast-border relative isolate flex flex-col overflow-hidden rounded-lane p-6 sm:p-8',
-    dark && 'on-dark',
-  ]}
-  style={`--reveal-at: ${index * 9}%; view-transition-name: lane-${track.slug}; view-transition-class: lane`}
+  class:list={[`depth-${track.depth}`, 'lane reveal contrast-border relative isolate overflow-hidden', dark && 'on-dark']}
+  style={`--reveal-at: ${index * 6}%; view-transition-name: lane-${track.slug}; view-transition-class: lane`}
   aria-labelledby={`lane-${track.slug}`}
 >
   <span class="caustics" aria-hidden="true"></span>
 
-  <p class="relative">
-    <span class="block text-[0.95rem] font-bold opacity-85">{t.tracksSection.agesPrefix}</span>
-    <span class="lane-ages block font-display text-numeral">
-      <AgeRange min={track.ages[0]} max={track.ages[1]} />
-    </span>
-  </p>
-
-  <h3 id={`lane-${track.slug}`} class="relative mt-5 text-2xl leading-tight font-extrabold">{copy.name}</h3>
-  <p class:list={['relative mt-1 font-semibold', dark ? 'text-white/90' : 'text-deep']}>{copy.tagline}</p>
-  <p class:list={['relative mt-4', dark ? 'text-white/90' : 'text-ink-soft']}>{copy.pitch}</p>
-
-  <ul class="relative mt-6 grid gap-2.5">
+  <div class="lane-ages">
+    <p>
+      <span class="block text-[0.9375rem] font-semibold opacity-80">{t.tracksSection.agesPrefix}</span>
+      <span class="lane-figure num block font-display">
+        <AgeRange min={track.ages[0]} max={track.ages[1]} />
+      </span>
+    </p>
     {
-      copy.benefits.map((benefit) => (
-        <li class="flex items-start gap-2.5">
-          <Icon name="check" size={20} strokeWidth={2.5} class:list={['mt-0.5', dark ? 'text-wa' : 'text-deep']} />
-          <span>{benefit}</span>
-        </li>
-      ))
+      hasLogo && (
+        <span class="lane-logo">
+          <LogoSlot slot={logo} label="SWIM" width={88} class="h-full w-auto" />
+        </span>
+      )
     }
-  </ul>
+  </div>
 
-  {copy.price && <p class="relative mt-6 text-lg font-bold">{copy.price}</p>}
+  <div class="lane-copy">
+    <h3 id={`lane-${track.slug}`} class="lane-name font-display">{copy.name}</h3>
+    <p class="lane-tagline mt-2">{copy.tagline}</p>
+    <p class="lane-pitch mt-4">{copy.pitch}</p>
+  </div>
 
-  <div class="relative mt-auto grid gap-3 pt-8">
-    <WhatsAppButton locale={locale} message={copy.whatsapp} cta={`track-${track.slug}`} class="w-full" />
-    <a href={localizePath(`/tracks/${track.slug}/`, locale)} class="btn btn-outline w-full" data-astro-prefetch>
-      {t.cta.details}
-      <Icon name="forward" size={18} />
-    </a>
+  <div class="lane-offer">
+    <ul class="grid gap-2.5">
+      {
+        copy.benefits.map((benefit) => (
+          <li class="flex items-start gap-2.5">
+            <Icon name="check" size={18} strokeWidth={2.25} class="lane-check mt-1" />
+            <span>{benefit}</span>
+          </li>
+        ))
+      }
+    </ul>
+    {copy.price && <p class="mt-6 text-lg font-semibold">{copy.price}</p>}
+    <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+      <WhatsAppButton locale={locale} message={copy.whatsapp} cta={`track-${track.slug}`} class="max-sm:w-full" />
+      <a href={localizePath(`/tracks/${track.slug}/`, locale)} class="link-forward lane-link" data-astro-prefetch>
+        {t.cta.details}
+        <Icon name="forward" size={18} />
+      </a>
+    </div>
   </div>
 </article>
+
+<style>
+  .lane {
+    display: grid;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    border-radius: var(--radius-card);
+    --tile-a: 20rem;
+    --tile-b: 30rem;
+  }
+
+  .lane > :not(.caustics) {
+    position: relative;
+  }
+
+  .lane-ages {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-md);
+  }
+
+  .lane-figure {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    font-size: min(var(--text-figure), 5.5rem);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+
+  .lane-logo {
+    display: grid;
+    place-items: center;
+    width: 5rem;
+    height: 5rem;
+    padding: var(--space-xs);
+    border-radius: var(--radius-inner);
+    background: var(--color-light);
+    box-shadow: var(--edge-light), var(--shadow-chip);
+  }
+
+  .lane-name {
+    font-size: var(--text-title);
+    font-weight: 400;
+    max-width: 24ch;
+  }
+
+  .lane-tagline {
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .lane-pitch {
+    max-width: 46ch;
+    color: var(--color-ink-2);
+  }
+
+  .lane :global(.lane-check) {
+    color: var(--color-accent-hi);
+  }
+
+  /* The deep end: light text on dark water. */
+  .depth-deep .lane-tagline,
+  .depth-deep .lane-pitch {
+    color: color-mix(in oklab, var(--color-light) 88%, var(--color-shade));
+  }
+
+  .depth-deep :global(.lane-check) {
+    color: var(--color-shade);
+  }
+
+  .depth-deep .lane-link {
+    color: var(--color-light);
+  }
+
+  @media (width >= 40rem) {
+    .lane {
+      padding: var(--space-xl);
+    }
+  }
+
+  @media (width >= 64rem) {
+    .lane {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 5fr) minmax(0, 4fr);
+      gap: var(--space-2xl);
+      padding: var(--space-2xl) var(--space-2xl) var(--space-xl);
+    }
+
+    .lane-ages {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+  }
+</style>

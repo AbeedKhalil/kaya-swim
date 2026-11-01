@@ -1,0 +1,73 @@
+---
+/**
+ * Pauses the moving water everywhere on the page (WCAG 2.2.2: anything that
+ * moves for more than five seconds can be paused). The choice is remembered.
+ * The script also stops the water while it is off screen.
+ */
+import Icon from './Icon.astro';
+import { getCopy, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+  class?: string;
+}
+
+const { locale, class: className } = Astro.props;
+const w = getCopy(locale).hero.water;
+---
+
+<button
+  type="button"
+  class:list={['water-toggle', className]}
+  aria-pressed="false"
+  aria-label={w.pause}
+  data-label-pause={w.pause}
+  data-label-play={w.play}
+  data-water-toggle
+>
+  <Icon name="pause" size={18} strokeWidth={2} class="icon-pause" />
+  <Icon name="play" size={18} strokeWidth={2} class="icon-play" />
+</button>
+
+<script>
+  const KEY = 'kaya-water';
+  const pools = document.querySelectorAll<HTMLElement>('.pool--live');
+  const toggles = document.querySelectorAll<HTMLButtonElement>('[data-water-toggle]');
+
+  const read = () => {
+    try {
+      return localStorage.getItem(KEY) === 'paused';
+    } catch {
+      return false;
+    }
+  };
+
+  const apply = (paused: boolean) => {
+    pools.forEach((pool) => pool.classList.toggle('is-paused', paused));
+    toggles.forEach((button) => {
+      button.setAttribute('aria-pressed', String(paused));
+      button.setAttribute('aria-label', (paused ? button.dataset.labelPlay : button.dataset.labelPause) ?? '');
+    });
+  };
+
+  let paused = read();
+  apply(paused);
+
+  toggles.forEach((button) =>
+    button.addEventListener('click', () => {
+      paused = !paused;
+      apply(paused);
+      try {
+        localStorage.setItem(KEY, paused ? 'paused' : 'moving');
+      } catch {
+        // Storage can be unavailable (private mode); the choice still holds on this page.
+      }
+    }),
+  );
+
+  // Water off screen does not need to move.
+  const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) entry.target.classList.toggle('is-offscreen', !entry.isIntersecting);
+  });
+  pools.forEach((pool) => observer.observe(pool));
+</script>

@@ -1,6 +1,6 @@
 ---
-import Icon from '../ui/Icon.astro';
 import MediaSlot from '../ui/MediaSlot.astro';
+import MedalEmblem from '../ui/MedalEmblem.astro';
 import { site } from '../../config/site';
 import { getCopy, type Locale } from '../../i18n';
 
@@ -13,44 +13,49 @@ const t = getCopy(locale);
 const f = t.founder;
 ---
 
-<section id="story" class="section-pad bg-white" aria-labelledby="story-title">
-  <div class="wrap grid items-start gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
-    <MediaSlot
-      slot="founder-portrait"
-      alt={f.portraitAlt}
-      aspect="4 / 5"
-      sizes="(min-width: 1024px) 34vw, 100vw"
-      depth="deep"
-      class="reveal-wipe rounded-lane lg:sticky lg:top-28"
-    >
-      <span class="absolute inset-x-0 bottom-0 p-6 text-white sm:p-8">
-        <span class="block font-display text-5xl leading-none sm:text-6xl">{site.founder[locale].full}</span>
-        <span class="mt-2 block font-semibold text-white/85">{t.hero.credential}</span>
-      </span>
-    </MediaSlot>
+<!-- The one chapter the page reads like a letter: the portrait held beside the story, the timeline on the pool floor. -->
+<section id="story" class="section-pad-l bg-paper-2" aria-labelledby="story-title">
+  <div class="wrap story-grid">
+    <div class="story-portrait">
+      <MediaSlot
+        slot="founder-portrait"
+        alt={f.portraitAlt}
+        aspect="4 / 5"
+        sizes="(min-width: 1024px) 34vw, 100vw"
+        depth="shallow"
+        class="reveal-wipe rounded-card"
+      >
+        <span class="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+          <span class="block font-display text-[clamp(2.25rem,6vw,3.25rem)] leading-none font-light">{site.founder[locale].full}</span>
+          <span class="mt-3 block font-semibold text-ink-2">{t.hero.credential}</span>
+        </span>
+      </MediaSlot>
+    </div>
 
-    <div>
-      <h2 id="story-title" class="reveal font-display text-display">{f.title}</h2>
-      <p class="reveal mt-6 text-xl leading-relaxed font-semibold md:text-2xl">{f.lead}</p>
-      {f.paragraphs.map((paragraph) => <p class="reveal mt-4 text-ink-soft">{paragraph}</p>)}
+    <div class="story-text">
+      <h2 id="story-title" class="head-section reveal">{f.title}</h2>
+      <p class="story-lead reveal mt-6">{f.lead}</p>
+      <div class="story-prose mt-8 grid gap-5">
+        {f.paragraphs.map((paragraph) => <p class="reveal">{paragraph}</p>)}
+      </div>
 
-      <ol class="timeline mt-14" aria-label={f.timelineLabel}>
+      <ol class="timeline mt-14 md:mt-16" aria-label={f.timelineLabel}>
         {
           f.timeline.map((item, index) => (
-            <li class="timeline-item reveal" style={`--reveal-at: ${10 + index * 6}%`}>
-              <span class:list={['timeline-marker', item.medal && 'text-bronze']}>
+            <li class:list={['timeline-item reveal', item.medal && 'timeline-item--medal']} style={`--reveal-at: ${5 + index * 5}%`}>
+              <span class="timeline-marker">
                 {item.age !== undefined ? (
                   <Fragment>
-                    <span class="block text-sm font-bold text-ink-soft">{f.agePrefix}</span>
-                    <span class="block font-display text-5xl leading-[0.85]">{item.age}</span>
+                    <span class="block text-sm text-muted">{f.agePrefix}</span>
+                    <span class="timeline-age num block font-display">{item.age}</span>
                   </Fragment>
                 ) : (
-                  <span class="block pt-4 font-display text-4xl leading-[0.85]">{item.label}</span>
+                  <span class="timeline-age timeline-word block pt-5 font-display">{item.label}</span>
                 )}
               </span>
-              <span class:list={['pt-4 text-[1.05rem]', item.medal && 'font-semibold']}>
-                {item.medal && <Icon name="medal" size={18} strokeWidth={2} class="me-1.5 inline align-[-3px] text-bronze" />}
+              <span class="timeline-text">
                 {item.text}
+                {item.medal && <MedalEmblem disc class="timeline-medal" />}
               </span>
             </li>
           ))
@@ -61,19 +66,54 @@ const f = t.founder;
 </section>
 
 <style>
+  .story-grid {
+    display: grid;
+    gap: var(--space-2xl);
+  }
+
+  @media (width >= 64rem) {
+    .story-grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: var(--space-3xl);
+      align-items: start;
+    }
+
+    .story-portrait {
+      position: sticky;
+      top: calc(var(--header-h) + var(--space-lg));
+    }
+  }
+
+  .story-lead {
+    font-family: var(--font-display);
+    font-size: var(--text-statement);
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+    max-width: 30ch;
+  }
+
+  .story-prose {
+    max-width: 62ch;
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-ink-2);
+  }
+
   /* The black lane stripe on the pool floor, ending in a T at the wall: today. */
   .timeline {
     position: relative;
     display: grid;
-    gap: 1.5rem;
-    padding-inline-start: 2.25rem;
+    /* Items share one marker column, wide enough for the word that ends the timeline. */
+    grid-template-columns: minmax(4.5rem, max-content) minmax(0, 1fr);
+    gap: var(--space-lg) var(--space-md);
+    padding-inline-start: 2.5rem;
   }
 
   .timeline::before,
   .timeline::after {
     content: '';
     position: absolute;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     background: var(--color-ink);
   }
 
@@ -91,7 +131,73 @@ const f = t.founder;
     height: 0.375rem;
   }
 
-  /* As the timeline scrolls in, the stripe draws down and the T lands at the wall. */
+  .timeline-item {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-items: start;
+  }
+
+  .timeline-age {
+    font-size: 2.75rem;
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  .timeline-text {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding-top: 1.25rem;
+    font-size: 1.0625rem;
+  }
+
+  .timeline-item--medal .timeline-age,
+  .timeline-item--medal .timeline-text {
+    color: var(--color-bronze);
+  }
+
+  .timeline-item--medal .timeline-text {
+    font-weight: 600;
+  }
+
+  .timeline :global(.timeline-medal) {
+    width: 3.25rem;
+    height: 3.25rem;
+    flex-shrink: 0;
+    margin-top: -0.75rem;
+    filter: drop-shadow(var(--drop-shadow-medal));
+  }
+
+  /* Phones: a tighter stripe, so the word that ends the timeline leaves the text its measure. */
+  @media (width < 40rem) {
+    .timeline {
+      column-gap: var(--space-sm);
+      padding-inline-start: 2rem;
+    }
+
+    .timeline::before {
+      inset-inline-start: 0.25rem;
+    }
+
+    .timeline::after {
+      inset-inline-start: -0.5rem;
+    }
+
+    .timeline-word {
+      font-size: 2.25rem;
+    }
+
+    .timeline :global(.timeline-medal) {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+  }
+
+  /* As the timeline scrolls in, the stripe draws down, the T lands at the wall,
+     and a band of light crosses the medal once. */
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: view()) {
       .timeline {
@@ -102,13 +208,19 @@ const f = t.founder;
         transform-origin: top;
         animation: stripe-draw linear both;
         animation-timeline: --story;
-        animation-range: entry 25% cover 55%;
+        animation-range: entry 20% cover 50%;
       }
 
       :global(html:not(.a11y-still)) .timeline::after {
-        animation: t-land var(--ease-spring) both;
+        animation: t-land linear both;
         animation-timeline: --story;
-        animation-range: cover 50% cover 62%;
+        animation-range: cover 45% cover 55%;
+      }
+
+      :global(html:not(.a11y-still)) .timeline-item--medal :global(.medal-sheen) {
+        animation: sheen linear both;
+        animation-timeline: --story;
+        animation-range: cover 30% cover 55%;
       }
     }
   }
@@ -125,10 +237,12 @@ const f = t.founder;
     }
   }
 
-  .timeline-item {
-    display: grid;
-    grid-template-columns: 4.5rem minmax(0, 1fr);
-    gap: 1rem;
-    align-items: start;
+  @keyframes sheen {
+    from {
+      translate: -40px 0;
+    }
+    to {
+      translate: 190px 0;
+    }
   }
 </style>

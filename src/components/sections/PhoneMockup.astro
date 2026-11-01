@@ -1,8 +1,9 @@
 ---
 /**
- * An illustrated WhatsApp-style chat showing the real customer journey:
- * first message → reply → payment details → digital receipt → lesson video.
- * Decorative for screen readers (the steps beside it carry the content).
+ * The joining journey as a WhatsApp thread, shown as a clear panel lying on the
+ * page (no device frame): first message → reply → payment details → digital
+ * receipt → lesson video. Decorative for screen readers (the steps beside it
+ * carry the content). Bubbles arrive as the steps list scrolls past (--journey).
  */
 import Icon from '../ui/Icon.astro';
 import { getCopy, type Locale } from '../../i18n';
@@ -14,50 +15,46 @@ interface Props {
 const p = getCopy(Astro.props.locale).journey.phone;
 ---
 
-<figure class="chat-figure mx-auto w-[min(20.5rem,88vw)]">
-  <div class="phone" aria-hidden="true">
-    <div class="flex items-center gap-3 bg-deep px-4 pt-7 pb-3 text-white">
-      <span class="grid size-9 place-items-center rounded-full bg-white font-display text-xl text-deep" dir="ltr">K</span>
+<figure class="chat-figure mx-auto w-full max-w-[24rem]">
+  <div class="chat-panel clear" aria-hidden="true">
+    <div class="chat-head flex items-center gap-3 px-4 py-3">
+      <span class="grid size-10 place-items-center rounded-full bg-light font-display text-xl text-deep" dir="ltr">K</span>
       <span class="leading-tight">
-        <span class="block font-bold" dir="ltr">{p.contact}</span>
-        <span class="block text-xs text-white/75">{p.status}</span>
+        <span class="block font-semibold" dir="ltr">{p.contact}</span>
+        <span class="block text-sm opacity-80">{p.status}</span>
       </span>
     </div>
 
-    <div class="chat grid gap-2.5 p-3 text-[0.9rem] leading-snug">
+    <div class="chat grid gap-2.5 p-3 text-[0.9375rem] leading-snug sm:p-4">
       <p class="bubble bubble-out" style="--i: 0">{p.outgoing}</p>
       <p class="bubble bubble-in" style="--i: 1">{p.reply}</p>
 
       <div class="bubble bubble-in flex items-center gap-3" style="--i: 2">
-        <span class="grid size-10 shrink-0 place-items-center rounded-lg bg-shallow text-deep">
-          <Icon name="receipt" size={20} />
-        </span>
+        <span class="chat-icon"><Icon name="receipt" size={20} /></span>
         <span>
-          <span class="block font-bold">{p.payment.title}</span>
-          <span class="block text-xs text-ink-soft">{p.payment.text}</span>
+          <span class="block font-semibold">{p.payment.title}</span>
+          <span class="block text-sm text-muted">{p.payment.text}</span>
         </span>
       </div>
 
       <div class="bubble bubble-in flex items-center gap-3" style="--i: 3">
-        <span class="grid size-10 shrink-0 place-items-center rounded-lg bg-shallow text-deep">
-          <Icon name="file-text" size={20} />
-        </span>
-        <span class="font-bold">{p.receipt}</span>
-        <Icon name="circle-check" size={18} class="ms-auto text-[#128c4a]" />
+        <span class="chat-icon"><Icon name="file-text" size={20} /></span>
+        <span class="font-semibold">{p.receipt}</span>
+        <Icon name="circle-check" size={18} class="ms-auto text-accent" />
       </div>
 
-      <div class="bubble bubble-in w-[85%] p-1.5" style="--i: 4">
-        <span class="video relative block aspect-video overflow-hidden rounded-lg depth-deep">
+      <div class="bubble bubble-in w-[85%] p-1.5!" style="--i: 4">
+        <span class="video pool relative block aspect-video overflow-hidden rounded-(--radius-inner)">
           <span class="caustics"></span>
           <span class="absolute inset-0 grid place-items-center">
-            <span class="grid size-11 place-items-center rounded-full bg-white/90 text-deep">
+            <span class="grid size-11 place-items-center rounded-full bg-light/90 text-deep">
               <Icon name="play" size={20} strokeWidth={2.25} class="translate-x-px" />
             </span>
           </span>
         </span>
         <span class="block px-1.5 pt-2 pb-1">
-          <span class="block font-bold">{p.video.title}</span>
-          <span class="block text-xs text-ink-soft">{p.video.text}</span>
+          <span class="block font-semibold">{p.video.title}</span>
+          <span class="block text-sm text-muted">{p.video.text}</span>
         </span>
       </div>
     </div>
@@ -66,42 +63,52 @@ const p = getCopy(Astro.props.locale).journey.phone;
 </figure>
 
 <style>
-  .phone {
+  .chat-panel {
     overflow: hidden;
-    border: 10px solid var(--color-ink);
-    border-radius: 2.75rem;
-    background: #e3eff1;
-    box-shadow: 0 40px 80px -40px rgb(11 34 48 / 0.55);
+    box-shadow: var(--edge-light), var(--shadow-cast);
+  }
+
+  .chat-head {
+    background: var(--color-deep);
+    color: var(--color-light);
+  }
+
+  .chat {
+    background: color-mix(in oklab, var(--color-shade) 30%, var(--color-paper));
+  }
+
+  .chat-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-inner);
+    background: var(--color-accent-soft);
+    color: var(--color-accent-hi);
   }
 
   .bubble {
     max-width: 85%;
     padding: 0.55rem 0.75rem;
     border-radius: 0.9rem;
-    background: #fff;
+    background: var(--color-light);
     color: var(--color-ink);
-    box-shadow: 0 1px 1px rgb(11 34 48 / 0.08);
+    box-shadow: var(--shadow-bubble);
   }
 
   /* Messages you send sit at the inline end, as in WhatsApp. */
   .bubble-out {
     justify-self: end;
-    background: #d9fdd3;
+    background: color-mix(in oklab, var(--color-wa) 22%, var(--color-light));
     border-end-end-radius: 0.3rem;
+    transform-origin: bottom right;
   }
 
   .bubble-in {
     justify-self: start;
     border-end-start-radius: 0.3rem;
-  }
-
-  /* Bubbles grow from their tail corner. */
-  .bubble-in {
     transform-origin: bottom left;
-  }
-
-  .bubble-out {
-    transform-origin: bottom right;
   }
 
   :global([dir='rtl']) .bubble-in {
@@ -112,38 +119,31 @@ const p = getCopy(Astro.props.locale).journey.phone;
     transform-origin: bottom left;
   }
 
-  /* The conversation plays out as the phone scrolls into view; the phone floats gently. */
+  /* The conversation plays out as the steps beside it scroll past. */
   @media (prefers-reduced-motion: no-preference) {
-    :global(html:not(.a11y-still)) .phone {
-      animation: phone-float 7s ease-in-out infinite alternate;
-    }
-
     @supports (animation-timeline: view()) {
-      .chat-figure {
-        view-timeline: --chat block;
+      :global(#how) {
+        timeline-scope: --journey;
+      }
+
+      :global(#how .steps) {
+        view-timeline: --journey block;
       }
 
       :global(html:not(.a11y-still)) .bubble {
-        animation: bubble-in var(--ease-spring) both;
-        animation-timeline: --chat;
-        animation-range: entry calc(14% + var(--i) * 13%) entry calc(30% + var(--i) * 13%);
+        animation: bubble-in linear both;
+        animation-timeline: --journey;
+        animation-range: entry calc(30% + var(--i) * 14%) entry calc(42% + var(--i) * 14%);
       }
-    }
-  }
-
-  @keyframes phone-float {
-    from {
-      translate: 0 0;
-    }
-    to {
-      translate: 0 -12px;
     }
   }
 
   @keyframes bubble-in {
     from {
       opacity: 0;
-      scale: 0.6;
+      scale: 0.94;
+      translate: 0 0.5rem;
+      animation-timing-function: var(--ease-out);
     }
   }
 </style>

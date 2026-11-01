@@ -20,7 +20,7 @@ const toggles = [
 <button
   type="button"
   popovertarget="a11y-menu"
-  class="a11y-trigger fixed z-50 grid size-11 place-items-center rounded-full bg-ink text-white transition-transform hover:scale-105"
+  class="a11y-trigger fixed grid size-11 place-items-center rounded-full bg-ink text-light"
   aria-label={t.open}
 >
   <Icon name="accessibility" size={24} strokeWidth={2} />
@@ -28,12 +28,12 @@ const toggles = [
 
 <div id="a11y-menu" popover role="dialog" aria-labelledby="a11y-menu-title" class="a11y-panel">
   <div class="flex items-center justify-between">
-    <h2 id="a11y-menu-title" class="text-xl font-bold">{t.title}</h2>
+    <h2 id="a11y-menu-title" class="text-xl font-semibold">{t.title}</h2>
     <button
       type="button"
       popovertarget="a11y-menu"
       popovertargetaction="hide"
-      class="grid size-10 place-items-center rounded-full hover:bg-shallow"
+      class="grid size-11 place-items-center rounded-full hover:bg-paper-3 active:scale-95"
       aria-label={t.close}
     >
       <Icon name="x" size={22} />
@@ -67,36 +67,49 @@ const toggles = [
     }
   </div>
 
-  <div class="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-ink/10 pt-4 text-[0.95rem]">
+  <div class="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-rule pt-4 text-[0.95rem]">
     <button type="button" class="inline-flex items-center gap-2 font-semibold hover:underline" data-a11y-reset>
       <Icon name="reset" size={16} />
       {t.reset}
     </button>
-    <a href={localizePath('/accessibility/', locale)} class="font-semibold text-deep underline underline-offset-4">{t.statement}</a>
+    <a href={localizePath('/accessibility/', locale)} class="font-semibold text-accent underline underline-offset-4">{t.statement}</a>
   </div>
 </div>
 
 <style>
   .a11y-trigger {
     view-transition-name: a11y-trigger;
-    left: 1rem;
-    bottom: max(1rem, env(safe-area-inset-bottom));
+    z-index: calc(var(--z-sticky) + 1);
+    left: var(--space-md);
+    bottom: max(14px, env(safe-area-inset-bottom, 0px));
     box-shadow:
-      0 0 0 3px rgb(255 255 255 / 0.9),
-      0 12px 26px -10px rgb(11 34 48 / 0.6);
+      0 0 0 3px var(--color-light),
+      var(--shadow-float);
+    transition: transform var(--dur-micro) var(--ease-out);
+  }
+
+  .a11y-trigger:active {
+    transform: scale(0.94);
+  }
+
+  @media (width >= 48rem) {
+    .a11y-trigger {
+      left: var(--space-lg);
+      bottom: max(var(--space-lg), env(safe-area-inset-bottom, 0px));
+    }
   }
 
   .a11y-panel {
     position: fixed;
     inset: auto auto calc(max(1rem, env(safe-area-inset-bottom)) + 3.75rem) 1rem;
-    width: min(21rem, calc(100vw - 2rem));
+    width: min(21rem, calc(100% - 2rem));
     max-height: calc(100dvh - 6rem);
     overflow-y: auto;
     padding: 1.25rem;
     border-radius: var(--radius-card);
-    background: #fff;
+    background: var(--color-light);
     color: var(--color-ink);
-    box-shadow: 0 30px 60px -20px rgb(11 34 48 / 0.45);
+    box-shadow: var(--edge-light), var(--shadow-float);
   }
 
   .a11y-option {
@@ -106,20 +119,33 @@ const toggles = [
     gap: 0.5rem;
     min-height: 2.75rem;
     padding: 0.5rem 0.875rem;
-    border-radius: 0.75rem;
-    border: 1.5px solid color-mix(in oklab, var(--color-ink) 18%, transparent);
+    border-radius: var(--radius-inner);
+    border: 1px solid var(--color-rule);
     font-weight: 600;
     text-align: start;
+    transition:
+      border-color var(--dur-short) var(--ease-out),
+      transform var(--dur-micro) var(--ease-out);
+  }
+
+  /* The three text sizes share one row: centred, a little tighter, so each label holds one line. */
+  .a11y-option[data-a11y-size] {
+    padding-inline: 0.5rem;
+    text-align: center;
   }
 
   .a11y-option:hover {
-    border-color: var(--color-ink);
+    border-color: var(--color-muted);
+  }
+
+  .a11y-option:active {
+    transform: scale(0.97);
   }
 
   .a11y-option[aria-pressed='true'] {
     background: var(--color-ink);
     border-color: var(--color-ink);
-    color: #fff;
+    color: var(--color-light);
   }
 </style>
 

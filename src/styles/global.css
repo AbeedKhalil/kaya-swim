@@ -1,72 +1,169 @@
+/* Hallmark · shape: kept sequence, story chapter as Long Document (draw 8b154a dealt Long Document; the tracks, steps, FAQ and form the page must keep refuse a prose-only shape) · genre: atmospheric · theme: Refract (deal 1/3, seed boutique-swimming-school-israeli-a817·42694e3d·2026-11-01·r0) · redesign: full
+ * hero: Poster, the head on plaster, the lit pool bleeding off the end edge with the three lanes floating in it · nav: edge-aligned, logo and five links, one WhatsApp action (swapped from slab: a heavy bar fights a calm lit page) · footer: mast, the name filling with water · imagery: none supplied; the light carries the page, photo slots wait for the founder portrait, the tracks and the pool · signature: sunlight moving on the pool floor, the three tracks lying in it as lanes · refract: water/pool
+ * axes: light/grotesk-sans/cool · posture: restrained (accent on the WhatsApp action, focus and the present marker; WhatsApp green only inside its glyph disc and the floating action) · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V4 · weakest: E, no photographs yet; every slot falls back to lit water and the handoff asks for the portrait first */
+/* Hallmark · waive 8 · kept sequence of the KAYA SWIM page (hero, honours, lanes, story, values, joining, voices, FAQ, pool, sign-up) in new compositions · KAYA SWIM keeps its own order: the tracks, then Katrin's story, then how to join on WhatsApp */
+/* Hallmark · waive 2b · single-hue water ramp from --color-shade to --color-deep (hue 208 to 236) clipped to the KAYA SWIM footer name · the name fills with pool water as the page ends */
+/* Hallmark · dismissed F5 · the WhatsApp contact row carries its green disc so visitors find WhatsApp at a glance; phone and email rows match its shape */
+/* Hallmark · dismissed 34 · BaseLayout imports this file, which sets overflow-x: clip on html and body */
+/* Hallmark · dismissed F8 · the header hairline is a state cue tied to scroll position, not choreography; the story timeline is the page's one scroll pattern */
+/* Hallmark · dismissed 49 · every .btn sets white-space: nowrap; the sr-only suffix is not painted */
+/* Hallmark · waive 47b · one frame, a WhatsApp thread with the real joining steps · no device bezel, the chat panel only */
 @import "tailwindcss";
 
-/* ───────────────────────── Design tokens ─────────────────────────
-   Palette: a champion's pool. Tile white above the water, lane-stripe ink,
-   pool water from the surface to the deep end, and medal bronze reserved
-   for champion details. */
-@theme {
-  --color-tile: #f4f8f9;
-  --color-ink: #0b2230;
-  --color-ink-soft: #3a5261;
-  --color-pool: #1497b5;
-  --color-pool-dark: #0f7d9b;
-  --color-deep: #0a5872;
-  --color-abyss: #08384a;
-  --color-shallow: #d8eef2;
-  --color-still: #e0edea;
-  --color-bronze: #9a5e2a;
-  --color-bronze-light: #d9a066;
-  --color-wa: #25d366;
-  --color-wa-hover: #3ee07b;
+/* ───────────────────────── Tokens ─────────────────────────
+   Sunlit plaster, pool water and deep pool-blue ink (the navy of the logo).
+   One water signal (accent) for the action and focus; bronze only for the
+   2017 medal; WhatsApp green only inside its own glyph. */
+@theme static {
+  --color-paper: oklch(98.4% 0.005 95);
+  --color-paper-2: oklch(96.5% 0.007 95);
+  --color-paper-3: oklch(93.8% 0.009 95);
+  --color-ink: oklch(27% 0.055 242);
+  --color-ink-2: oklch(37% 0.045 240);
+  --color-muted: oklch(49% 0.03 238);
+  --color-rule: oklch(89.5% 0.01 225);
+  --color-rule-2: oklch(93.5% 0.008 225);
+  --color-accent: oklch(48% 0.1 228);
+  --color-accent-hi: oklch(42% 0.1 232);
+  --color-accent-ink: oklch(99% 0.004 95);
+  --color-accent-soft: oklch(94.5% 0.025 215);
+  --color-focus: oklch(55% 0.14 230);
+  --color-shade: oklch(87% 0.055 208);
+  --color-shade-2: oklch(76% 0.075 216);
+  --color-light: oklch(99.7% 0.004 95);
+  --color-deep: oklch(36% 0.07 236);
+  --color-abyss: oklch(25% 0.05 242);
+  --color-still: oklch(93% 0.022 178);
+  --color-still-2: oklch(85% 0.04 185);
+  --color-bronze: oklch(50% 0.1 55);
+  --color-bronze-light: oklch(80% 0.08 68);
+  --color-bronze-1: oklch(88% 0.06 72);
+  --color-bronze-2: oklch(66% 0.11 58);
+  --color-bronze-3: oklch(40% 0.08 50);
+  --color-wa: oklch(77% 0.19 150);
+  --color-wa-ink: oklch(24% 0.05 160);
+  --color-error: oklch(50% 0.18 27);
+  --color-white: oklch(99.7% 0.004 95);
+  --color-black: oklch(18% 0.03 245);
+  --color-spec-1: oklch(80% 0.13 32);
+  --color-spec-3: oklch(84% 0.12 175);
 
-  --radius-card: 1.25rem;
-  --radius-lane: 1.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5625rem;
+  --text-hero: clamp(3.25rem, 2rem + 6vw, 7.25rem);
+  --text-display: clamp(2.5rem, 1.6rem + 3.4vw, 4.5rem);
+  --text-section: clamp(2.125rem, 1.5rem + 2.2vw, 3.5rem);
+  --text-title: clamp(1.25rem, 0.875rem + 0.75vw, 1.625rem);
+  --text-lead: clamp(1.125rem, 1rem + 0.35vw, 1.375rem);
+  --text-statement: clamp(1.375rem, 1.1rem + 0.9vw, 2.125rem);
+  --text-figure: clamp(3.75rem, 2.5rem + 4.5vw, 6.5rem);
 
-  --ease-water: cubic-bezier(0.22, 0.61, 0.36, 1);
-  /* Long, soft deceleration — entrances, reveals, page transitions. */
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  /* A gentle spring with a small overshoot — hover and "pop" moments. */
-  --ease-spring: linear(0, 0.009, 0.035 2.1%, 0.141 4.4%, 0.723 12.9%, 0.938 16.7%, 1.017 19.7%, 1.067 22.8%, 1.077 25.5%, 1.067 28.6%, 1.006 37.3%, 0.991 41.6%, 0.995 51.7%, 1);
+  --radius-card: 22px;
+  --radius-inner: 12px;
+  --radius-pill: 999px;
 
-  --shadow-card: 0 1px 2px rgb(11 34 48 / 0.06), 0 18px 40px -28px rgb(11 34 48 / 0.35);
-  --shadow-lift: 0 2px 4px rgb(11 34 48 / 0.06), 0 34px 60px -30px rgb(11 34 48 / 0.5);
+  /* Strong ease-out for arrivals, ease-in-out for things moving on screen (Emil Kowalski's curves). */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
 
-  --text-hero: clamp(5.25rem, 26vw, 12.5rem);
-  --text-hero--line-height: 0.8;
-  --text-display: clamp(2.75rem, 11vw, 5.5rem);
-  --text-display--line-height: 0.92;
-  --text-numeral: clamp(4.75rem, 18vw, 7.5rem);
-  --text-numeral--line-height: 0.8;
+  /* One sun, up and to the start side: every shadow falls down and away, tinted by the water. */
+  --shadow-card: 0 28px 48px -26px oklch(52% 0.09 220 / 0.38), 0 3px 6px -2px oklch(40% 0.05 230 / 0.12);
+  --shadow-cast: 0 40px 70px -30px oklch(55% 0.11 212 / 0.5);
+  --shadow-float: 0 18px 40px -16px oklch(30% 0.06 235 / 0.45);
+  --shadow-press: inset 0 1px 0 oklch(100% 0 0 / 0.28), inset 0 -3px 0 oklch(25% 0.06 240 / 0.28);
+  --shadow-pressed: inset 0 1px 0 oklch(100% 0 0 / 0.2), inset 0 -1px 0 oklch(25% 0.06 240 / 0.28), 0 10px 20px -14px oklch(52% 0.09 220 / 0.5);
+  --shadow-disc: inset 0 -2px 0 oklch(30% 0.08 150 / 0.25);
+  --shadow-chip: 0 10px 20px -14px oklch(30% 0.06 235 / 0.5);
+  --shadow-soft: 0 10px 24px -18px oklch(52% 0.09 220 / 0.45);
+  --shadow-soft-hi: 0 14px 28px -18px oklch(52% 0.09 220 / 0.5);
+  --shadow-row: 0 10px 22px -18px oklch(40% 0.08 225 / 0.6);
+  --shadow-bubble: 0 1px 1px oklch(30% 0.05 235 / 0.08);
+  --drop-shadow-rope: 0 2px 1px oklch(40% 0.06 230 / 0.22);
+  --drop-shadow-medal: 0 8px 10px oklch(40% 0.08 55 / 0.3);
+  --drop-shadow-pass: 0 30px 34px oklch(45% 0.1 215 / 0.35);
+  --drop-shadow-pass-near: 0 2px 3px oklch(40% 0.06 230 / 0.12);
+
+  /* High contrast (accessibility menu) and highlighted links. */
+  --color-hc-paper: oklch(99.6% 0.004 95);
+  --color-hc-paper-3: oklch(96.5% 0.006 95);
+  --color-hc-ink: oklch(14% 0.03 245);
+  --color-hc-accent: oklch(36% 0.09 230);
+  --color-hc-accent-hi: oklch(30% 0.09 230);
+  --color-hc-deep: oklch(25% 0.06 240);
+  --color-hc-abyss: oklch(15% 0.04 240);
+  --color-hc-bronze: oklch(38% 0.08 50);
+  --color-mark: oklch(95% 0.1 100);
 }
 
-/* Metric-matched fallbacks: local Arial scaled to the measured widths of the web
-   fonts, so text keeps its line breaks when the fonts finish loading (no layout shift).
-   Re-measure if the fonts change. */
-@font-face {
-  font-family: "Assistant Fallback";
-  src: local("Arial"), local("ArialMT"), local("Helvetica"), local("Liberation Sans");
-  font-weight: 200 550;
-  size-adjust: 93.3%;
-}
-
-@font-face {
-  font-family: "Assistant Fallback";
-  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Bold"), local("Liberation Sans Bold");
-  font-weight: 551 800;
-  size-adjust: 92%;
-}
-
-@font-face {
-  font-family: "Karantina Fallback";
-  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Bold"), local("Liberation Sans Bold");
-  font-weight: 700;
-  size-adjust: 66.5%;
-}
-
-/* Font variables come from Astro's <Font> component. */
 @theme inline {
-  --font-display: var(--font-karantina);
-  --font-sans: var(--font-assistant);
+  --font-display: var(--font-kaya-display);
+  --font-sans: var(--font-kaya-sans);
+}
+
+:root {
+  color-scheme: light;
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 144px;
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long: 420ms;
+  --container: 1440px;
+  --gutter: 64px;
+  --section-gap-s: 120px;
+  --section-gap: 144px;
+  --section-gap-l: 176px;
+  --z-raised: 10;
+  --z-sticky: 200;
+  --z-sticky-nav: 300;
+  --z-modal: 400;
+  --edge-light: inset 0 1px 0 oklch(100% 0 0 / 0.9), inset 0 0 0 1px oklch(100% 0 0 / 0.55);
+  --tracking-display: -0.03em;
+  --header-h: 4.5rem;
+}
+
+@media (width < 60rem) {
+  :root {
+    --gutter: 24px;
+    --section-gap-s: 80px;
+    --section-gap: 96px;
+    --section-gap-l: 120px;
+    --header-h: 4rem;
+  }
+}
+
+@media (width < 40rem) {
+  :root {
+    --gutter: 20px;
+    --section-gap-s: 64px;
+    --section-gap: 80px;
+    --section-gap-l: 96px;
+  }
+}
+
+/* Metric-matched fallbacks: local Arial scaled toward Funnel's widths, so lines keep
+   their breaks when the web fonts arrive. Re-measure if the fonts change. */
+@font-face {
+  font-family: "Kaya Sans Fallback";
+  src: local("Arial"), local("ArialMT"), local("Helvetica"), local("Liberation Sans");
+  size-adjust: 101%;
+}
+
+@font-face {
+  font-family: "Kaya Display Fallback";
+  src: local("Arial"), local("ArialMT"), local("Helvetica"), local("Liberation Sans");
+  size-adjust: 98%;
 }
 
 /* ───────────────────────── Base ───────────────────────── */
@@ -74,9 +171,11 @@
   html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
-    scroll-padding-top: 5.5rem;
-    background: var(--color-tile);
-    /* Lets <details> and other "auto" sizes animate where supported. */
+    -webkit-tap-highlight-color: transparent;
+    scroll-padding-top: calc(var(--header-h) + var(--space-lg));
+    background: var(--color-paper);
+    scrollbar-color: var(--color-muted) var(--color-paper);
+    overflow-x: clip;
     interpolate-size: allow-keywords;
   }
 
@@ -87,192 +186,314 @@
   }
 
   body {
-    background: var(--color-tile);
+    overflow-x: clip;
+    background: var(--color-paper);
     color: var(--color-ink);
+    font-family: var(--font-sans);
     font-size: 1.0625rem;
-    line-height: 1.65;
+    line-height: 1.6;
+    font-synthesis: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: clip;
+    caret-color: var(--color-accent);
     overflow-wrap: break-word;
-  }
-
-  @media (width >= 48rem) {
-    body {
-      font-size: 1.125rem;
-    }
   }
 
   h1,
   h2,
   h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: var(--tracking-display);
+    line-height: 1.04;
     text-wrap: balance;
+    overflow-wrap: break-word;
+    min-width: 0;
   }
 
-  /* Last resort for very long words at large text sizes on small screens. */
+  h3 {
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+  }
+
+  /* Hebrew letterforms close up on their own: keep tracking near zero. */
+  :where(h1, h2, h3):lang(he) {
+    letter-spacing: -0.005em;
+  }
+
   :where(h1, h2, h3):lang(en) {
-    hyphens: auto;
+    hyphens: manual;
   }
 
   p,
-  li {
+  li,
+  dd {
     text-wrap: pretty;
   }
 
+  a,
+  button,
+  summary,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+
+  button,
+  summary,
+  .btn {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: max(16px, 1rem);
+  }
+
   :focus-visible {
-    outline: 3px solid var(--color-pool);
+    outline: 2px solid var(--color-focus);
     outline-offset: 3px;
   }
 
   .on-dark :focus-visible {
-    outline-color: #fff;
+    outline-color: var(--color-light);
   }
 
-  /* A light card inside a dark section (e.g. the sign-up form). */
   .on-dark .on-light :focus-visible {
-    outline-color: var(--color-pool);
+    outline-color: var(--color-focus);
   }
 
   ::selection {
-    background: var(--color-pool);
-    color: #fff;
+    background: color-mix(in oklab, var(--color-accent) 24%, transparent);
+    color: var(--color-ink);
   }
 
   main:focus {
     outline: none;
   }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
 }
 
-/* ───────────────────────── Utilities ───────────────────────── */
+/* ───────────────────────── Layout utilities ───────────────────────── */
 @utility wrap {
   width: 100%;
-  max-width: 78rem;
+  max-width: var(--container);
   margin-inline: auto;
-  padding-inline: 1.25rem;
-
-  @media (width >= 40rem) {
-    padding-inline: 2rem;
-  }
+  padding-inline: var(--gutter);
 }
 
 @utility section-pad {
-  padding-block: 5rem;
-
-  @media (width >= 64rem) {
-    padding-block: 7.5rem;
-  }
+  padding-block: var(--section-gap);
 }
 
-/* Small label above a heading. Latin gets tracking; Hebrew never does. */
-@utility eyebrow {
-  font-size: 0.9375rem;
-  font-weight: 700;
-  line-height: 1.3;
-
-  &:lang(en) {
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-size: 0.8125rem;
-  }
+@utility section-pad-s {
+  padding-block: var(--section-gap-s);
 }
 
-/* Buttons: one shape, three skins. Minimum 48px touch target. */
+@utility section-pad-l {
+  padding-block: var(--section-gap-l);
+}
+
+/* Section heads and leads: one size per role across the site. */
+@utility head-section {
+  font-size: var(--text-section);
+  max-width: 22ch;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+
+@utility lead {
+  font-size: var(--text-lead);
+  line-height: 1.5;
+  max-width: 52ch;
+  color: var(--color-ink-2);
+}
+
+/* A clear surface lying in the light: white at 82%, a bright edge, a tinted shadow. Never blurred. */
+@utility clear {
+  background: color-mix(in oklab, var(--color-light) 84%, transparent);
+  border-radius: var(--radius-card);
+  box-shadow: var(--edge-light), var(--shadow-card);
+}
+
+/* ───────────────────────── Buttons ─────────────────────────
+   One shape. A tactile pill: a bright top edge, a darker lip below, and a
+   press that sinks into the lip. 48px tall, 56px for the hero size. */
 @utility btn {
   position: relative;
-  isolation: isolate;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
+  gap: var(--space-sm);
   min-height: 3rem;
-  padding: 0.7rem 1.5rem;
-  border-radius: 999px;
-  font-weight: 700;
+  padding-inline: var(--space-lg);
+  border: 0;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  font-weight: 600;
   line-height: 1.2;
+  white-space: nowrap;
   text-decoration: none;
-  overflow: hidden;
+  cursor: pointer;
   transition:
-    background-color 0.3s var(--ease-out),
-    border-color 0.3s var(--ease-out),
-    box-shadow 0.4s var(--ease-out),
-    transform 0.45s var(--ease-spring);
+    transform var(--dur-micro) var(--ease-out),
+    background-color var(--dur-short) var(--ease-out),
+    box-shadow var(--dur-short) var(--ease-out),
+    color var(--dur-short) var(--ease-out);
 
-  @media (hover: hover) {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(1px) scale(0.97);
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+@utility btn-lg {
+  min-height: 3.5rem;
+  padding-inline: var(--space-lg) 1.75rem;
+  font-size: 1.0625rem;
+}
+
+/* The primary action (WhatsApp): the water signal, with WhatsApp green kept inside its glyph disc. */
+@utility btn-wa {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+  padding-inline-start: var(--space-xs);
+  box-shadow: var(--shadow-press), var(--shadow-card);
+
+  @media (hover: hover) and (pointer: fine) {
     &:hover {
-      transform: translateY(-2px);
+      background: var(--color-accent-hi);
     }
   }
 
   &:active {
-    transform: translateY(1px) scale(0.985);
-    transition-duration: 0.1s;
+    box-shadow: var(--shadow-pressed);
   }
 }
 
-/* WhatsApp green with a light sheen that sweeps across on hover. */
-@utility btn-wa {
-  background: linear-gradient(180deg, #2fe07a, var(--color-wa) 55%, #1fc35c);
+/* Secondary on paper or light: a clear pill. */
+@utility btn-clear {
+  background: color-mix(in oklab, var(--color-light) 80%, transparent);
   color: var(--color-ink);
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.45),
-    0 12px 26px -14px rgb(11 34 48 / 0.6);
+    var(--edge-light),
+    0 0 0 1px var(--color-rule),
+    var(--shadow-soft);
 
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(105deg, transparent 30%, rgb(255 255 255 / 0.55) 48%, transparent 66%);
-    translate: -110% 0;
-    transition: translate 0.8s var(--ease-out);
-  }
-
-  @media (hover: hover) {
+  @media (hover: hover) and (pointer: fine) {
     &:hover {
+      background: var(--color-light);
       box-shadow:
-        inset 0 1px 0 rgb(255 255 255 / 0.5),
-        0 18px 34px -14px rgb(11 34 48 / 0.65);
-    }
-
-    &:hover::after {
-      translate: 110% 0;
+        var(--edge-light),
+        0 0 0 1px var(--color-shade-2),
+        var(--shadow-soft-hi);
     }
   }
 }
 
+/* Secondary on dark water. */
 @utility btn-outline {
-  border: 1.5px solid color-mix(in oklab, currentColor 35%, transparent);
+  color: inherit;
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklab, currentColor 40%, transparent);
 
-  &:hover {
-    border-color: currentColor;
-    background-color: color-mix(in oklab, currentColor 7%, transparent);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      box-shadow: inset 0 0 0 1.5px currentColor;
+      background-color: color-mix(in oklab, currentColor 8%, transparent);
+    }
   }
 }
 
-/* ───────────────────────── Water ─────────────────────────
-   Shared water gradient, measured in rem so the colour at a given depth
-   is the same in the hero, the sign-up section and image fallbacks. */
-.water-bg {
-  background:
-    linear-gradient(
-      180deg,
-      var(--color-pool) 0,
-      var(--color-pool-dark) 1.25rem,
-      var(--color-deep) 4rem,
-      var(--color-abyss) 30rem
-    )
-    var(--color-abyss);
+/* The WhatsApp glyph in its own green disc, inside the primary button. */
+.wa-disc {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-wa);
+  color: var(--color-wa-ink);
+  box-shadow: var(--shadow-disc);
 }
 
-/* Caustic light: two layers of the same net at different scales.
-   Each layer is a masked colour fill, so the net can be white on dark water
-   or tinted on pale water. */
+.btn-lg .wa-disc {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+/* A text link that moves with the reading direction. */
+.link-forward {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-weight: 600;
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, currentColor 35%, transparent);
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color var(--dur-short) var(--ease-out);
+}
+
+.link-forward:hover {
+  text-decoration-color: currentColor;
+}
+
+@media (pointer: coarse) {
+  .link-forward {
+    min-height: 2.75rem;
+  }
+}
+
+.link-forward svg {
+  transition: translate var(--dur-short) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .link-forward:hover svg {
+    translate: calc(var(--dir, 1) * 3px) 0;
+  }
+}
+
+[dir="rtl"] {
+  --dir: -1;
+}
+
+/* ───────────────────────── The light ─────────────────────────
+   Sun through moving water: a bright caustic net on an aqua shade, two layers
+   of the same net at different scales drifting against each other, with a
+   faint warm and cool split at the brightest seams.
+   Each layer is a masked fill, so the net can be white on water or tinted on paper. */
+.pool {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    linear-gradient(172deg, var(--color-shade) 0%, color-mix(in oklab, var(--color-shade) 55%, var(--color-shade-2)) 55%, var(--color-shade-2) 100%);
+}
+
 .caustics {
   position: absolute;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-  --caustic-color: #fff;
+  --caustic-color: var(--color-light);
 }
 
 .caustics::before,
@@ -282,447 +503,313 @@
   background-color: var(--caustic-color);
   -webkit-mask: url("../assets/art/caustics.svg") 0 0 / var(--tile) repeat;
   mask: url("../assets/art/caustics.svg") 0 0 / var(--tile) repeat;
-  /* The pointer light in the hero nudges the two layers apart (depth). */
-  transition: translate 1.2s var(--ease-out);
 }
 
 .caustics::before {
-  --tile: 22rem;
-  /* One tile of drift room plus margin for the pointer parallax. */
-  inset: -24rem -2rem -2rem -24rem;
-  opacity: var(--caustic-a, 0.14);
-  translate: calc(var(--mx, 0) * -18px) calc(var(--my, 0) * -12px);
+  --tile: var(--tile-a, 22rem);
+  inset: calc(var(--tile-a, 22rem) * -1 - 2rem) -2rem -2rem calc(var(--tile-a, 22rem) * -1 - 2rem);
+  opacity: var(--caustic-a, 0.5);
 }
 
 .caustics::after {
-  --tile: 34rem;
-  inset: -36rem -36rem -2rem -2rem;
-  opacity: var(--caustic-b, 0.07);
-  translate: calc(var(--mx, 0) * 10px) calc(var(--my, 0) * 6px);
+  --tile: var(--tile-b, 34rem);
+  inset: calc(var(--tile-b, 34rem) * -1 - 2rem) calc(var(--tile-b, 34rem) * -1 - 2rem) -2rem -2rem;
+  opacity: var(--caustic-b, 0.28);
 }
 
-/* Live water drifts: one tile per cycle, so the loop is seamless. */
+/* The spectral split: the same net, offset a hair and tinted warm or cool. */
+.caustics--spec-warm {
+  --caustic-color: var(--color-spec-1);
+  translate: 3px 2px;
+  mix-blend-mode: multiply;
+  --caustic-a: 0.16;
+  --caustic-b: 0.08;
+}
+
+.caustics--spec-cool {
+  --caustic-color: var(--color-spec-3);
+  translate: -2px -1px;
+  --caustic-a: 0.22;
+  --caustic-b: 0.12;
+}
+
+/* Live water drifts one tile per cycle, so the loop is seamless. The pattern
+   changes at swimming-pool speed; it pauses off screen, on the pause control,
+   under reduced motion and under "stop animations". */
 @media (prefers-reduced-motion: no-preference) {
-  html:not(.a11y-still) .caustics--live::before {
-    animation: drift-a 46s linear infinite;
+  html:not(.a11y-still) .pool--live .caustics::before {
+    animation: drift-a 26s linear infinite;
   }
 
-  html:not(.a11y-still) .caustics--live::after {
-    animation: drift-b 70s linear infinite;
+  html:not(.a11y-still) .pool--live .caustics::after {
+    animation: drift-b 38s linear infinite;
   }
 
-  html:not(.a11y-still) .caustics--live {
-    animation: caustics-in 0.8s ease-out both;
+  .pool--live:is(.is-offscreen, .is-paused) .caustics::before,
+  .pool--live:is(.is-offscreen, .is-paused) .caustics::after {
+    animation-play-state: paused;
   }
 }
 
 @keyframes drift-a {
   to {
-    transform: translate3d(22rem, 22rem, 0);
+    transform: translate3d(var(--tile-a, 22rem), var(--tile-a, 22rem), 0);
   }
 }
 
 @keyframes drift-b {
   to {
-    transform: translate3d(-34rem, 34rem, 0);
+    transform: translate3d(calc(var(--tile-b, 34rem) * -1), var(--tile-b, 34rem), 0);
   }
 }
 
-@keyframes caustics-in {
-  from {
-    opacity: 0;
-  }
-}
-
-/* ───────────────────────── The waterline headline ─────────────────────────
-   .waterline wraps the half-submerged word.
-   - .water hangs from the word's own box, so the line stays aligned through
-     wrapping and font swaps; it extends full-bleed and is clipped by the hero.
-   - .waterline-dry shows only the part above the line.
-   - ::after repeats the word below the line, refracted (CSS alt text "" keeps
-     screen readers from reading it twice).
-   Motion: a splash that settles on load, then a slow living sway, a glint that
-   travels along the surface, and (desktop) a tilt toward the pointer. */
-.waterline {
-  --wl: 58%;
-  position: relative;
-  display: inline-block;
-  white-space: nowrap;
-}
-
-.waterline .water {
+/* The black lane stripe on the pool floor, ending in a T at the wall. Seen through the water. */
+.floor-stripe {
   position: absolute;
-  top: var(--wl);
-  inset-inline: -200vw;
-  height: 400vh;
   z-index: -1;
+  width: 0.875rem;
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--color-deep) 55%, transparent);
 }
 
-.waterline .surface {
-  position: absolute;
-  top: -1px;
-  inset-inline: 0;
-  height: 3px;
-  background: linear-gradient(90deg, rgb(255 255 255 / 0.55), #fff 40%, rgb(255 255 255 / 0.7));
-  box-shadow: 0 0 18px 3px rgb(255 255 255 / 0.45);
-  transform-origin: 50% 50%;
-}
-
-/* A soft highlight gliding along the surface (positioned in viewport units,
-   because the surface itself is far wider than the screen). */
-.waterline .surface::after {
+.floor-stripe::after {
   content: "";
   position: absolute;
-  top: -9px;
-  left: 0;
-  width: 26vw;
-  height: 21px;
-  background: radial-gradient(closest-side, rgb(255 255 255 / 0.95), rgb(255 255 255 / 0));
-  opacity: 0;
-  translate: 150vw 0;
+  bottom: 0;
+  inset-inline-start: 50%;
+  width: 4.5rem;
+  height: 0.875rem;
+  border-radius: inherit;
+  background: inherit;
+  translate: calc(var(--dir, 1) * -50%) 0;
 }
 
-.waterline-dry {
+/* Pause control for the moving water (shown wherever the water is live). */
+.water-toggle {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-pill);
+  color: var(--color-ink);
+  background: color-mix(in oklab, var(--color-light) 78%, transparent);
+  box-shadow: var(--edge-light), var(--shadow-chip);
+  cursor: pointer;
+  transition: transform var(--dur-micro) var(--ease-out), background-color var(--dur-short) var(--ease-out);
+}
+
+.water-toggle:active {
+  transform: scale(0.94);
+}
+
+.water-toggle .icon-play,
+.water-toggle[aria-pressed="true"] .icon-pause {
+  display: none;
+}
+
+.water-toggle[aria-pressed="true"] .icon-play {
   display: block;
-  clip-path: inset(-0.4em -0.3em calc(100% - var(--wl)) -0.3em);
 }
 
-.waterline::after {
-  content: attr(data-text);
-  content: attr(data-text) / "";
-  position: absolute;
-  inset: 0;
-  color: rgb(255 255 255 / 0.94);
-  clip-path: inset(var(--wl) -0.3em -0.4em -0.3em);
-  transform: translateX(0.035em) scaleY(1.07);
-  transform-origin: 50% var(--wl);
-  rotate: calc(var(--mx, 0) * -0.7deg);
-  filter: url("#refract");
-  pointer-events: none;
-  transition: rotate 1.4s var(--ease-out);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html:not(.a11y-still) .waterline::after {
-    animation:
-      settle 1.6s var(--ease-water) both,
-      sway 6.5s ease-in-out 1.6s infinite alternate;
-  }
-
-  html:not(.a11y-still) .waterline .surface {
-    animation: surface-settle 1.6s ease-out both;
-  }
-
-  html:not(.a11y-still) .waterline .surface::after {
-    animation: glint 7s ease-in-out 2s infinite;
+/* With motion off there is nothing to pause. */
+@media (prefers-reduced-motion: reduce) {
+  .water-toggle {
+    display: none;
   }
 }
 
-/* The ripple after a splash, dying down to calm refraction. */
-@keyframes settle {
-  0% {
-    transform: translateX(0.16em) skewX(-9deg) scaleY(1.16);
-  }
-  22% {
-    transform: translateX(-0.08em) skewX(5deg) scaleY(1.02);
-  }
-  46% {
-    transform: translateX(0.07em) skewX(-2.5deg) scaleY(1.1);
-  }
-  70% {
-    transform: translateX(0.02em) skewX(1deg) scaleY(1.05);
-  }
-  100% {
-    transform: translateX(0.035em) scaleY(1.07);
-  }
-}
-
-/* Calm water never stops moving. */
-@keyframes sway {
-  to {
-    translate: -0.03em 0.012em;
-  }
-}
-
-@keyframes surface-settle {
-  0% {
-    transform: scaleY(4);
-    opacity: 0.4;
-  }
-  40% {
-    transform: scaleY(1.8);
-  }
-  100% {
-    transform: scaleY(1);
-    opacity: 1;
-  }
-}
-
-@keyframes glint {
-  0% {
-    translate: 150vw 0;
-    opacity: 0;
-  }
-  12% {
-    opacity: 0.9;
-  }
-  55%,
-  100% {
-    translate: 330vw 0;
-    opacity: 0;
-  }
+html.a11y-still .water-toggle {
+  display: none;
 }
 
 /* ───────────────────────── Lane ropes ─────────────────────────
-   The floats that separate swimming lanes, seen from above. In Hebrew a
-   course track and a swimming lane share one word: מסלול. */
+   The floats between swimming lanes, seen from above. In Hebrew a course
+   track and a swimming lane share one word: מסלול. */
 .lane-rope {
   --bead: 0.75rem;
-  --rope-a: var(--color-pool);
-  --rope-b: var(--color-deep);
-  background:
-    radial-gradient(circle, var(--rope-a) 0 calc(var(--bead) * 0.42), transparent calc(var(--bead) * 0.46)) 0 50% /
-      calc(var(--bead) * 2) var(--bead) repeat-x,
-    radial-gradient(circle, var(--rope-b) 0 calc(var(--bead) * 0.42), transparent calc(var(--bead) * 0.46))
-      var(--bead) 50% / calc(var(--bead) * 2) var(--bead) repeat-x;
+  --rope-a: var(--color-accent);
+  --rope-b: var(--color-light);
   height: var(--bead);
+  background:
+    radial-gradient(circle, var(--rope-a) 0 calc(var(--bead) * 0.4), transparent calc(var(--bead) * 0.44)) 0 50% /
+      calc(var(--bead) * 2) var(--bead) repeat-x,
+    radial-gradient(circle, var(--rope-b) 0 calc(var(--bead) * 0.4), transparent calc(var(--bead) * 0.44))
+      var(--bead) 50% / calc(var(--bead) * 2) var(--bead) repeat-x;
   transform-origin: left center;
+  filter: drop-shadow(var(--drop-shadow-rope));
 }
 
 [dir="rtl"] .lane-rope {
   transform-origin: right center;
 }
 
-@media (width >= 64rem) {
-  .lane-rope--responsive {
-    background:
-      radial-gradient(circle, var(--rope-a) 0 calc(var(--bead) * 0.42), transparent calc(var(--bead) * 0.46)) 50% 0 /
-        var(--bead) calc(var(--bead) * 2) repeat-y,
-      radial-gradient(circle, var(--rope-b) 0 calc(var(--bead) * 0.42), transparent calc(var(--bead) * 0.46)) 50%
-        var(--bead) / var(--bead) calc(var(--bead) * 2) repeat-y;
-    width: var(--bead);
-    height: auto;
-    transform-origin: center top !important;
-  }
+.lane-rope--fine {
+  --bead: 0.375rem;
+  --rope-a: color-mix(in oklab, var(--color-shade-2) 70%, transparent);
+  --rope-b: transparent;
+  filter: none;
 }
 
-/* Water depth tells the audiences apart. */
+/* Water depth tells the audiences apart: shallow (first steps), deep (competitive), still (calm). */
 .depth-shallow {
-  background-color: var(--color-shallow);
+  background: linear-gradient(170deg, var(--color-accent-soft), var(--color-shade));
   color: var(--color-ink);
-  --caustic-color: var(--color-pool);
-  --caustic-a: 0.16;
-  --caustic-b: 0.08;
+  --caustic-color: var(--color-light);
+  --caustic-a: 0.55;
+  --caustic-b: 0.3;
 }
 
 .depth-deep {
-  background: linear-gradient(180deg, var(--color-deep), var(--color-abyss));
-  color: #fff;
-  --caustic-color: #fff;
-  --caustic-a: 0.1;
-  --caustic-b: 0.05;
+  background: linear-gradient(170deg, var(--color-deep), var(--color-abyss));
+  color: var(--color-light);
+  --caustic-color: var(--color-shade);
+  --caustic-a: 0.14;
+  --caustic-b: 0.07;
 }
 
 .depth-still {
-  background-color: var(--color-still);
+  background: linear-gradient(170deg, var(--color-still), var(--color-still-2));
   color: var(--color-ink);
-  --caustic-color: var(--color-pool);
-  --caustic-a: 0.08;
-  --caustic-b: 0.04;
+  --caustic-color: var(--color-light);
+  --caustic-a: 0.4;
+  --caustic-b: 0.2;
 }
 
-/* Lanes and cards: a soft resting shadow, lifting on hover (desktop). */
-.lane {
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.35),
-    var(--shadow-card);
-  transition:
-    transform 0.6s var(--ease-spring),
-    box-shadow 0.6s var(--ease-out);
-}
-
-.lane .caustics {
-  opacity: 0.75;
-  transition: opacity 0.6s var(--ease-out);
-}
-
-.lane .lane-ages {
-  transition: translate 0.6s var(--ease-spring);
-}
-
-.card-lift {
-  transition:
-    transform 0.6s var(--ease-spring),
-    box-shadow 0.6s var(--ease-out);
-}
-
-@media (hover: hover) {
-  .lane:hover,
-  .card-lift:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-lift);
-  }
-
-  .lane:hover .caustics {
-    opacity: 1;
-  }
-
-  .lane:hover .lane-ages {
-    translate: 0 -4px;
-  }
-}
-
-/* Contact rows on water (sign-up section and the links list). */
+/* ───────────────────────── Contact rows and icon links ───────────────────────── */
+/* A clear row lying on the lit water (sign-up) or on paper. */
 .contact-row {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 0.875rem 1rem;
-  border-radius: 1rem;
-  background: rgb(255 255 255 / 0.08);
-  border: 1px solid rgb(255 255 255 / 0.16);
+  gap: var(--space-md);
+  min-height: 4rem;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-inner);
+  background: color-mix(in oklab, var(--color-light) 80%, transparent);
+  color: var(--color-ink);
+  box-shadow: var(--edge-light), var(--shadow-row);
   transition:
-    background-color 0.3s var(--ease-out),
-    transform 0.5s var(--ease-spring);
+    background-color var(--dur-short) var(--ease-out),
+    transform var(--dur-micro) var(--ease-out);
 }
 
-.contact-row:hover {
-  background: rgb(255 255 255 / 0.15);
+.contact-row:active {
+  transform: scale(0.98);
 }
 
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .contact-row:hover {
-    transform: translateX(var(--nudge, 4px));
-  }
-
-  [dir="rtl"] .contact-row:hover {
-    --nudge: -4px;
+    background: var(--color-light);
   }
 }
 
 .contact-icon {
   display: grid;
   place-items: center;
+  flex-shrink: 0;
   width: 2.75rem;
   height: 2.75rem;
-  flex-shrink: 0;
-  border-radius: 999px;
-  background: rgb(255 255 255 / 0.14);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-hi);
 }
 
-/* Icon-only external links (header). */
 .site-link-icon {
   transition:
-    background-color 0.3s var(--ease-out),
-    color 0.3s var(--ease-out),
-    transform 0.5s var(--ease-spring);
+    background-color var(--dur-short) var(--ease-out),
+    color var(--dur-short) var(--ease-out),
+    transform var(--dur-micro) var(--ease-out);
 }
 
-.site-link-icon:hover {
-  background: var(--color-ink);
-  color: #fff;
+.site-link-icon:active {
+  transform: scale(0.94);
 }
 
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .site-link-icon:hover {
-    transform: scale(1.08);
+    background: var(--color-paper-3);
+    color: var(--color-ink);
   }
 }
 
 /* ───────────────────────── Scroll reveals ─────────────────────────
-   Content rises into place as it enters the screen, driven by the scroll
-   position itself (no JavaScript). Only where the browser supports
-   scroll-driven animations, and never with reduced motion or "stop animations":
-   otherwise everything is simply visible.
-   Stagger with --reveal-at (e.g. style="--reveal-at: 12%"). */
+   One reveal language for the page: content rises 16px into place as it
+   enters, driven by the scroll position itself (no JavaScript). Only where the
+   browser supports scroll-driven animations, never with reduced motion or
+   "stop animations": otherwise everything is simply visible.
+   Stagger with --reveal-at (e.g. style="--reveal-at: 8%"). */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     html:not(.a11y-still) .reveal,
     html:not(.a11y-still) .reveal-pop {
-      animation: reveal-up var(--ease-out) both;
+      animation: reveal-up linear both;
       animation-timeline: view();
-      animation-range: entry var(--reveal-at, 0%) entry calc(var(--reveal-at, 0%) + 55%);
+      animation-range: entry var(--reveal-at, 0%) entry calc(var(--reveal-at, 0%) + 45%);
     }
 
     html:not(.a11y-still) .reveal-pop {
       animation-name: reveal-pop;
-      animation-timing-function: var(--ease-spring);
     }
 
     html:not(.a11y-still) .reveal-wipe {
-      animation: reveal-wipe var(--ease-out) both;
+      animation: reveal-wipe linear both;
       animation-timeline: view();
-      animation-range: entry 0% entry 80%;
+      animation-range: entry 0% entry 70%;
     }
 
     html:not(.a11y-still) .reveal-draw {
-      animation: rope-draw var(--ease-out) both;
+      animation: rope-draw linear both;
       animation-timeline: view();
-      animation-range: entry 30% cover 45%;
-    }
-
-    @media (width >= 64rem) {
-      html:not(.a11y-still) .lane-rope--responsive.reveal-draw {
-        animation-name: rope-draw-y;
-      }
+      animation-range: entry 20% cover 40%;
     }
   }
 }
 
+/* Scroll-linked, so the curve lives in the keyframes: a strong ease-out along the scroll. */
 @keyframes reveal-up {
   from {
     opacity: 0;
-    translate: 0 2.25rem;
+    translate: 0 1rem;
+    animation-timing-function: var(--ease-out);
   }
 }
 
 @keyframes reveal-pop {
   from {
     opacity: 0;
-    scale: 0.9;
+    scale: 0.96;
+    animation-timing-function: var(--ease-out);
   }
 }
 
 /* Photos fill in from the bottom, like water rising. */
 @keyframes reveal-wipe {
   from {
-    clip-path: inset(40% 0 0 0 round var(--radius-lane));
-    translate: 0 2rem;
+    clip-path: inset(30% 0 0 0 round var(--radius-card));
+    animation-timing-function: var(--ease-out);
   }
   to {
-    clip-path: inset(0 0 0 0 round var(--radius-lane));
+    clip-path: inset(0 0 0 0 round var(--radius-card));
   }
 }
 
 @keyframes rope-draw {
   from {
     scale: 0 1;
-  }
-}
-
-@keyframes rope-draw-y {
-  from {
-    scale: 1 0;
+    animation-timing-function: var(--ease-out);
   }
 }
 
 /* ───────────────────────── Entrances (on load) ─────────────────────────
-   The hero builds in quickly. Headline lines only rise (never fade), so the
-   largest text is painted from the first frame. */
+   The hero settles within a second. The headline only rises (never fades),
+   so the largest text is painted from the first frame. */
 @media (prefers-reduced-motion: no-preference) {
   html:not(.a11y-still) .enter {
-    animation: enter-up 0.7s var(--ease-out) both;
+    animation: enter-up 0.6s var(--ease-out) both;
     animation-delay: var(--enter-delay, 0ms);
   }
 
   html:not(.a11y-still) .enter-rise {
-    animation: enter-rise 0.9s var(--ease-out) both;
-    animation-delay: var(--enter-delay, 0ms);
-  }
-
-  /* For text that may be the largest paint: it glides in but is visible from the first frame. */
-  html:not(.a11y-still) .enter-slide {
-    animation: enter-slide 0.8s var(--ease-out) both;
+    animation: enter-rise 0.7s var(--ease-out) both;
     animation-delay: var(--enter-delay, 0ms);
   }
 }
@@ -730,19 +817,13 @@
 @keyframes enter-up {
   from {
     opacity: 0;
-    translate: 0 1.5rem;
+    translate: 0 0.5rem;
   }
 }
 
 @keyframes enter-rise {
   from {
-    translate: 0 0.22em;
-  }
-}
-
-@keyframes enter-slide {
-  from {
-    translate: 0 1rem;
+    translate: 0 0.18em;
   }
 }
 
@@ -757,14 +838,13 @@
 }
 
 ::view-transition-group(*) {
-  animation-duration: 0.6s;
-  animation-timing-function: var(--ease-out);
+  animation-duration: 0.45s;
+  animation-timing-function: var(--ease-in-out);
 }
 
-/* Lanes morph inside a clipped, rounded box; snapshots crop from the top. */
 ::view-transition-group(*.lane) {
   overflow: clip;
-  border-radius: var(--radius-lane);
+  border-radius: var(--radius-card);
 }
 
 ::view-transition-old(*.lane),
@@ -775,11 +855,11 @@
 }
 
 ::view-transition-old(*.lane) {
-  animation: vt-fade-out 0.3s var(--ease-out) both;
+  animation: vt-fade-out 0.2s var(--ease-out) both;
 }
 
 ::view-transition-new(*.lane) {
-  animation: vt-fade-in 0.5s var(--ease-out) 0.08s both;
+  animation: vt-fade-in 0.35s var(--ease-out) 0.05s both;
 }
 
 @keyframes vt-fade-out {
@@ -795,24 +875,23 @@
 }
 
 ::view-transition-old(root) {
-  animation: vt-out 0.28s var(--ease-out) both;
+  animation: vt-out 0.2s var(--ease-out) both;
 }
 
 ::view-transition-new(root) {
-  animation: vt-in 0.55s var(--ease-out) 0.06s both;
+  animation: vt-in 0.4s var(--ease-out) 0.04s both;
 }
 
 @keyframes vt-out {
   to {
     opacity: 0;
-    translate: 0 -0.75rem;
   }
 }
 
 @keyframes vt-in {
   from {
     opacity: 0;
-    translate: 0 1.5rem;
+    translate: 0 0.75rem;
   }
 }
 
@@ -835,17 +914,23 @@ html[data-text-size="2"] {
 }
 
 html.a11y-contrast {
-  --color-tile: #fff;
-  --color-ink: #000;
-  --color-ink-soft: #000;
-  --color-pool: #00586f;
-  --color-pool-dark: #00475a;
-  --color-deep: #003646;
-  --color-abyss: #001f29;
-  --color-shallow: #fff;
-  --color-still: #fff;
-  --color-bronze: #6a3a10;
-  --color-bronze-light: #ffd29a;
+  --color-paper: var(--color-hc-paper);
+  --color-paper-2: var(--color-hc-paper);
+  --color-paper-3: var(--color-hc-paper-3);
+  --color-ink: var(--color-hc-ink);
+  --color-ink-2: var(--color-hc-ink);
+  --color-muted: var(--color-hc-ink);
+  --color-rule: var(--color-hc-ink);
+  --color-accent: var(--color-hc-accent);
+  --color-accent-hi: var(--color-hc-accent-hi);
+  --color-shade: var(--color-hc-paper);
+  --color-shade-2: var(--color-hc-paper);
+  --color-accent-soft: var(--color-hc-paper);
+  --color-still: var(--color-hc-paper);
+  --color-still-2: var(--color-hc-paper);
+  --color-deep: var(--color-hc-deep);
+  --color-abyss: var(--color-hc-abyss);
+  --color-bronze: var(--color-hc-bronze);
 }
 
 html.a11y-contrast .caustics,
@@ -853,7 +938,8 @@ html.a11y-contrast .decor {
   display: none;
 }
 
-html.a11y-contrast .contrast-border {
+html.a11y-contrast .contrast-border,
+html.a11y-contrast .clear {
   border: 2px solid currentColor;
 }
 
@@ -864,8 +950,8 @@ html.a11y-links a {
 }
 
 html.a11y-links a:not(.btn) {
-  background-color: #fff2a8;
-  color: #000 !important;
+  background-color: var(--color-mark);
+  color: var(--color-hc-ink) !important;
 }
 
 html.a11y-still *,
@@ -882,12 +968,13 @@ html.a11y-still::view-transition-new(*) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *:not(.keep-motion),
+  *:not(.keep-motion)::before,
+  *:not(.keep-motion)::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     transition-delay: 0s !important;
+    scroll-behavior: auto !important;
   }
 }

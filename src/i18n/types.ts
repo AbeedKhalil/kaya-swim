@@ -42,12 +42,6 @@ export interface TrackCopy {
   meta: { title: string; description: string };
 }
 
-export interface Door {
-  title: string;
-  meta: string;
-  text: string;
-}
-
 export interface SiteCopy {
   locale: Locale;
   /** This language's name, written in this language. */
@@ -89,14 +83,16 @@ export interface SiteCopy {
   whatsapp: { general: string };
 
   hero: {
-    eyebrow: string;
-    /** Above the waterline. */
+    /** The headline, set on two lines. */
     line1: string;
-    /** The half-submerged word(s). */
     line2: string;
     credential: string;
+    /** One sentence under the headline. */
     sub: string;
-    doors: { kids: Door; adults: Door };
+    /** Names the three lanes floating in the hero pool. */
+    lanesLabel: string;
+    /** The pause control for the moving water. */
+    water: { pause: string; play: string };
   };
 
   credentials: { icon: CredentialIcon; text: string; medal?: boolean }[];
@@ -114,7 +110,6 @@ export interface SiteCopy {
   };
 
   values: {
-    eyebrow: string;
     title: string;
     items: { icon: ValueIcon; title: string; text: string }[];
     promises: string[];
@@ -146,7 +141,7 @@ export interface SiteCopy {
 
   faq: { title: string; intro: string; items: FaqItem[] };
 
-  location: { eyebrow: string; title: string; text: string; waze: string; maps: string; imageAlt: string };
+  location: { title: string; text: string; waze: string; maps: string; imageAlt: string };
 
   register: {
     title: string;
