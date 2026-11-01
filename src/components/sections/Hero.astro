@@ -198,10 +198,15 @@ const portrait = getPhoto('founder-portrait');
     background: var(--color-accent-soft);
   }
 
+  /* Bottom right of the pool in both languages: the accessibility button holds bottom left. */
   :global(.hero-toggle) {
     position: absolute;
-    inset-inline-end: var(--space-md);
+    right: var(--space-md);
     bottom: var(--space-md);
+  }
+
+  :global([dir='rtl'] .hero-toggle) {
+    right: calc(var(--space-lg) + var(--space-md));
   }
 
   /* Phones: the pool sits under the copy and the panel floats half in it. */
@@ -248,6 +253,11 @@ const portrait = getPhoto('founder-portrait');
 
     :global(.hero-toggle) {
       bottom: calc(var(--pool-gap) + var(--space-md));
+    }
+
+    /* Hebrew: the pool lies on the left, so its right edge is the inner one. */
+    :global([dir='rtl'] .hero-toggle) {
+      right: calc(50% + var(--space-xl) + var(--space-md));
     }
   }
 

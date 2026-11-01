@@ -128,6 +128,12 @@ const toggles = [
       transform var(--dur-micro) var(--ease-out);
   }
 
+  /* The three text sizes share one row: centred, a little tighter, so each label holds one line. */
+  .a11y-option[data-a11y-size] {
+    padding-inline: 0.5rem;
+    text-align: center;
+  }
+
   .a11y-option:hover {
     border-color: var(--color-muted);
   }

@@ -50,7 +50,7 @@ const f = t.founder;
                     <span class="timeline-age num block font-display">{item.age}</span>
                   </Fragment>
                 ) : (
-                  <span class="timeline-age block pt-5 font-display">{item.label}</span>
+                  <span class="timeline-age timeline-word block pt-5 font-display">{item.label}</span>
                 )}
               </span>
               <span class="timeline-text">
@@ -103,7 +103,9 @@ const f = t.founder;
   .timeline {
     position: relative;
     display: grid;
-    gap: var(--space-lg);
+    /* Items share one marker column, wide enough for the word that ends the timeline. */
+    grid-template-columns: minmax(4.5rem, max-content) minmax(0, 1fr);
+    gap: var(--space-lg) var(--space-md);
     padding-inline-start: 2.5rem;
   }
 
@@ -130,9 +132,9 @@ const f = t.founder;
   }
 
   .timeline-item {
+    grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: 4.5rem minmax(0, 1fr);
-    gap: var(--space-md);
+    grid-template-columns: subgrid;
     align-items: start;
   }
 
@@ -141,6 +143,7 @@ const f = t.founder;
     font-weight: 300;
     line-height: 0.9;
     letter-spacing: -0.02em;
+    white-space: nowrap;
   }
 
   .timeline-text {
@@ -166,6 +169,31 @@ const f = t.founder;
     flex-shrink: 0;
     margin-top: -0.75rem;
     filter: drop-shadow(var(--drop-shadow-medal));
+  }
+
+  /* Phones: a tighter stripe, so the word that ends the timeline leaves the text its measure. */
+  @media (width < 40rem) {
+    .timeline {
+      column-gap: var(--space-sm);
+      padding-inline-start: 2rem;
+    }
+
+    .timeline::before {
+      inset-inline-start: 0.25rem;
+    }
+
+    .timeline::after {
+      inset-inline-start: -0.5rem;
+    }
+
+    .timeline-word {
+      font-size: 2.25rem;
+    }
+
+    .timeline :global(.timeline-medal) {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
   }
 
   /* As the timeline scrolls in, the stripe draws down, the T lands at the wall,

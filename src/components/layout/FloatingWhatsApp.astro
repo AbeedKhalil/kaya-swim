@@ -51,8 +51,8 @@ const t = getCopy(Astro.props.locale);
     opacity: 0;
     visibility: hidden;
     transition:
-      translate 160ms var(--ease-in),
-      opacity 160ms var(--ease-in),
+      translate 160ms var(--ease-out),
+      opacity 160ms var(--ease-out),
       visibility 0s linear 160ms;
   }
 
@@ -68,6 +68,11 @@ const t = getCopy(Astro.props.locale);
     .wa-bar-button {
       width: auto;
       box-shadow: var(--shadow-press), var(--shadow-float);
+    }
+
+    /* Hebrew: the end corner is bottom left, where the accessibility button sits; step past it. */
+    :global([dir='rtl']) .wa-bar {
+      inset-inline-end: calc(var(--space-lg) + 2.75rem + var(--space-sm));
     }
   }
 

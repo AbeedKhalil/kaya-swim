@@ -51,7 +51,7 @@ const links = [
 
     <nav aria-labelledby="footer-nav-title">
       <h2 id="footer-nav-title" class="min-w-0 text-sm wrap-break-word text-shade-2">{t.footer.navTitle}</h2>
-      <ul class="mt-4 grid gap-2">
+      <ul class="mt-4 grid gap-2 pointer-coarse:mt-2 pointer-coarse:gap-0">
         {
           links.map((link) => (
             <li>
@@ -66,7 +66,7 @@ const links = [
 
     <div>
       <h2 class="min-w-0 text-sm wrap-break-word text-shade-2">{t.footer.contactTitle}</h2>
-      <ul class="mt-4 grid gap-3">
+      <ul class="mt-4 grid gap-3 pointer-coarse:mt-2 pointer-coarse:gap-0">
         <li>
           <a href={waLink(t.whatsapp.general)} target="_blank" rel="noopener" data-cta="footer" class="foot-link inline-flex items-center gap-3">
             <BrandIcon name="whatsapp" size={20} class="text-wa" />
@@ -87,7 +87,7 @@ const links = [
           </a>
         </li>
       </ul>
-      <SiteLinks locale={locale} placement="footer" variant="list" class="mt-3 grid gap-3" iconClass="text-shade" linkClass="foot-link inline-flex items-center gap-3" />
+      <SiteLinks locale={locale} placement="footer" variant="list" class="mt-3 grid gap-3 pointer-coarse:mt-0 pointer-coarse:gap-0" iconClass="text-shade" linkClass="foot-link inline-flex items-center gap-3" />
     </div>
   </div>
 
@@ -97,7 +97,7 @@ const links = [
   </div>
 
   <div class="border-t border-light/10">
-    <div class="wrap flex flex-wrap items-center justify-between gap-x-6 gap-y-3 pt-6 pb-28 text-sm text-shade md:pb-6">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-6 gap-y-3 pt-6 pb-28 text-sm text-shade md:pb-24">
       <p>© {year} KAYA SWIM, {t.footer.rights}</p>
       <ul class="flex flex-wrap gap-x-5 gap-y-2">
         <li><a href={localizePath('/accessibility/', locale)} class="foot-link">{t.footer.accessibility}</a></li>
@@ -118,7 +118,7 @@ const links = [
     initial-value: 38%;
   }
 
-  .foot-link {
+  :global(.foot-link) {
     text-decoration: underline;
     text-decoration-color: transparent;
     text-underline-offset: 0.3em;
@@ -126,8 +126,17 @@ const links = [
     transition: text-decoration-color var(--dur-short) var(--ease-out);
   }
 
-  .foot-link:hover {
+  :global(.foot-link:hover) {
     text-decoration-color: currentColor;
+  }
+
+  /* Touch: every footer link is a full 44px row; the list gaps close up to compensate. */
+  @media (pointer: coarse) {
+    :global(.foot-link) {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.75rem;
+    }
   }
 
   .footer-mark {

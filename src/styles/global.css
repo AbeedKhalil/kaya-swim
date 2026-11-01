@@ -6,6 +6,7 @@
 /* Hallmark · waive 2b · single-hue water ramp from --color-shade to --color-deep (hue 208 to 236) clipped to the KAYA SWIM footer name · the name fills with pool water as the page ends */
 /* Hallmark · dismissed F5 · the WhatsApp contact row carries its green disc so visitors find WhatsApp at a glance; phone and email rows match its shape */
 /* Hallmark · dismissed 34 · BaseLayout imports this file, which sets overflow-x: clip on html and body */
+/* Hallmark · dismissed F8 · the header hairline is a state cue tied to scroll position, not choreography; the story timeline is the page's one scroll pattern */
 /* Hallmark · dismissed 49 · every .btn sets white-space: nowrap; the sr-only suffix is not painted */
 /* Hallmark · waive 47b · one frame, a WhatsApp thread with the real joining steps · no device bezel, the chat panel only */
 @import "tailwindcss";
@@ -346,12 +347,12 @@
     color var(--dur-short) var(--ease-out);
 
   @media (hover: hover) and (pointer: fine) {
-    &:hover {
+    &:hover:not(:disabled) {
       transform: translateY(-1px);
     }
   }
 
-  &:active {
+  &:active:not(:disabled) {
     transform: translateY(1px) scale(0.97);
   }
 
@@ -452,6 +453,12 @@
 
 .link-forward:hover {
   text-decoration-color: currentColor;
+}
+
+@media (pointer: coarse) {
+  .link-forward {
+    min-height: 2.75rem;
+  }
 }
 
 .link-forward svg {

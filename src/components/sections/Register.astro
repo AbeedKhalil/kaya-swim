@@ -266,9 +266,10 @@ const r = t.register;
     font-weight: 600;
   }
 
+  /* Bottom right in both languages: the accessibility button holds bottom left. */
   :global(.register-toggle) {
     position: absolute;
-    inset-inline-end: var(--space-md);
+    right: var(--space-md);
     bottom: var(--space-md);
   }
 </style>
