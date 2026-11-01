@@ -78,6 +78,14 @@ const heading = title ?? s.title;
     text-wrap: pretty;
   }
 
+  .voice-quote:lang(he) {
+    quotes: '\201D' '\201D';
+  }
+
+  .voice-quote:lang(en) {
+    quotes: '\201C' '\201D';
+  }
+
   .voice-quote p::before {
     content: open-quote;
   }

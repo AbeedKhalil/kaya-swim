@@ -50,7 +50,7 @@ const links = [
     </div>
 
     <nav aria-labelledby="footer-nav-title">
-      <h2 id="footer-nav-title" class="text-sm text-shade-2">{t.footer.navTitle}</h2>
+      <h2 id="footer-nav-title" class="min-w-0 text-sm wrap-break-word text-shade-2">{t.footer.navTitle}</h2>
       <ul class="mt-4 grid gap-2">
         {
           links.map((link) => (
@@ -65,7 +65,7 @@ const links = [
     </nav>
 
     <div>
-      <h2 class="text-sm text-shade-2">{t.footer.contactTitle}</h2>
+      <h2 class="min-w-0 text-sm wrap-break-word text-shade-2">{t.footer.contactTitle}</h2>
       <ul class="mt-4 grid gap-3">
         <li>
           <a href={waLink(t.whatsapp.general)} target="_blank" rel="noopener" data-cta="footer" class="foot-link inline-flex items-center gap-3">

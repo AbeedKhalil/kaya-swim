@@ -102,7 +102,9 @@ const hasLogo = Boolean(getLogo(logo));
   }
 
   .lane-figure {
-    font-size: var(--text-figure);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    font-size: min(var(--text-figure), 5.5rem);
     font-weight: 300;
     line-height: 0.95;
     letter-spacing: -0.03em;
@@ -116,7 +118,7 @@ const hasLogo = Boolean(getLogo(logo));
     padding: var(--space-xs);
     border-radius: var(--radius-inner);
     background: var(--color-light);
-    box-shadow: var(--edge-light), 0 10px 20px -14px oklch(30% 0.06 235 / 0.5);
+    box-shadow: var(--edge-light), var(--shadow-chip);
   }
 
   .lane-name {

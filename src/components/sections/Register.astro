@@ -170,7 +170,7 @@ const r = t.register;
   /* A pass lying in the water: the fields, then a stub torn along a perforation.
      The notches are cut with masks, so the shadow comes from a drop-shadow on the whole pass. */
   .pass {
-    filter: drop-shadow(0 30px 34px oklch(45% 0.1 215 / 0.35)) drop-shadow(0 2px 3px oklch(40% 0.06 230 / 0.12));
+    filter: drop-shadow(var(--drop-shadow-pass)) drop-shadow(var(--drop-shadow-pass-near));
   }
 
   .pass-main,
