@@ -18,8 +18,8 @@ const updated = new Intl.DateTimeFormat(locale === 'he' ? 'he-IL' : 'en-GB', { d
 
 <BaseLayout locale={locale} path="/accessibility/" title={a.meta.title} description={a.meta.description}>
   <article class="wrap max-w-3xl! py-14 lg:py-20">
-    <h1 class="font-display text-display">{a.title}</h1>
-    <p class="mt-3 text-ink-soft">
+    <h1 class="text-display">{a.title}</h1>
+    <p class="mt-3 text-ink-2">
       {a.updatedLabel}: <time datetime={site.accessibility.lastReviewed}>{updated}</time>
     </p>
 
@@ -28,11 +28,11 @@ const updated = new Intl.DateTimeFormat(locale === 'he' ? 'he-IL' : 'en-GB', { d
     {
       a.sections.map((section) => (
         <section class="mt-12">
-          <h2 class="text-2xl font-bold">{section.title}</h2>
+          <h2 class="text-title">{section.title}</h2>
           {section.pool && <p class="mt-3">{pool || a.poolFallback}</p>}
           {section.paragraphs?.map((paragraph) => <p class="mt-3">{paragraph}</p>)}
           {section.list && (
-            <ul class="mt-4 grid list-disc gap-2 ps-6 marker:text-pool">
+            <ul class="mt-4 grid list-disc gap-2 ps-6 marker:text-accent">
               {section.list.map((item) => <li>{item}</li>)}
             </ul>
           )}
@@ -40,16 +40,16 @@ const updated = new Intl.DateTimeFormat(locale === 'he' ? 'he-IL' : 'en-GB', { d
       ))
     }
 
-    <section class="contrast-border mt-12 rounded-card bg-white p-6 sm:p-8">
-      <h2 class="text-2xl font-bold">{a.contactTitle}</h2>
+    <section class="contrast-border mt-12 rounded-card bg-paper-2 p-6 sm:p-8">
+      <h2 class="text-title">{a.contactTitle}</h2>
       <p class="mt-3">{a.contactIntro}</p>
       <dl class="mt-5 grid gap-3 sm:grid-cols-[auto_1fr] sm:gap-x-6">
-        <dt class="font-bold">{a.coordinatorLabel}</dt>
+        <dt class="font-semibold">{a.coordinatorLabel}</dt>
         <dd>{site.accessibility.coordinator[locale]}</dd>
-        <dt class="font-bold">{a.phoneLabel}</dt>
-        <dd><a href={telUrl} class="text-deep underline underline-offset-4" dir="ltr">{site.phone.display}</a></dd>
-        <dt class="font-bold">{a.emailLabel}</dt>
-        <dd><a href={mailUrl} class="text-deep underline underline-offset-4" dir="ltr">{site.email}</a></dd>
+        <dt class="font-semibold">{a.phoneLabel}</dt>
+        <dd><a href={telUrl} class="text-accent underline underline-offset-4" dir="ltr">{site.phone.display}</a></dd>
+        <dt class="font-semibold">{a.emailLabel}</dt>
+        <dd><a href={mailUrl} class="text-accent underline underline-offset-4" dir="ltr">{site.email}</a></dd>
       </dl>
     </section>
   </article>

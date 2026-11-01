@@ -24,9 +24,9 @@ const t = getCopy(locale);
   target="_blank"
   rel="noopener"
   data-cta={cta}
-  class:list={['btn btn-wa', size === 'lg' && 'min-h-14 px-7 text-lg', className]}
+  class:list={['btn btn-wa', size === 'lg' && 'btn-lg', className]}
 >
-  <BrandIcon name="whatsapp" size={size === 'lg' ? 22 : 20} />
+  <span class="wa-disc" aria-hidden="true"><BrandIcon name="whatsapp" size={size === 'lg' ? 22 : 20} /></span>
   <span>{label ?? t.cta.whatsapp}</span>
   <span class="sr-only">{t.cta.opensWhatsapp}</span>
 </a>

@@ -27,19 +27,27 @@ const BASE_PATH = process.env.BASE_PATH || '/';
  * Each subset is its own variant, always Hebrew first then Latin: BaseLayout
  * relies on that order to preload exactly the files the first screen needs.
  */
-const HEBREW = ['U+0307-0308', 'U+0590-05FF', 'U+200C-2010', 'U+20AA', 'U+25CC', 'U+FB1D-FB4F'];
+const HEBREW = ['U+0307-0308', 'U+0590-05FF', 'U+20AA', 'U+25CC', 'U+FB1D-FB4F'];
 const LATIN = [
   'U+0000-00FF', 'U+0131', 'U+0152-0153', 'U+02BB-02BC', 'U+02C6', 'U+02DA', 'U+02DC', 'U+0304', 'U+0308',
   'U+0329', 'U+2000-206F', 'U+20AC', 'U+2122', 'U+2191', 'U+2193', 'U+2212', 'U+2215', 'U+FEFF', 'U+FFFD',
 ];
 
 /**
- * @param {string} pkg @param {string} file @param {string} weight
+ * Each role is one family made of two scripts: Assistant draws the Hebrew, Funnel
+ * draws the Latin (Funnel has no Hebrew). Variants are Hebrew first, Latin second:
+ * BaseLayout relies on that order to preload exactly the files the first screen needs.
+ * @param {string} latinPkg @param {string} latinFile
  * @returns {[any, any]} the Hebrew variant, then the Latin variant
  */
-const subsets = (pkg, file, weight) => [
-  { src: [`${pkg}/files/${file.replace('SUBSET', 'hebrew')}`], weight, style: 'normal', unicodeRange: HEBREW },
-  { src: [`${pkg}/files/${file.replace('SUBSET', 'latin')}`], weight, style: 'normal', unicodeRange: LATIN },
+const pair = (latinPkg, latinFile) => [
+  {
+    src: ['@fontsource-variable/assistant/files/assistant-hebrew-wght-normal.woff2'],
+    weight: '300 800',
+    style: 'normal',
+    unicodeRange: HEBREW,
+  },
+  { src: [`${latinPkg}/files/${latinFile}`], weight: '300 800', style: 'normal', unicodeRange: LATIN },
 ];
 
 // https://astro.build/config
@@ -58,20 +66,20 @@ export default defineConfig({
   fonts: [
     {
       provider: fontProviders.local(),
-      name: 'Karantina',
-      cssVariable: '--font-karantina',
-      // Metric-matched fallback defined in src/styles/global.css (Astro's estimate was off for these fonts).
-      fallbacks: ['Karantina Fallback', 'sans-serif'],
+      name: 'Kaya Display',
+      cssVariable: '--font-kaya-display',
+      // Metric-matched fallback defined in src/styles/global.css.
+      fallbacks: ['Kaya Display Fallback', 'sans-serif'],
       optimizedFallbacks: false,
-      options: { variants: subsets('@fontsource/karantina', 'karantina-SUBSET-700-normal.woff2', '700') },
+      options: { variants: pair('@fontsource-variable/funnel-display', 'funnel-display-latin-wght-normal.woff2') },
     },
     {
       provider: fontProviders.local(),
-      name: 'Assistant',
-      cssVariable: '--font-assistant',
-      fallbacks: ['Assistant Fallback', 'sans-serif'],
+      name: 'Kaya Sans',
+      cssVariable: '--font-kaya-sans',
+      fallbacks: ['Kaya Sans Fallback', 'sans-serif'],
       optimizedFallbacks: false,
-      options: { variants: subsets('@fontsource-variable/assistant', 'assistant-SUBSET-wght-normal.woff2', '200 800') },
+      options: { variants: pair('@fontsource-variable/funnel-sans', 'funnel-sans-latin-wght-normal.woff2') },
     },
   ],
 

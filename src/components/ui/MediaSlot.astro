@@ -51,11 +51,11 @@ if (photo && usableWidths.length === 0) usableWidths.push(photo.width);
         class="h-full w-full object-cover"
       />
     ) : (
-      <div class:list={['absolute inset-0', `depth-${depth}`]} aria-hidden="true">
+      <div class:list={['absolute inset-0 isolate', `depth-${depth}`]} aria-hidden="true">
         <span class="caustics" />
         <slot />
         {import.meta.env.DEV && (
-          <span class="absolute bottom-3 start-3 rounded-full bg-black/60 px-3 py-1 font-mono text-xs text-white" dir="ltr">
+          <span class="absolute bottom-3 start-3 rounded-full bg-ink/70 px-3 py-1 text-xs text-light" dir="ltr">
             {`src/assets/images/${slot}.jpg`}
           </span>
         )}

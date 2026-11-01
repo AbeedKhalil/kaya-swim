@@ -31,13 +31,13 @@ const switchHref = localizePath(path, other);
 ---
 
 <header class="site-header sticky top-0 z-40">
-  <div class="wrap flex h-16 items-center gap-3 lg:h-[4.5rem]">
+  <div class="wrap flex h-(--header-h) items-center gap-3">
     <a href={localizePath('/', locale)} class="shrink-0 rounded-md" aria-label={t.nav.home}>
       {
         hasMainLogo ? (
-          <LogoSlot slot="logo-main" label="SWIM" width={67} eager class="h-14 w-auto lg:h-16" />
+          <LogoSlot slot="logo-main" label="SWIM" width={67} eager class="h-13 w-auto lg:h-15" />
         ) : (
-          <span class="font-display text-[clamp(1.5rem,7.5vw,1.85rem)] leading-none tracking-[0.08em]" dir="ltr">
+          <span class="font-display text-[clamp(1.5rem,7.5vw,1.85rem)] leading-none" dir="ltr">
             KAYA SWIM
           </span>
         )
@@ -49,7 +49,7 @@ const switchHref = localizePath(path, other);
         {
           links.map((link) => (
             <li>
-              <a href={link.href} class="nav-link relative block px-3 py-2 text-[0.95rem] font-semibold">
+              <a href={link.href} class="nav-link relative block px-3 py-2 text-[0.9375rem] text-ink-2 hover:text-ink">
                 {link.label}
               </a>
             </li>
@@ -63,7 +63,7 @@ const switchHref = localizePath(path, other);
         href={switchHref}
         lang={other}
         hreflang={other}
-        class="rounded-full px-3 py-2 text-[0.95rem] font-semibold transition-colors hover:bg-shallow"
+        class="grid min-h-11 place-items-center rounded-full px-3 text-[0.9375rem] font-semibold text-ink-2 transition-colors hover:bg-paper-3 hover:text-ink"
       >
         <span class="min-[24rem]:hidden">{otherCopy.languageShort}</span>
         <span class="max-[24rem]:sr-only">{otherCopy.languageName}</span>
@@ -73,23 +73,23 @@ const switchHref = localizePath(path, other);
         placement="header"
         variant="icon"
         class="header-links flex items-center max-[24rem]:hidden"
-        linkClass="site-link-icon grid size-[44px] place-items-center rounded-full"
+        linkClass="site-link-icon grid size-11 place-items-center rounded-full text-ink-2"
       />
       <a
         href={waLink(t.whatsapp.general)}
         target="_blank"
         rel="noopener"
         data-cta="header"
-        class="btn btn-wa hidden min-h-11 px-4 text-[0.95rem] sm:inline-flex"
+        class="btn btn-wa hidden min-h-11 pe-4 text-[0.9375rem] sm:inline-flex"
       >
-        <BrandIcon name="whatsapp" size={18} />
+        <span class="wa-disc size-8!" aria-hidden="true"><BrandIcon name="whatsapp" size={17} /></span>
         <span>{t.cta.whatsapp}</span>
         <span class="sr-only">{t.cta.opensWhatsapp}</span>
       </a>
       <button
         type="button"
         popovertarget="site-menu"
-        class="grid size-[44px] place-items-center rounded-full transition-colors hover:bg-shallow lg:hidden"
+        class="grid size-11 place-items-center rounded-full transition-colors hover:bg-paper-3 active:scale-95 lg:hidden"
         aria-label={t.nav.menuOpen}
       >
         <Icon name="menu" size={24} />
@@ -98,12 +98,12 @@ const switchHref = localizePath(path, other);
   </div>
 
   <div id="site-menu" popover class="site-menu">
-    <div class="wrap flex h-16 items-center justify-between">
+    <div class="wrap flex h-(--header-h) items-center justify-between">
       {
         hasMainLogo ? (
-          <LogoSlot slot="logo-main" label="SWIM" width={67} class="h-14 w-auto" />
+          <LogoSlot slot="logo-main" label="SWIM" width={67} class="h-13 w-auto" />
         ) : (
-          <span class="font-display text-[1.85rem] leading-none tracking-[0.08em]" dir="ltr" aria-hidden="true">
+          <span class="font-display text-[1.85rem] leading-none" dir="ltr" aria-hidden="true">
             KAYA SWIM
           </span>
         )
@@ -112,7 +112,7 @@ const switchHref = localizePath(path, other);
         type="button"
         popovertarget="site-menu"
         popovertargetaction="hide"
-        class="grid size-11 place-items-center rounded-full hover:bg-shallow"
+        class="grid size-11 place-items-center rounded-full hover:bg-paper-3 active:scale-95"
         aria-label={t.nav.menuClose}
       >
         <Icon name="x" size={24} />
@@ -122,10 +122,10 @@ const switchHref = localizePath(path, other);
       <ul class="grid">
         {
           links.map((link, index) => (
-            <li class="menu-item border-b border-ink/10" style={`--i: ${index}`}>
-              <a href={link.href} class="flex items-center justify-between py-4 text-2xl font-bold">
+            <li class="menu-item border-b border-rule" style={`--i: ${index}`}>
+              <a href={link.href} class="flex min-h-16 items-center justify-between font-display text-[1.75rem] leading-tight">
                 {link.label}
-                <Icon name="forward" size={22} class="text-pool" />
+                <Icon name="forward" size={22} class="text-accent" />
               </a>
             </li>
           ))
@@ -138,13 +138,13 @@ const switchHref = localizePath(path, other);
         target="_blank"
         rel="noopener"
         data-cta="menu"
-        class="btn btn-wa min-h-14 text-lg"
+        class="btn btn-wa btn-lg"
       >
-        <BrandIcon name="whatsapp" size={22} />
+        <span class="wa-disc" aria-hidden="true"><BrandIcon name="whatsapp" size={22} /></span>
         <span>{t.cta.whatsapp}</span>
         <span class="sr-only">{t.cta.opensWhatsapp}</span>
       </a>
-      <a href={switchHref} lang={other} hreflang={other} class="btn btn-outline">
+      <a href={switchHref} lang={other} hreflang={other} class="btn btn-clear">
         {otherCopy.languageName}
       </a>
       <SiteLinks
@@ -152,7 +152,7 @@ const switchHref = localizePath(path, other);
         placement="menu"
         variant="list"
         class="mt-2 flex flex-wrap justify-center gap-x-6 gap-y-2"
-        linkClass="inline-flex items-center gap-2 py-2 font-semibold hover:text-deep"
+        linkClass="inline-flex min-h-11 items-center gap-2 font-semibold text-ink-2 hover:text-ink"
       />
     </div>
   </div>
@@ -161,22 +161,22 @@ const switchHref = localizePath(path, other);
 <style>
   .site-header {
     view-transition-name: site-header;
-    background: color-mix(in oklab, var(--color-tile) 90%, transparent);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
+    background: color-mix(in oklab, var(--color-paper) 96%, transparent);
+    box-shadow: 0 1px 0 transparent;
   }
 
+  /* A hairline settles under the bar once the page moves. */
   @supports (animation-timeline: scroll()) {
     .site-header {
-      animation: header-lift linear both;
+      animation: header-rule linear both;
       animation-timeline: scroll(root);
-      animation-range: 0 5rem;
+      animation-range: 0 4rem;
     }
   }
 
-  @keyframes header-lift {
+  @keyframes header-rule {
     to {
-      box-shadow: 0 12px 32px -22px rgb(11 34 48 / 0.6);
+      box-shadow: 0 1px 0 var(--color-rule);
     }
   }
 
@@ -188,16 +188,17 @@ const switchHref = localizePath(path, other);
     max-width: none;
     max-height: none;
     overflow-y: auto;
-    background: var(--color-tile);
+    overscroll-behavior: contain;
+    background: var(--color-paper);
     color: var(--color-ink);
-    padding-bottom: 2rem;
+    padding-bottom: calc(var(--space-xl) + env(safe-area-inset-bottom, 0px));
     opacity: 0;
-    translate: 0 -0.75rem;
+    translate: 0 -0.5rem;
     transition:
-      opacity 0.22s ease,
-      translate 0.22s ease,
-      overlay 0.22s allow-discrete,
-      display 0.22s allow-discrete;
+      opacity var(--dur-short) var(--ease-out),
+      translate var(--dur-short) var(--ease-out),
+      overlay var(--dur-short) allow-discrete,
+      display var(--dur-short) allow-discrete;
   }
 
   .site-menu:popover-open {
@@ -208,44 +209,47 @@ const switchHref = localizePath(path, other);
   @starting-style {
     .site-menu:popover-open {
       opacity: 0;
-      translate: 0 -0.75rem;
+      translate: 0 -0.5rem;
     }
   }
 
-  /* Menu items arrive one after another. */
+  /* Menu items arrive one after another, 40ms apart. */
   .menu-item {
     opacity: 0;
-    translate: 0 0.75rem;
+    translate: 0 0.5rem;
     transition:
-      opacity 0.45s var(--ease-out),
-      translate 0.6s var(--ease-out);
+      opacity var(--dur-short) var(--ease-out),
+      translate 300ms var(--ease-out);
   }
 
   .site-menu:popover-open .menu-item {
     opacity: 1;
     translate: 0 0;
-    transition-delay: calc(var(--i, 0) * 40ms + 60ms);
+    transition-delay: calc(var(--i, 0) * 40ms + 40ms);
   }
 
   @starting-style {
     .site-menu:popover-open .menu-item {
       opacity: 0;
-      translate: 0 0.75rem;
+      translate: 0 0.5rem;
     }
   }
 
   /* Nav links: an underline that grows from the start of the word. */
+  .nav-link {
+    transition: color var(--dur-short) var(--ease-out);
+  }
+
   .nav-link::after {
     content: '';
     position: absolute;
     inset-inline: 0.75rem;
-    bottom: 0.3rem;
-    height: 2px;
-    border-radius: 2px;
-    background: var(--color-pool);
+    bottom: 0.35rem;
+    height: 1px;
+    background: currentColor;
     scale: 0 1;
     transform-origin: left;
-    transition: scale 0.45s var(--ease-out);
+    transition: scale var(--dur-short) var(--ease-out);
   }
 
   :global([dir='rtl']) .nav-link::after {

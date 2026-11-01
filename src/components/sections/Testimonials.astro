@@ -1,5 +1,4 @@
 ---
-import Icon from '../ui/Icon.astro';
 import type { TrackSlug } from '../../data/tracks';
 import { getCopy, type Locale } from '../../i18n';
 
@@ -22,25 +21,23 @@ const heading = title ?? s.title;
   items.length > 0 && (
     <section id="testimonials" class:list={['section-pad', className]} aria-labelledby="testimonials-title">
       <div class="wrap">
-        <h2 id="testimonials-title" class="reveal font-display text-display">
+        <h2 id="testimonials-title" class="head-section reveal">
           {heading}
         </h2>
-        <div class="testimonial-scroller reveal mt-10" role="region" aria-label={s.regionLabel} tabindex="0">
-          <ul class="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 md:grid md:grid-cols-2 md:gap-5 md:overflow-visible md:pb-0">
+        <div class="voices reveal mt-10 md:mt-12" role="region" aria-label={s.regionLabel} tabindex="0">
+          <ul class="voices-list">
             {items.map((item) => (
-              <li class="w-[85%] shrink-0 snap-start md:w-auto">
-                <figure class="card-lift contrast-border flex h-full flex-col rounded-card bg-tile p-6 sm:p-7">
-                  <Icon name="quote" size={28} strokeWidth={2} class="text-pool" />
-                  <blockquote class="mt-3 text-lg leading-relaxed">{item.quote}</blockquote>
-                  <figcaption class="mt-auto flex flex-wrap items-center gap-2 pt-6 text-sm">
-                    <span class="me-1 font-bold">{item.name}</span>
-                    <span class="rounded-full bg-shallow px-2.5 py-1 font-semibold text-deep">{s.audiences[item.audience]}</span>
-                    <span class="rounded-full bg-shallow px-2.5 py-1 font-semibold text-deep">{t.tracks[item.track].name}</span>
-                    {item.sample && (
-                      <span class="rounded-full border border-dashed border-ink-soft px-2.5 py-0.5 font-semibold text-ink-soft">
-                        {s.sampleBadge}
-                      </span>
-                    )}
+              <li class="voice">
+                <figure class="flex h-full flex-col">
+                  {item.sample && <span class="sample-stamp">{s.sampleBadge}</span>}
+                  <blockquote class="voice-quote font-display">
+                    <p>{item.quote}</p>
+                  </blockquote>
+                  <figcaption class="mt-auto pt-8 text-[0.9375rem]">
+                    <span class="block font-semibold">{item.name}</span>
+                    <span class="mt-1 block text-muted">
+                      {s.audiences[item.audience]}, {t.tracks[item.track].name}
+                    </span>
                   </figcaption>
                 </figure>
               </li>
@@ -51,3 +48,77 @@ const heading = title ?? s.title;
     </section>
   )
 }
+
+<style>
+  .voices-list {
+    display: flex;
+    gap: var(--space-md);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    margin-inline: calc(var(--gutter) * -1);
+    padding: var(--space-2xs) var(--gutter) var(--space-md);
+    scrollbar-width: thin;
+  }
+
+  .voice {
+    position: relative;
+    flex: 0 0 min(85%, 24rem);
+    scroll-snap-align: start;
+    padding: var(--space-lg);
+    border-radius: var(--radius-card);
+    background: var(--color-paper-2);
+  }
+
+  .voice-quote {
+    font-size: 1.25rem;
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+    text-wrap: pretty;
+  }
+
+  .voice-quote p::before {
+    content: open-quote;
+  }
+
+  .voice-quote p::after {
+    content: close-quote;
+  }
+
+  /* An honest mark on placeholder quotes: a small inked stamp, not a badge. */
+  .sample-stamp {
+    align-self: flex-start;
+    margin-bottom: var(--space-md);
+    padding: var(--space-2xs) var(--space-sm);
+    border: 1.5px dashed color-mix(in oklab, var(--color-bronze) 70%, transparent);
+    border-radius: var(--space-xs);
+    color: var(--color-bronze);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    rotate: -3deg;
+  }
+
+  :global([dir='rtl']) .sample-stamp {
+    rotate: 3deg;
+  }
+
+  @media (width >= 48rem) {
+    .voices-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-lg);
+      overflow: visible;
+      margin-inline: 0;
+      padding: 0;
+    }
+
+    .voice {
+      padding: var(--space-xl);
+    }
+
+    .voice-quote {
+      font-size: 1.5rem;
+    }
+  }
+</style>

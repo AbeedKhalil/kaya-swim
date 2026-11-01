@@ -16,9 +16,9 @@ export const photoSlots = [
 ] as const;
 
 export const logoSlots = [
-  { name: 'logo-kids', where: 'Hero, kids & teens board', required: true },
-  { name: 'logo-main', where: 'Header, mobile menu, and the hero adults board', required: true },
-  { name: 'logo-adults', where: 'Hero adults board (optional: the main logo is used otherwise)', required: false },
+  { name: 'logo-kids', where: 'The Water Experience lane (the turtle)', required: true },
+  { name: 'logo-main', where: 'Header, mobile menu, footer and the Swimming Excellence lane', required: true },
+  { name: 'logo-adults', where: 'The fear-of-water lane (optional: the lane shows no logo otherwise)', required: false },
 ] as const;
 
 export type PhotoSlot = (typeof photoSlots)[number]['name'];

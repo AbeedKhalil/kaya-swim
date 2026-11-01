@@ -35,11 +35,11 @@ const ogImage = new URL(withBase(`/og/og-${locale}.png`), siteUrl).href;
 const ldJson = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : undefined;
 
 // Preload the font files the first screen needs (Hebrew pages also use the Latin
-// files for digits and dashes). Variants are declared Hebrew first, Latin second
-// in astro.config.mjs.
-const [displayHe, displayLatin] = fontData['--font-karantina'] ?? [];
-const [bodyHe, bodyLatin] = fontData['--font-assistant'] ?? [];
-const preloads = (locale === 'he' ? [displayHe, displayLatin, bodyHe, bodyLatin] : [displayLatin, bodyLatin])
+// files for digits). Variants are declared Hebrew first, Latin second in astro.config.mjs.
+// Both roles share the Hebrew file (Assistant), so Hebrew pages preload it once.
+const [hebrew, displayLatin] = fontData['--font-kaya-display'] ?? [];
+const [, bodyLatin] = fontData['--font-kaya-sans'] ?? [];
+const preloads = (locale === 'he' ? [hebrew, displayLatin, bodyLatin] : [displayLatin, bodyLatin])
   .map((font) => font?.src[0]?.url)
   .filter((url): url is string => Boolean(url));
 ---
@@ -77,22 +77,23 @@ const preloads = (locale === 'he' ? [displayHe, displayLatin, bodyHe, bodyLatin]
     <meta property="og:image:alt" content={t.meta.ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <meta name="theme-color" content="#f4f8f9" />
+    <meta name="theme-color" content="#fbfaf6" />
     <meta name="format-detection" content="telephone=no" />
     <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
     <link rel="icon" href={withBase('/favicon-32.png')} sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
 
     {preloads.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
-    <Font cssVariable="--font-karantina" />
-    <Font cssVariable="--font-assistant" />
+    <Font cssVariable="--font-kaya-display" />
+    <Font cssVariable="--font-kaya-sans" />
 
     <!-- Apply saved accessibility settings before first paint (no flash). -->
     <script is:inline>
       (function () {
+        var d = document.documentElement;
+        d.classList.add('js');
         try {
           var p = JSON.parse(localStorage.getItem('kaya-a11y') || '{}');
-          var d = document.documentElement;
           if (p.size === '1' || p.size === '2') d.dataset.textSize = p.size;
           if (p.contrast) d.classList.add('a11y-contrast');
           if (p.still) d.classList.add('a11y-still');

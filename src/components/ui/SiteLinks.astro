@@ -30,7 +30,7 @@ const labelOf = (link: SiteLink) => (typeof link.label === 'string' ? link.label
 
 const defaultLinkClass = {
   icon: 'site-link-icon grid size-11 place-items-center rounded-full',
-  list: 'inline-flex items-center gap-3 hover:text-wa',
+  list: 'inline-flex items-center gap-3 underline-offset-4 hover:underline',
   row: 'contact-row',
 }[variant];
 ---
@@ -63,7 +63,7 @@ const defaultLinkClass = {
                 <span class="sr-only">{`${label} ${t.cta.opensNewTab}`}</span>
               ) : variant === 'row' ? (
                 <span>
-                  <span class="block font-bold">{label}</span>
+                  <span class="block font-semibold">{label}</span>
                   {link.handle && (
                     <span class="block opacity-85" dir="ltr">
                       {link.handle}

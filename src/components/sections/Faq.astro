@@ -17,25 +17,26 @@ const faq = getCopy(locale).faq;
 const items = track ? faq.items.filter((item) => !item.tracks || item.tracks.includes(track)) : faq.items;
 ---
 
+<!-- Rows: the head block holds its place while the questions run beside it. -->
 <section id="faq" class:list={['section-pad', className]} aria-labelledby="faq-title">
-  <div class="wrap grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:gap-16">
-    <div>
-      <h2 id="faq-title" class="reveal font-display text-display">{title ?? faq.title}</h2>
-      <p class="reveal mt-4 text-lg text-ink-soft">{faq.intro}</p>
-      <WhatsAppButton locale={locale} cta="faq" class="mt-6" />
+  <div class="wrap faq-grid">
+    <div class="faq-head">
+      <h2 id="faq-title" class="head-section reveal">{title ?? faq.title}</h2>
+      <p class="lead reveal mt-4">{faq.intro}</p>
+      <WhatsAppButton locale={locale} cta="faq" class="reveal mt-8 max-sm:w-full" />
     </div>
 
-    <div class="grid content-start gap-3">
+    <div class="faq-list">
       {
-        items.map((item, index) => (
-          <details name="faq" class="faq-item reveal contrast-border rounded-card bg-white" style={`--reveal-at: ${Math.min(index, 5) * 5}%`}>
-            <summary class="flex cursor-pointer items-center justify-between gap-4 rounded-card p-5 text-lg leading-snug font-bold">
-              {item.q}
-              <span class="faq-icon grid size-9 shrink-0 place-items-center rounded-full bg-shallow text-deep">
-                <Icon name="plus" size={20} strokeWidth={2.25} />
+        items.map((item) => (
+          <details name="faq" class="faq-item">
+            <summary class="faq-q">
+              <span>{item.q}</span>
+              <span class="faq-icon" aria-hidden="true">
+                <Icon name="plus" size={18} strokeWidth={2} />
               </span>
             </summary>
-            <p class="px-5 pb-5 text-ink-soft">{item.a}</p>
+            <p class="faq-a">{item.a}</p>
           </details>
         ))
       }
@@ -44,41 +45,91 @@ const items = track ? faq.items.filter((item) => !item.tracks || item.tracks.inc
 </section>
 
 <style>
-  summary {
-    list-style: none;
+  .faq-grid {
+    display: grid;
+    gap: var(--space-2xl);
   }
 
-  summary::-webkit-details-marker {
+  @media (width >= 64rem) {
+    .faq-grid {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+      gap: var(--space-3xl);
+      align-items: start;
+    }
+
+    .faq-head {
+      position: sticky;
+      top: calc(var(--header-h) + var(--space-xl));
+    }
+  }
+
+  .faq-list {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .faq-q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    min-height: 4.5rem;
+    padding-block: var(--space-md);
+    cursor: pointer;
+    list-style: none;
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.35;
+    transition: color var(--dur-short) var(--ease-out);
+  }
+
+  .faq-q::-webkit-details-marker {
     display: none;
   }
 
+  @media (hover: hover) and (pointer: fine) {
+    .faq-q:hover {
+      color: var(--color-accent-hi);
+    }
+  }
+
   .faq-icon {
-    transition: rotate 0.25s var(--ease-water);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent-soft);
+    color: var(--color-accent-hi);
+    transition:
+      rotate var(--dur-short) var(--ease-out),
+      background-color var(--dur-short) var(--ease-out);
   }
 
   details[open] .faq-icon {
     rotate: 45deg;
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
   }
 
-  .faq-item {
-    transition:
-      box-shadow 0.4s var(--ease-out),
-      background-color 0.4s var(--ease-out);
+  .faq-a {
+    max-width: 60ch;
+    padding-bottom: var(--space-lg);
+    color: var(--color-ink-2);
   }
 
-  .faq-item:hover,
-  .faq-item[open] {
-    box-shadow: var(--shadow-card);
-  }
-
-  /* Answers slide open where the browser can animate to "auto" height. */
+  /* Answers slide open where the browser can animate to "auto" height (the one tolerated height animation). */
   @media (prefers-reduced-motion: no-preference) {
     .faq-item::details-content {
       block-size: 0;
       overflow-y: clip;
       transition:
-        block-size 0.45s var(--ease-out),
-        content-visibility 0.45s allow-discrete;
+        block-size 280ms var(--ease-out),
+        content-visibility 280ms allow-discrete;
     }
 
     .faq-item[open]::details-content {

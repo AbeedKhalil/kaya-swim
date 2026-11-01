@@ -28,34 +28,34 @@ const links = [
 ];
 ---
 
-<footer class="on-dark overflow-hidden bg-ink text-white">
-  <div class="wrap grid gap-12 py-16 md:grid-cols-[1.5fr_1fr_1.2fr]">
+<footer class="on-dark overflow-hidden bg-abyss text-light">
+  <div class="wrap grid gap-12 pt-(--section-gap-s) pb-16 md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1.2fr)]">
     <div>
       {
         hasMainLogo ? (
-          <span class="inline-grid size-28 place-items-center rounded-2xl bg-white p-2.5">
+          <span class="inline-grid size-28 place-items-center rounded-(--radius-card) bg-light p-2.5">
             <LogoSlot slot="logo-main" label="SWIM" alt={site.brand} width={92} class="h-full w-auto" />
           </span>
         ) : (
-          <span class="font-display text-[2.4rem] leading-none tracking-[0.08em]" dir="ltr">
+          <span class="font-display text-[2.4rem] leading-none" dir="ltr">
             KAYA SWIM
           </span>
         )
       }
-      <p class="mt-4 max-w-xs text-white/75">{t.footer.tagline}</p>
-      <p class="mt-4 flex items-center gap-2 text-white/75">
-        <Icon name="map-pin" size={18} class="text-pool" />
+      <p class="mt-5 max-w-xs text-shade">{t.footer.tagline}</p>
+      <p class="mt-4 flex items-center gap-2 text-shade">
+        <Icon name="map-pin" size={18} />
         {site.location[locale]}
       </p>
     </div>
 
     <nav aria-labelledby="footer-nav-title">
-      <h2 id="footer-nav-title" class="text-sm font-bold text-white/60">{t.footer.navTitle}</h2>
+      <h2 id="footer-nav-title" class="text-sm text-shade-2">{t.footer.navTitle}</h2>
       <ul class="mt-4 grid gap-2">
         {
           links.map((link) => (
             <li>
-              <a href={link.href} class="hover:text-wa">
+              <a href={link.href} class="foot-link">
                 {link.label}
               </a>
             </li>
@@ -65,29 +65,29 @@ const links = [
     </nav>
 
     <div>
-      <h2 class="text-sm font-bold text-white/60">{t.footer.contactTitle}</h2>
+      <h2 class="text-sm text-shade-2">{t.footer.contactTitle}</h2>
       <ul class="mt-4 grid gap-3">
         <li>
-          <a href={waLink(t.whatsapp.general)} target="_blank" rel="noopener" data-cta="footer" class="inline-flex items-center gap-3 hover:text-wa">
+          <a href={waLink(t.whatsapp.general)} target="_blank" rel="noopener" data-cta="footer" class="foot-link inline-flex items-center gap-3">
             <BrandIcon name="whatsapp" size={20} class="text-wa" />
             <span>{t.cta.whatsapp}</span>
             <span class="sr-only">{t.cta.opensWhatsapp}</span>
           </a>
         </li>
         <li>
-          <a href={telUrl} class="inline-flex items-center gap-3 hover:text-wa">
-            <Icon name="phone" size={20} class="text-pool" />
+          <a href={telUrl} class="foot-link inline-flex items-center gap-3">
+            <Icon name="phone" size={20} class="text-shade" />
             <span dir="ltr">{site.phone.display}</span>
           </a>
         </li>
         <li>
-          <a href={mailUrl} class="inline-flex items-center gap-3 hover:text-wa">
-            <Icon name="mail" size={20} class="text-pool" />
+          <a href={mailUrl} class="foot-link inline-flex items-center gap-3">
+            <Icon name="mail" size={20} class="text-shade" />
             <span dir="ltr">{site.email}</span>
           </a>
         </li>
       </ul>
-      <SiteLinks locale={locale} placement="footer" variant="list" class="mt-3 grid gap-3" iconClass="text-pool" />
+      <SiteLinks locale={locale} placement="footer" variant="list" class="mt-3 grid gap-3" iconClass="text-shade" linkClass="foot-link inline-flex items-center gap-3" />
     </div>
   </div>
 
@@ -96,13 +96,13 @@ const links = [
     <span class="footer-mark-text" data-text="KAYA SWIM" dir="ltr">KAYA SWIM</span>
   </div>
 
-  <div class="border-t border-white/10">
-    <div class="wrap flex flex-wrap items-center justify-between gap-x-6 gap-y-3 pt-6 pb-24 text-sm text-white/70 md:pb-6">
-      <p>© {year} KAYA SWIM · {t.footer.rights}</p>
+  <div class="border-t border-light/10">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-6 gap-y-3 pt-6 pb-28 text-sm text-shade md:pb-6">
+      <p>© {year} KAYA SWIM, {t.footer.rights}</p>
       <ul class="flex flex-wrap gap-x-5 gap-y-2">
-        <li><a href={localizePath('/accessibility/', locale)} class="underline-offset-4 hover:text-white hover:underline">{t.footer.accessibility}</a></li>
+        <li><a href={localizePath('/accessibility/', locale)} class="foot-link">{t.footer.accessibility}</a></li>
         <li>
-          <a href={localizePath(path, other)} lang={other} hreflang={other} class="underline-offset-4 hover:text-white hover:underline">
+          <a href={localizePath(path, other)} lang={other} hreflang={other} class="foot-link">
             {getCopy(other).languageName}
           </a>
         </li>
@@ -115,37 +115,49 @@ const links = [
   @property --fill {
     syntax: '<percentage>';
     inherits: false;
-    initial-value: 40%;
+    initial-value: 38%;
+  }
+
+  .foot-link {
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.3em;
+    text-decoration-thickness: 1px;
+    transition: text-decoration-color var(--dur-short) var(--ease-out);
+  }
+
+  .foot-link:hover {
+    text-decoration-color: currentColor;
   }
 
   .footer-mark {
-    padding-bottom: 1.5rem;
+    padding-bottom: var(--space-lg);
   }
 
   .footer-mark-text {
     position: relative;
     display: block;
     font-family: var(--font-display);
-    font-size: clamp(4.5rem, 21vw, 19rem);
-    line-height: 0.8;
-    letter-spacing: 0.04em;
+    font-size: clamp(4rem, 17vw, 16rem);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
     text-align: center;
     white-space: nowrap;
     color: transparent;
-    -webkit-text-stroke: 1.5px rgb(255 255 255 / 0.16);
+    -webkit-text-stroke: 1px color-mix(in oklab, var(--color-light) 22%, transparent);
   }
 
-  /* The same letters, filled with pool water up to --fill. */
+  /* The same letters, filled with sunlit pool water up to --fill. */
   .footer-mark-text::after {
     content: attr(data-text);
     position: absolute;
     inset: 0;
     -webkit-text-stroke: 0;
-    /* A translucent water tint over the caustic net, so the lines read as soft light. */
     background:
-      linear-gradient(180deg, rgb(20 151 181 / 0.82), rgb(10 88 114 / 0.9) 75%),
-      url('../../assets/art/caustics.svg') 0 0 / 14rem,
-      var(--color-deep);
+      linear-gradient(180deg, color-mix(in oklab, var(--color-shade) 70%, transparent), color-mix(in oklab, var(--color-deep) 85%, transparent) 80%),
+      url('../../assets/art/caustics.svg') 0 0 / 12rem,
+      var(--color-shade-2);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -171,7 +183,7 @@ const links = [
       --fill: 100%;
     }
     to {
-      --fill: 40%;
+      --fill: 38%;
     }
   }
 </style>

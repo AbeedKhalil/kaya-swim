@@ -2,6 +2,7 @@
 import BrandIcon from '../ui/BrandIcon.astro';
 import Icon from '../ui/Icon.astro';
 import SiteLinks from '../ui/SiteLinks.astro';
+import WaterToggle from '../ui/WaterToggle.astro';
 import { mailUrl, site, telUrl } from '../../config/site';
 import { tracks, type TrackSlug } from '../../data/tracks';
 import { getCopy, type Locale } from '../../i18n';
@@ -18,16 +19,15 @@ const t = getCopy(locale);
 const r = t.register;
 ---
 
-<section id="register" class="on-dark water-bg section-pad relative isolate overflow-hidden text-white" aria-labelledby="register-title">
-  <span class="caustics caustics--live" aria-hidden="true"></span>
+<!-- The close: the lit water again, the sign-up as a pass lying in it, direct lines beside. -->
+<section id="register" class="pool pool--live register section-pad relative" aria-labelledby="register-title">
+  <span class="caustics" aria-hidden="true"></span>
+  <span class="caustics caustics--spec-cool" aria-hidden="true"></span>
 
-  <div class="wrap relative grid gap-12 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:items-start lg:gap-16">
-    <div class="on-light reveal rounded-lane bg-white p-6 text-ink shadow-2xl shadow-abyss/40 sm:p-10">
-      <h2 id="register-title" class="font-display text-display">{r.title}</h2>
-      <p class="mt-3 text-ink-soft">{r.intro}</p>
-
+  <div class="wrap register-grid relative">
+    <div class="pass on-light reveal">
       <form
-        class="mt-8 grid gap-5"
+        class="grid"
         method="get"
         action={`https://wa.me/${site.whatsapp}`}
         target="_blank"
@@ -41,74 +41,81 @@ const r = t.register;
         data-label-age={r.message.age}
         data-label-note={r.message.note}
       >
-        <div class="field">
-          <label for="reg-name" class="field-label">{r.fields.name}</label>
-          <input id="reg-name" name="name" type="text" autocomplete="name" required class="field-input" aria-describedby="reg-name-error" />
-          <p id="reg-name-error" class="field-error" hidden>{r.errors.name}</p>
-        </div>
-
-        <div class="grid gap-5 sm:grid-cols-[minmax(0,1fr)_9rem]">
-          <div class="field">
-            <label for="reg-track" class="field-label">{r.fields.track}</label>
-            <select id="reg-track" name="track" required class="field-input" aria-describedby="reg-track-error">
-              <option value="" disabled selected={!defaultTrack}>{r.fields.trackPlaceholder}</option>
-              {
-                tracks.map((track) => (
-                  <option value={track.slug} selected={track.slug === defaultTrack}>
-                    {t.tracks[track.slug].name}
-                  </option>
-                ))
-              }
-              <option value="not-sure">{r.fields.trackNotSure}</option>
-            </select>
-            <p id="reg-track-error" class="field-error" hidden>{r.errors.track}</p>
+        <div class="pass-main grid gap-5">
+          <div>
+            <h2 id="register-title" class="head-section">{r.title}</h2>
+            <p class="mt-3 max-w-[46ch] text-ink-2">{r.intro}</p>
           </div>
 
           <div class="field">
-            <label for="reg-age" class="field-label">{r.fields.age}</label>
-            <input
-              id="reg-age"
-              name="age"
-              type="number"
-              inputmode="numeric"
-              min="1"
-              max="120"
-              required
-              class="field-input"
-              aria-describedby="reg-age-error"
-            />
-            <p id="reg-age-error" class="field-error" hidden>{r.errors.age}</p>
+            <label for="reg-name" class="field-label">{r.fields.name}</label>
+            <input id="reg-name" name="name" type="text" autocomplete="name" enterkeyhint="next" required class="field-input" aria-describedby="reg-name-error" />
+            <p id="reg-name-error" class="field-error" hidden>{r.errors.name}</p>
+          </div>
+
+          <div class="grid gap-5 sm:grid-cols-[minmax(0,1fr)_9rem]">
+            <div class="field">
+              <label for="reg-track" class="field-label">{r.fields.track}</label>
+              <select id="reg-track" name="track" required class="field-input" aria-describedby="reg-track-error">
+                <option value="" disabled selected={!defaultTrack}>{r.fields.trackPlaceholder}</option>
+                {
+                  tracks.map((track) => (
+                    <option value={track.slug} selected={track.slug === defaultTrack}>
+                      {t.tracks[track.slug].name}
+                    </option>
+                  ))
+                }
+                <option value="not-sure">{r.fields.trackNotSure}</option>
+              </select>
+              <p id="reg-track-error" class="field-error" hidden>{r.errors.track}</p>
+            </div>
+
+            <div class="field">
+              <label for="reg-age" class="field-label">{r.fields.age}</label>
+              <input
+                id="reg-age"
+                name="age"
+                type="number"
+                inputmode="numeric"
+                min="1"
+                max="120"
+                required
+                class="field-input"
+                aria-describedby="reg-age-error"
+              />
+              <p id="reg-age-error" class="field-error" hidden>{r.errors.age}</p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="reg-note" class="field-label">
+              {r.fields.note}
+              <span class="font-normal text-muted">({r.fields.optional})</span>
+            </label>
+            <textarea id="reg-note" name="note" rows="3" class="field-input resize-y"></textarea>
           </div>
         </div>
 
-        <div class="field">
-          <label for="reg-note" class="field-label">
-            {r.fields.note}
-            <span class="font-normal text-ink-soft">({r.fields.optional})</span>
-          </label>
-          <textarea id="reg-note" name="note" rows="3" class="field-input resize-y"></textarea>
-        </div>
-
-        <div class="mt-1 flex flex-col gap-3">
-          <button type="submit" class="btn btn-wa min-h-14 w-full text-lg sm:w-auto sm:self-start">
-            <BrandIcon name="whatsapp" size={22} />
+        <div class="pass-stub">
+          <button type="submit" class="btn btn-wa btn-lg w-full sm:w-auto">
+            <span class="wa-disc" aria-hidden="true"><BrandIcon name="whatsapp" size={22} /></span>
             {t.cta.send}
             <span class="sr-only">{t.cta.opensWhatsapp}</span>
           </button>
-          <p class="text-sm text-ink-soft">{r.privacy}</p>
+          <p class="text-sm text-muted">{r.privacy}</p>
         </div>
       </form>
     </div>
 
-    <div class="reveal lg:pt-8" style="--reveal-at: 12%">
-      <h3 class="text-2xl font-bold">{r.direct}</h3>
+    <div class="reveal" style="--reveal-at: 10%">
+      <h3 class="font-display text-title">{r.direct}</h3>
       <ul class="mt-6 grid gap-3">
         <li>
           <a href={waLink(t.whatsapp.general)} target="_blank" rel="noopener" data-cta="register-direct" class="contact-row">
-            <span class="contact-icon bg-wa text-ink"><BrandIcon name="whatsapp" size={22} /></span>
+            <span class="contact-icon bg-wa! text-wa-ink!"><BrandIcon name="whatsapp" size={22} /></span>
             <span>
-              <span class="block font-bold">WhatsApp</span>
-              <span class="block text-white/85" dir="ltr">{site.phone.display}</span>
+              <span class="block font-semibold">WhatsApp</span>
+              <span class="block text-ink-2" dir="ltr">{site.phone.display}</span>
             </span>
             <span class="sr-only">{t.cta.opensWhatsapp}</span>
           </a>
@@ -117,17 +124,17 @@ const r = t.register;
           <a href={telUrl} class="contact-row">
             <span class="contact-icon"><Icon name="phone" size={22} /></span>
             <span>
-              <span class="block font-bold">{t.cta.call}</span>
-              <span class="block text-white/85" dir="ltr">{site.phone.display}</span>
+              <span class="block font-semibold">{t.cta.call}</span>
+              <span class="block text-ink-2" dir="ltr">{site.phone.display}</span>
             </span>
           </a>
         </li>
         <li>
           <a href={mailUrl} class="contact-row">
             <span class="contact-icon"><Icon name="mail" size={22} /></span>
-            <span>
-              <span class="block font-bold">{t.cta.email}</span>
-              <span class="block text-white/85" dir="ltr">{site.email}</span>
+            <span class="min-w-0">
+              <span class="block font-semibold">{t.cta.email}</span>
+              <span class="block truncate text-ink-2" dir="ltr">{site.email}</span>
             </span>
           </a>
         </li>
@@ -135,51 +142,135 @@ const r = t.register;
       <SiteLinks locale={locale} placement="contact" variant="row" class="mt-3 grid gap-3" />
     </div>
   </div>
+
+  <WaterToggle locale={locale} class="register-toggle" />
 </section>
 
 <style>
+  .register {
+    --tile-a: 20rem;
+    --tile-b: 32rem;
+    --caustic-a: 0.6;
+    --caustic-b: 0.32;
+  }
+
+  .register-grid {
+    display: grid;
+    gap: var(--space-2xl);
+  }
+
+  @media (width >= 64rem) {
+    .register-grid {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+      gap: var(--space-3xl);
+      align-items: start;
+    }
+  }
+
+  /* A pass lying in the water: the fields, then a stub torn along a perforation.
+     The notches are cut with masks, so the shadow comes from a drop-shadow on the whole pass. */
+  .pass {
+    filter: drop-shadow(0 30px 34px oklch(45% 0.1 215 / 0.35)) drop-shadow(0 2px 3px oklch(40% 0.06 230 / 0.12));
+  }
+
+  .pass-main,
+  .pass-stub {
+    background: color-mix(in oklab, var(--color-light) 94%, transparent);
+    color: var(--color-ink);
+  }
+
+  .pass-main {
+    padding: var(--space-lg) var(--space-lg) var(--space-xl);
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
+    -webkit-mask:
+      radial-gradient(circle 14px at 0 100%, transparent 13px, var(--color-ink) 14px),
+      radial-gradient(circle 14px at 100% 100%, transparent 13px, var(--color-ink) 14px);
+    -webkit-mask-composite: source-in;
+    mask:
+      radial-gradient(circle 14px at 0 100%, transparent 13px, var(--color-ink) 14px),
+      radial-gradient(circle 14px at 100% 100%, transparent 13px, var(--color-ink) 14px);
+    mask-composite: intersect;
+  }
+
+  .pass-stub {
+    display: grid;
+    gap: var(--space-md);
+    padding: var(--space-xl) var(--space-lg) var(--space-lg);
+    border-radius: 0 0 var(--radius-card) var(--radius-card);
+    background-image: linear-gradient(to right, var(--color-rule) 50%, transparent 50%);
+    background-size: 12px 1.5px;
+    background-repeat: repeat-x;
+    background-position: 0 0;
+    -webkit-mask:
+      radial-gradient(circle 14px at 0 0, transparent 13px, var(--color-ink) 14px),
+      radial-gradient(circle 14px at 100% 0, transparent 13px, var(--color-ink) 14px);
+    -webkit-mask-composite: source-in;
+    mask:
+      radial-gradient(circle 14px at 0 0, transparent 13px, var(--color-ink) 14px),
+      radial-gradient(circle 14px at 100% 0, transparent 13px, var(--color-ink) 14px);
+    mask-composite: intersect;
+  }
+
+  @media (width >= 40rem) {
+    .pass-main {
+      padding: var(--space-xl) var(--space-xl) var(--space-xl);
+    }
+
+    .pass-stub {
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      gap: var(--space-lg);
+      padding: var(--space-xl);
+    }
+  }
+
   .field {
     display: grid;
-    gap: 0.4rem;
+    gap: var(--space-xs);
     align-content: start;
   }
 
   .field-label {
-    font-weight: 700;
+    font-weight: 600;
   }
 
   .field-input {
     width: 100%;
-    min-height: 3.25rem;
-    padding: 0.7rem 1rem;
-    border: 1.5px solid color-mix(in oklab, var(--color-ink) 22%, transparent);
-    border-radius: 0.875rem;
-    background: var(--color-tile);
+    min-height: 3.5rem;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--color-muted);
+    border-radius: var(--radius-inner);
+    background: var(--color-light);
     color: var(--color-ink);
     font: inherit;
-    transition: border-color 0.2s ease;
+    font-size: max(16px, 1rem);
+    transition: border-color var(--dur-short) var(--ease-out);
   }
 
   .field-input:hover {
-    border-color: color-mix(in oklab, var(--color-ink) 45%, transparent);
+    border-color: var(--color-ink-2);
   }
 
   .field-input:focus-visible {
-    outline: 3px solid var(--color-pool);
-    outline-offset: 1px;
-    border-color: var(--color-deep);
+    outline: 2px solid var(--color-focus);
+    outline-offset: -2px;
   }
 
   .field-input[aria-invalid='true'] {
-    border-color: #b42318;
+    border-color: var(--color-error);
   }
 
   .field-error {
-    color: #b42318;
-    font-size: 0.95rem;
+    color: var(--color-error);
+    font-size: 0.9375rem;
     font-weight: 600;
   }
 
+  :global(.register-toggle) {
+    position: absolute;
+    inset-inline-end: var(--space-md);
+    bottom: var(--space-md);
+  }
 </style>
 
 <script>
