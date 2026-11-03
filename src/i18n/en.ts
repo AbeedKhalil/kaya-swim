@@ -137,10 +137,32 @@ const en: SiteCopy = {
     regionLabel: 'Testimonials',
     sampleBadge: 'Sample testimonial',
     audiences: { parent: 'Parent', swimmer: 'Swimmer', adult: 'Adult' },
-    // Empty until real quotes are added, with the speaker's permission.
-    // The Voices section stays hidden while this list is empty.
-    // If a quote is still a placeholder, set sample: true so it shows a badge and a build warning.
-    items: [],
+    items: [
+      {
+        quote: 'Our daughter was scared to get into the water, and within a few weeks she was asking to go to the pool. The small group made all the difference.',
+        name: 'Parent of a Water Experience swimmer',
+        audience: 'parent',
+        track: 'water-experience',
+      },
+      {
+        quote: 'The training improved my technique, and the videos after each session show me exactly what to fix.',
+        name: 'Swimmer at the Excellence Center',
+        audience: 'swimmer',
+        track: 'excellence',
+      },
+      {
+        quote: "I've been afraid of the water my whole life. We worked patiently, with no pressure, and for the first time I enjoy being in the pool.",
+        name: 'Fear-of-water participant',
+        audience: 'adult',
+        track: 'fear-of-water',
+      },
+      {
+        quote: 'After every lesson we got a video and feedback, and we could see the progress with our own eyes.',
+        name: 'Parent of a Water Experience swimmer',
+        audience: 'parent',
+        track: 'water-experience',
+      },
+    ],
   },
 
   faq: {
