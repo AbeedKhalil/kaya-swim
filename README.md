@@ -38,7 +38,7 @@ Requires Node 22.12 or newer.
 8. **Accessibility statement** — fill in `poolArrangements` (parking, entrance, pool access) and review the
    statement text; update `lastReviewed`. Israeli law requires the statement — have it checked by someone
    qualified.
-9. **Instagram** — linked as `@Katrinshaphir24` (`https://www.instagram.com/Katrinshaphir24/`) from the
+9. **Instagram** — linked as `@Katrinshafir24` (`https://www.instagram.com/Katrinshafir24/`) from the
    header, menu, footer, and contact list (`links` in `src/config/site.ts`).
 10. **Social preview images** — after changing the hero text, run `npm run og` (needs Chrome or Edge).
 
