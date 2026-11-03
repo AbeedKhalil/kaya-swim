@@ -77,7 +77,7 @@ const toggles = [
 </div>
 
 <style>
-  /* Phones open the menu from the header button instead; the corner stays clear for the booking bar. */
+  /* Phones and tablets open the menu from the header button instead; the corner stays clear for the booking bar. */
   .a11y-trigger {
     display: none;
     view-transition-name: a11y-trigger;
@@ -94,7 +94,7 @@ const toggles = [
     transform: scale(0.94);
   }
 
-  @media (width >= 48rem) {
+  @media (width >= 64rem) {
     .a11y-trigger {
       display: grid;
       left: var(--space-lg);
@@ -137,7 +137,7 @@ const toggles = [
     }
   }
 
-  @media (width >= 48rem) {
+  @media (width >= 64rem) {
     .a11y-panel {
       inset: auto auto calc(max(var(--space-lg), env(safe-area-inset-bottom)) + 3.5rem) var(--space-lg);
       width: min(22rem, calc(100% - 2rem));

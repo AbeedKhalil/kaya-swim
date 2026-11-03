@@ -86,11 +86,11 @@ const switchHref = localizePath(path, other);
         <span>{t.cta.whatsapp}</span>
         <span class="sr-only">{t.cta.opensWhatsapp}</span>
       </a>
-      <!-- Phones: the accessibility menu lives in the bar, so the thumb zone below holds only the booking bar. -->
+      <!-- Phones and tablets: the accessibility menu lives in the bar, so the thumb zone below holds only the booking bar. -->
       <button
         type="button"
         popovertarget="a11y-menu"
-        class="head-a11y grid size-11 place-items-center rounded-full bg-ink text-light md:hidden"
+        class="head-a11y grid size-11 place-items-center rounded-full bg-ink text-light lg:hidden"
         aria-label={t.a11yMenu.open}
       >
         <Icon name="accessibility" size={22} strokeWidth={2} />

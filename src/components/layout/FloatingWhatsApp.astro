@@ -73,7 +73,10 @@ const t = getCopy(Astro.props.locale);
       box-shadow: var(--shadow-press), var(--shadow-float);
     }
 
-    /* Hebrew: the end corner is bottom left, where the accessibility button sits; step past it. */
+  }
+
+  /* Hebrew: the end corner is bottom left, where the accessibility button sits from 64rem; step past it. */
+  @media (width >= 64rem) {
     :global([dir='rtl']) .wa-bar {
       inset-inline-end: calc(var(--space-lg) + 2.75rem + var(--space-sm));
     }
