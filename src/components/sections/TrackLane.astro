@@ -34,11 +34,12 @@ const hasLogo = Boolean(getLogo(logo));
   style={`--reveal-at: ${index * 6}%; view-transition-name: lane-${track.slug}; view-transition-class: lane`}
   aria-labelledby={`lane-${track.slug}`}
 >
+  <span class="floor-stripe lane-stripe decor" aria-hidden="true"></span>
   <span class="caustics" aria-hidden="true"></span>
 
   <div class="lane-ages">
     <p>
-      <span class="block text-[0.9375rem] font-semibold opacity-80">{t.tracksSection.agesPrefix}</span>
+      <span class="lane-prefix block">{t.tracksSection.agesPrefix}</span>
       <span class="lane-figure num block font-display">
         <AgeRange min={track.ages[0]} max={track.ages[1]} />
       </span>
@@ -81,17 +82,46 @@ const hasLogo = Boolean(getLogo(logo));
 </article>
 
 <style>
+  /* A lane of the pool seen from above. On phones it runs almost edge to edge, like the hero basin,
+     so the water and the age figure own the screen instead of sitting in a card. */
   .lane {
     display: grid;
     gap: var(--space-lg);
-    padding: var(--space-lg);
-    border-radius: var(--radius-card);
-    --tile-a: 20rem;
-    --tile-b: 30rem;
+    margin-inline: calc(var(--space-sm) - var(--gutter));
+    padding: var(--space-xl) var(--space-lg);
+    border-radius: var(--radius-basin);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--color-light) 35%, transparent);
+    --tile-a: 18rem;
+    --tile-b: 28rem;
   }
 
-  .lane > :not(.caustics) {
+  .depth-deep.lane {
+    box-shadow:
+      inset 0 0 0 1px color-mix(in oklab, var(--color-light) 10%, transparent),
+      var(--shadow-deep);
+  }
+
+  .lane > :not(.caustics, .lane-stripe) {
     position: relative;
+  }
+
+  /* The black line on the pool floor, ending in its T: each lane has one. */
+  .lane-stripe {
+    inset-inline-end: 2.25rem;
+    top: -1rem;
+    bottom: 2.25rem;
+    width: 0.625rem;
+    z-index: auto;
+    background: color-mix(in oklab, var(--color-deep) 18%, transparent);
+  }
+
+  .lane-stripe::after {
+    width: 3.5rem;
+    height: 0.625rem;
+  }
+
+  .depth-deep .lane-stripe {
+    background: color-mix(in oklab, var(--color-abyss) 70%, transparent);
   }
 
   .lane-ages {
@@ -101,34 +131,57 @@ const hasLogo = Boolean(getLogo(logo));
     gap: var(--space-md);
   }
 
+  .lane-prefix {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-ink-2);
+  }
+
   .lane-figure {
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
-    font-size: min(var(--text-figure), 5.5rem);
-    font-weight: 300;
-    line-height: 0.95;
-    letter-spacing: -0.03em;
+    font-size: clamp(5rem, 3rem + 8vw, 6.5rem);
+    font-weight: 500;
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    color: var(--color-ink);
+  }
+
+  .depth-deep .lane-prefix {
+    color: var(--color-shade);
+  }
+
+  .depth-deep .lane-figure {
+    color: var(--color-tile);
   }
 
   .lane-logo {
     display: grid;
     place-items: center;
+    flex-shrink: 0;
     width: 5rem;
     height: 5rem;
     padding: var(--space-xs);
-    border-radius: var(--radius-inner);
+    border-radius: 18px;
     background: var(--color-light);
-    box-shadow: var(--edge-light), var(--shadow-chip);
+    box-shadow: var(--shadow-chip);
+    rotate: -4deg;
+  }
+
+  :global([dir='rtl']) .lane-logo {
+    rotate: 4deg;
   }
 
   .lane-name {
-    font-size: var(--text-title);
-    font-weight: 400;
-    max-width: 24ch;
+    font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.25rem);
+    line-height: 1.08;
+    max-width: 20ch;
   }
 
   .lane-tagline {
+    font-size: 1.125rem;
     font-weight: 600;
+    line-height: 1.4;
     color: var(--color-ink);
   }
 
@@ -137,26 +190,45 @@ const hasLogo = Boolean(getLogo(logo));
     color: var(--color-ink-2);
   }
 
-  .lane :global(.lane-check) {
-    color: var(--color-accent-hi);
+  .lane-offer ul {
+    font-weight: 500;
   }
 
-  /* The deep end: light text on dark water. */
-  .depth-deep .lane-tagline,
-  .depth-deep .lane-pitch {
-    color: color-mix(in oklab, var(--color-light) 88%, var(--color-shade));
+  .lane :global(.lane-check) {
+    color: var(--color-accent);
+  }
+
+  /* The deep end: light type on dark water. */
+  .depth-deep .lane-tagline {
+    color: var(--color-light);
+  }
+
+  .depth-deep .lane-pitch,
+  .depth-deep .lane-offer ul {
+    color: color-mix(in oklab, var(--color-light) 86%, var(--color-shade));
   }
 
   .depth-deep :global(.lane-check) {
-    color: var(--color-shade);
+    color: var(--color-tile);
   }
 
   .depth-deep .lane-link {
     color: var(--color-light);
   }
 
+  .lane-link {
+    color: var(--color-accent-hi);
+  }
+
+  @media (width >= 30rem) {
+    .lane {
+      margin-inline: calc(var(--space-md) - var(--gutter));
+    }
+  }
+
   @media (width >= 40rem) {
     .lane {
+      margin-inline: 0;
       padding: var(--space-xl);
     }
   }
@@ -172,6 +244,11 @@ const hasLogo = Boolean(getLogo(logo));
       flex-direction: column;
       align-items: flex-start;
       justify-content: space-between;
+    }
+
+    /* Desktop: the stripe runs in the lane's end margin, clear of all three columns. */
+    .lane-stripe {
+      inset-inline-end: 1.5rem;
     }
   }
 </style>

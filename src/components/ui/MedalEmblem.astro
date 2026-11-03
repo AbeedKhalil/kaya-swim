@@ -6,11 +6,13 @@
  */
 interface Props {
   disc?: boolean;
+  /** Distinguishes the gradient ids when the medal appears more than once on a page. */
+  uid?: string;
   class?: string;
 }
 
-const { disc = false, class: className } = Astro.props;
-const id = disc ? 'medal-disc' : 'medal-full';
+const { disc = false, uid, class: className } = Astro.props;
+const id = `${disc ? 'medal-disc' : 'medal-full'}${uid ? `-${uid}` : ''}`;
 ---
 
 <svg viewBox={disc ? '22 206 116 116' : '0 0 160 320'} class:list={['medal', className]} aria-hidden="true" focusable="false">

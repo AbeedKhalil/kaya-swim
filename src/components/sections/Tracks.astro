@@ -16,7 +16,7 @@ const t = getCopy(locale);
 <section id="tracks" class="section-pad" aria-labelledby="tracks-title">
   <div class="wrap">
     <div class="tracks-head reveal">
-      <h2 id="tracks-title" class="head-section">{t.tracksSection.title}</h2>
+      <h2 id="tracks-title" class="head-section min-w-0 wrap-break-word">{t.tracksSection.title}</h2>
       <p class="lead">{t.tracksSection.intro}</p>
     </div>
 
@@ -24,7 +24,7 @@ const t = getCopy(locale);
       {
         tracks.map((track, index) => (
           <Fragment>
-            {index > 0 && <LaneRope class="reveal-draw mx-6 md:mx-12" />}
+            {index > 0 && <LaneRope class="tracks-rope reveal-draw" />}
             <TrackLane locale={locale} track={track} index={index} />
           </Fragment>
         ))
@@ -37,6 +37,14 @@ const t = getCopy(locale);
   .tracks-head {
     display: grid;
     gap: var(--space-md);
+  }
+
+  /* The rope between two lanes: bolder beads than the panel ropes, running the lanes' full width. */
+  .tracks-head + div :global(.tracks-rope) {
+    --bead: 0.875rem;
+    --rope-a: var(--color-accent);
+    --rope-b: var(--color-light);
+    margin-inline: var(--space-lg);
   }
 
   /* Head and line split across the row, baselines aligned. */

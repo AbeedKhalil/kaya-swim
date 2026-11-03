@@ -2,6 +2,7 @@
 import { Picture } from 'astro:assets';
 import AgeRange from '../ui/AgeRange.astro';
 import Icon from '../ui/Icon.astro';
+import MedalEmblem from '../ui/MedalEmblem.astro';
 import WaterToggle from '../ui/WaterToggle.astro';
 import WhatsAppButton from '../ui/WhatsAppButton.astro';
 import { site } from '../../config/site';
@@ -19,51 +20,57 @@ const hero = t.hero;
 const portrait = getPhoto('founder-portrait');
 ---
 
-<!-- Poster: the head on sunlit plaster; the pool bleeds off the end edge with the three lanes lying in it. -->
+<!--
+  The deep end at noon: a pool basin cut into the plaster, sunlight netting the water.
+  The head, one sentence and the WhatsApp action sit in the calm water; the three tracks
+  lie below them as lanes, parted by lane ropes. The basin's colour is painted from the
+  first frame; only the light on it arrives.
+-->
 <section id="top" class="hero relative isolate" aria-labelledby="hero-title">
-  <div class="pool pool--live hero-pool decor" aria-hidden="true">
-    <span class="floor-stripe hero-stripe"></span>
-    <span class="caustics"></span>
-    <span class="caustics caustics--spec-cool"></span>
-  </div>
-
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <h1 id="hero-title" class="hero-title font-display">
-        <span class="enter-rise block">{hero.line1}</span>
-        <span class="enter-rise block" style="--enter-delay: 40ms">{hero.line2}</span>
-      </h1>
-      <p class="lead enter mt-6 md:mt-8" style="--enter-delay: 90ms">{hero.sub}</p>
-      <div class="enter mt-8 flex flex-wrap items-center gap-3 md:mt-10" style="--enter-delay: 150ms">
-        <WhatsAppButton locale={locale} cta="hero" size="lg" class="max-sm:w-full" />
-        <a href="#tracks" class="btn btn-clear btn-lg max-sm:w-full">{t.cta.seeTracks}</a>
-      </div>
+  <div class="hero-basin on-dark">
+    <div class="pool pool--live hero-water decor" aria-hidden="true">
+      <span class="hero-sun"></span>
+      <span class="floor-stripe hero-stripe"></span>
+      <span class="caustics hero-caustics"></span>
+      <span class="caustics caustics--spec-cool hero-caustics"></span>
     </div>
 
-    <div class="hero-stage">
-      <div class="hero-panel clear enter" style="--enter-delay: 220ms">
-        <p class="flex items-center gap-3">
-          <span class="avatar grid size-12 shrink-0 place-items-center overflow-hidden rounded-full">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <h1 id="hero-title" class="hero-title font-display">
+          <span class="enter-rise block">{hero.line1}</span>
+          <span class="enter-rise block" style="--enter-delay: 40ms">{hero.line2}</span>
+        </h1>
+        <p class="hero-sub enter" style="--enter-delay: 90ms">{hero.sub}</p>
+        <div class="hero-actions enter" style="--enter-delay: 150ms">
+          <WhatsAppButton locale={locale} cta="hero" size="lg" class="hero-cta" />
+          <a href="#tracks" class="btn btn-outline btn-lg hero-more">{t.cta.seeTracks}</a>
+        </div>
+      </div>
+
+      <div class="hero-lanes enter" style="--enter-delay: 220ms">
+        <p class="hero-who">
+          <span class="hero-avatar">
             {
               portrait ? (
-                <Picture src={portrait} alt="" formats={['avif', 'webp']} widths={[96, 144]} sizes="48px" class="size-full object-cover" />
+                <Picture src={portrait} alt="" formats={['avif', 'webp']} widths={[96, 144]} sizes="48px" class="size-full rounded-full object-cover" />
               ) : (
-                <Icon name="medal" size={22} strokeWidth={1.75} />
+                <MedalEmblem disc uid="hero" class="size-full" />
               )
             }
           </span>
-          <span class="leading-snug">
+          <span class="min-w-0 leading-snug">
             <strong class="block font-semibold">{site.founder[locale].full}</strong>
-            <span class="block text-[0.9375rem] text-muted">{hero.credential}</span>
+            <span class="hero-who-line block">{hero.credential}</span>
           </span>
         </p>
 
-        <ul class="mt-4" aria-label={hero.lanesLabel}>
+        <ul class="hero-lane-list" aria-label={hero.lanesLabel}>
           {
             tracks.map((track) => (
               <li>
-                <span class="lane-rope lane-rope--fine block" aria-hidden="true" />
-                <a href={localizePath(`/tracks/${track.slug}/`, locale)} class="hero-lane group" data-astro-prefetch>
+                <span class="lane-rope hero-rope block" aria-hidden="true" />
+                <a href={localizePath(`/tracks/${track.slug}/`, locale)} class="hero-lane" data-astro-prefetch>
                   <span class="hero-lane-ages num font-display">
                     <AgeRange min={track.ages[0]} max={track.ages[1]} />
                   </span>
@@ -71,93 +78,182 @@ const portrait = getPhoto('founder-portrait');
                     <span class="sr-only">{t.tracksSection.agesPrefix} </span>
                     <span class="block font-semibold">{t.tracks[track.slug].name}</span>
                   </span>
-                  <Icon name="forward" size={20} class="hero-lane-arrow text-accent" />
+                  <span class="hero-lane-go" aria-hidden="true">
+                    <Icon name="forward" size={18} strokeWidth={2.25} />
+                  </span>
                 </a>
               </li>
             ))
           }
         </ul>
 
-        <p class="mt-1 flex items-center gap-2 border-t border-rule pt-4 text-[0.9375rem] text-muted">
-          <Icon name="map-pin" size={16} strokeWidth={2} class="text-accent" />
+        <p class="hero-where">
+          <Icon name="map-pin" size={16} strokeWidth={2} />
           {site.location[locale]}
         </p>
       </div>
     </div>
-  </div>
 
-  <WaterToggle locale={locale} class="hero-toggle" />
+    <WaterToggle locale={locale} class="hero-toggle" />
+  </div>
 </section>
 
 <style>
   .hero {
-    --pool-gap: var(--space-xl);
+    padding-inline: var(--basin-inset);
+    --basin-inset: var(--space-sm);
+  }
+
+  /* The basin: painted deep from the first frame (so the light type is never on plaster),
+     with a bright coping edge where the water meets the deck. */
+  .hero-basin {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    border-radius: var(--radius-basin);
+    background:
+      linear-gradient(180deg, var(--color-pool) 0%, var(--color-pool-2) 42%, var(--color-deep) 78%, color-mix(in oklab, var(--color-deep) 70%, var(--color-abyss)) 100%);
+    color: var(--color-light);
+    box-shadow:
+      inset 0 0 0 1px color-mix(in oklab, var(--color-light) 12%, transparent),
+      inset 0 18px 30px -18px color-mix(in oklab, var(--color-abyss) 55%, transparent);
+  }
+
+  .hero-water {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: none;
+    --tile-a: 17rem;
+    --tile-b: 27rem;
+    --caustic-color: var(--color-tile);
+    --caustic-a: 0.34;
+    --caustic-b: 0.2;
+  }
+
+  /* The sun stands up and to the end side: one warm-white pool of light, kept off the copy. */
+  .hero-sun {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(70% 55% at 88% 0%, color-mix(in oklab, var(--color-sun) 55%, transparent), transparent 70%);
+  }
+
+  :global([dir='rtl']) .hero-sun {
+    background: radial-gradient(70% 55% at 12% 0%, color-mix(in oklab, var(--color-sun) 55%, transparent), transparent 70%);
+  }
+
+  /* Calm water behind the words: the light net thins where the copy sits and runs full in the lanes. */
+  .hero-caustics {
+    -webkit-mask-image: linear-gradient(180deg, color-mix(in oklab, var(--color-black) 40%, transparent) 0%, color-mix(in oklab, var(--color-black) 30%, transparent) 45%, var(--color-black) 85%);
+    mask-image: linear-gradient(180deg, color-mix(in oklab, var(--color-black) 40%, transparent) 0%, color-mix(in oklab, var(--color-black) 30%, transparent) 45%, var(--color-black) 85%);
+  }
+
+  .hero-stripe {
+    inset-inline-end: 9%;
+    top: -1rem;
+    bottom: 3.5rem;
+    width: 0.75rem;
+    background: color-mix(in oklab, var(--color-abyss) 60%, transparent);
   }
 
   .hero-grid {
+    position: relative;
     display: grid;
-    gap: var(--space-2xl);
-    padding-block: var(--space-xl) var(--space-3xl);
+    gap: var(--space-xl);
+    padding-block: var(--space-xl) var(--space-lg);
+    padding-inline: max(var(--space-lg), calc(var(--gutter) - var(--basin-inset)));
   }
 
   .hero-title {
     font-size: var(--text-hero);
-    font-weight: 300;
-    line-height: 1;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    color: var(--color-light);
     max-width: none;
   }
 
-  .hero-copy .lead {
-    max-width: 30ch;
+  .hero-title:lang(he) {
+    line-height: 1;
+    letter-spacing: -0.01em;
   }
 
-  /* The pool: a sunlit window of water, square to the end edge, rounded where it meets the plaster. */
-  .hero-pool {
-    position: absolute;
-    z-index: -1;
-    inset-inline: var(--space-lg) 0;
-    bottom: 0;
-    height: var(--pool-h, 26rem);
-    border-start-start-radius: var(--radius-card);
-    border-end-start-radius: 0;
-    --tile-a: 18rem;
-    --tile-b: 28rem;
-    --caustic-a: 0.62;
-    --caustic-b: 0.34;
+  .hero-sub {
+    margin-top: var(--space-md);
+    max-width: 32ch;
+    font-size: var(--text-lead);
+    line-height: 1.45;
+    color: color-mix(in oklab, var(--color-light) 88%, var(--color-shade));
   }
 
-  .hero-stripe {
-    inset-inline-end: 7%;
-    top: -1rem;
-    bottom: 3.5rem;
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
   }
 
-  /* Between lanes a fine rope; it is the panel's only divider language besides the foot rule. */
-  .hero-panel li + li .lane-rope {
-    margin-block: var(--space-2xs);
+  .hero-actions :global(.hero-cta) {
+    flex: 1 1 auto;
   }
 
-  .hero-panel li:first-child .lane-rope {
-    --rope-a: var(--color-rule);
-    --rope-b: transparent;
+  .hero-more {
+    color: var(--color-light);
   }
 
-  .hero-stage {
+  /* Phones: one action owns the row; the way down to the lanes is a quiet underlined link. */
+  @media (width < 40rem) {
+    .hero-actions :global(.hero-cta) {
+      flex-basis: 100%;
+    }
+
+    .hero-more {
+      min-height: 2.75rem;
+      padding-inline: var(--space-xs);
+      box-shadow: none;
+      font-size: 1rem;
+      text-decoration: underline;
+      text-decoration-color: color-mix(in oklab, var(--color-light) 45%, transparent);
+      text-underline-offset: 0.3em;
+    }
+  }
+
+  /* The lanes: a panel of deep, still water so the light type reads at full strength. */
+  .hero-lanes {
+    width: 100%;
+    padding: var(--space-md) var(--space-md) var(--space-sm);
+    border-radius: 20px;
+    background: color-mix(in oklab, var(--color-abyss) 62%, transparent);
+    box-shadow:
+      inset 0 0 0 1px color-mix(in oklab, var(--color-light) 10%, transparent),
+      var(--shadow-deep);
+  }
+
+  .hero-who {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding-bottom: var(--space-sm);
+  }
+
+  .hero-avatar {
     display: grid;
-    place-items: center;
-    padding-inline: var(--space-sm);
+    flex-shrink: 0;
+    width: 3rem;
+    height: 3rem;
+    filter: drop-shadow(var(--drop-shadow-deep));
   }
 
-  .hero-panel {
-    width: min(100%, 28rem);
-    padding: var(--space-lg);
-    box-shadow: var(--edge-light), var(--shadow-cast);
+  .hero-who-line {
+    font-size: 0.9375rem;
+    color: var(--color-shade);
   }
 
-  .avatar {
-    color: var(--color-bronze);
-    background: var(--color-paper);
-    box-shadow: inset 0 0 0 1.5px var(--color-bronze-light);
+  .hero-rope {
+    --bead: 0.5rem;
+    --rope-a: var(--color-tile);
+    --rope-b: color-mix(in oklab, var(--color-light) 85%, transparent);
+    filter: none;
   }
 
   .hero-lane {
@@ -165,115 +261,158 @@ const portrait = getPhoto('founder-portrait');
     align-items: center;
     gap: var(--space-md);
     min-height: 4.25rem;
-    padding-block: var(--space-xs);
-    border-radius: var(--radius-inner);
-    transition: background-color var(--dur-short) var(--ease-out);
+    margin-inline: calc(var(--space-xs) * -1);
+    padding: var(--space-xs);
+    border-radius: 14px;
+    transition:
+      background-color var(--dur-short) var(--ease-out),
+      transform var(--dur-micro) var(--ease-out);
   }
 
   .hero-lane-ages {
     flex-shrink: 0;
-    min-width: 5.5ch;
-    font-size: 2rem;
-    font-weight: 300;
+    min-width: 5.2ch;
+    font-size: clamp(1.875rem, 1.2rem + 2.4vw, 2.25rem);
+    font-weight: 500;
     line-height: 1;
-    letter-spacing: -0.02em;
-    color: var(--color-accent-hi);
+    letter-spacing: -0.03em;
+    color: var(--color-tile);
   }
 
-  .hero-lane :global(.hero-lane-arrow) {
-    transition: translate var(--dur-short) var(--ease-out);
+  .hero-lane-go {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-pill);
+    background: color-mix(in oklab, var(--color-light) 12%, transparent);
+    color: var(--color-light);
+    transition:
+      translate var(--dur-short) var(--ease-out),
+      background-color var(--dur-short) var(--ease-out);
   }
 
   @media (hover: hover) and (pointer: fine) {
     .hero-lane:hover {
-      background: color-mix(in oklab, var(--color-accent-soft) 70%, transparent);
+      background: color-mix(in oklab, var(--color-light) 8%, transparent);
     }
 
-    .hero-lane:hover :global(.hero-lane-arrow) {
+    .hero-lane:hover .hero-lane-go {
       translate: calc(var(--dir, 1) * 4px) 0;
+      background: var(--color-light);
+      color: var(--color-ink);
     }
   }
 
+  /* Touch: the lane answers on pointer-down. */
   .hero-lane:active {
-    background: var(--color-accent-soft);
+    background: color-mix(in oklab, var(--color-light) 14%, transparent);
+    transform: scale(0.985);
+    transition-duration: 60ms;
   }
 
-  /* Bottom right of the pool in both languages: the accessibility button holds bottom left. */
+  .hero-where {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-top: var(--space-2xs);
+    padding-top: var(--space-sm);
+    border-top: 1px solid color-mix(in oklab, var(--color-light) 16%, transparent);
+    font-size: 0.9375rem;
+    color: var(--color-shade);
+  }
+
+  /* Pause control: top end corner of the basin, the one corner the copy never reaches. */
   :global(.hero-toggle) {
     position: absolute;
-    right: var(--space-md);
-    bottom: var(--space-md);
+    top: var(--space-sm);
+    inset-inline-end: var(--space-sm);
   }
 
-  :global([dir='rtl'] .hero-toggle) {
-    right: calc(var(--space-lg) + var(--space-md));
-  }
-
-  /* Phones: the pool sits under the copy and the panel floats half in it. */
-  @media (width < 60rem) {
+  @media (width >= 30rem) {
     .hero {
-      --pool-h: 24rem;
-    }
-
-    .hero-grid {
-      gap: var(--space-xl);
-      padding-block: var(--space-lg) var(--space-2xl);
+      --basin-inset: var(--space-md);
     }
   }
 
-  /* Desktop: copy on the start half, the pool and its lanes on the end half. */
+  /* Tablet: the lanes sit beside each other's width, the copy gets a wider measure. */
+  @media (width >= 40rem) {
+    .hero-grid {
+      padding-block: var(--space-2xl) var(--space-xl);
+    }
+
+    .hero-lanes {
+      padding: var(--space-lg) var(--space-lg) var(--space-md);
+    }
+
+    .hero-actions :global(.hero-cta) {
+      flex: 0 0 auto;
+    }
+  }
+
+  /* Desktop: one panorama of water; copy on the start half, the lanes floating on the end half. */
   @media (width >= 60rem) {
     .hero {
-      min-height: min(calc(100svh - var(--header-h)), 54rem);
+      --basin-inset: var(--space-md);
+    }
+
+    .hero-basin {
+      min-height: min(calc(100svh - var(--header-h) - var(--space-md)), 52rem);
       display: grid;
       align-items: center;
     }
 
     .hero-grid {
-      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
       align-items: center;
-      padding-block: var(--space-2xl);
+      gap: var(--space-3xl);
+      padding-block: var(--space-3xl);
     }
 
-    .hero-pool {
-      inset-inline-start: calc(50% + var(--space-xl));
-      inset-block: 0 var(--pool-gap);
-      height: auto;
-      border-end-start-radius: var(--radius-card);
+    .hero-sub {
+      margin-top: var(--space-lg);
+    }
+
+    .hero-actions {
+      margin-top: var(--space-xl);
+    }
+
+    .hero-caustics {
+      -webkit-mask-image: linear-gradient(90deg, color-mix(in oklab, var(--color-black) 30%, transparent) 0%, color-mix(in oklab, var(--color-black) 35%, transparent) 45%, var(--color-black) 70%);
+      mask-image: linear-gradient(90deg, color-mix(in oklab, var(--color-black) 30%, transparent) 0%, color-mix(in oklab, var(--color-black) 35%, transparent) 45%, var(--color-black) 70%);
+    }
+
+    :global([dir='rtl']) .hero-caustics {
+      -webkit-mask-image: linear-gradient(270deg, color-mix(in oklab, var(--color-black) 30%, transparent) 0%, color-mix(in oklab, var(--color-black) 35%, transparent) 45%, var(--color-black) 70%);
+      mask-image: linear-gradient(270deg, color-mix(in oklab, var(--color-black) 30%, transparent) 0%, color-mix(in oklab, var(--color-black) 35%, transparent) 45%, var(--color-black) 70%);
+    }
+
+    .hero-lanes {
+      max-width: 30rem;
+      justify-self: end;
     }
 
     .hero-stripe {
       bottom: 4rem;
     }
 
-    .hero-stage {
-      padding-inline: var(--space-2xl) 0;
-      padding-bottom: var(--pool-gap);
-    }
-
     :global(.hero-toggle) {
-      bottom: calc(var(--pool-gap) + var(--space-md));
-    }
-
-    /* Hebrew: the pool lies on the left, so its right edge is the inner one. */
-    :global([dir='rtl'] .hero-toggle) {
-      right: calc(50% + var(--space-xl) + var(--space-md));
+      top: var(--space-md);
+      inset-inline-end: var(--space-md);
     }
   }
 
-  /* On load the water rises into its window, then the panel settles on it. */
+  /* On load the sunlight switches on across the water: the net brightens from nothing in under a second. */
   @media (prefers-reduced-motion: no-preference) {
-    :global(html:not(.a11y-still)) .hero-pool {
-      animation: pool-fill 0.9s var(--ease-out) both;
+    :global(html:not(.a11y-still)) .hero-water {
+      animation: light-on 0.9s var(--ease-out) both;
     }
   }
 
-  @keyframes pool-fill {
+  @keyframes light-on {
     from {
-      clip-path: inset(100% 0 0 0);
-    }
-    to {
-      clip-path: inset(0 0 0 0);
+      opacity: 0;
     }
   }
 </style>

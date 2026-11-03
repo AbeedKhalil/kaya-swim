@@ -3,6 +3,7 @@ import MediaSlot from '../ui/MediaSlot.astro';
 import MedalEmblem from '../ui/MedalEmblem.astro';
 import { site } from '../../config/site';
 import { getCopy, type Locale } from '../../i18n';
+import { getPhoto } from '../../lib/media';
 
 interface Props {
   locale: Locale;
@@ -11,6 +12,8 @@ interface Props {
 const { locale } = Astro.props;
 const t = getCopy(locale);
 const f = t.founder;
+// A real portrait keeps its 4:5; the water stand-in is shorter on phones so the story starts sooner.
+const hasPortrait = Boolean(getPhoto('founder-portrait'));
 ---
 
 <!-- The one chapter the page reads like a letter: the portrait held beside the story, the timeline on the pool floor. -->
@@ -20,14 +23,15 @@ const f = t.founder;
       <MediaSlot
         slot="founder-portrait"
         alt={f.portraitAlt}
-        aspect="4 / 5"
+        aspect={hasPortrait ? '4 / 5' : '5 / 4'}
         sizes="(min-width: 1024px) 34vw, 100vw"
-        depth="shallow"
-        class="reveal-wipe rounded-card"
+        depth="deep"
+        class="story-photo reveal-wipe rounded-card"
       >
-        <span class="absolute inset-x-0 bottom-0 p-6 sm:p-8">
-          <span class="block font-display text-[clamp(2.25rem,6vw,3.25rem)] leading-none font-light">{site.founder[locale].full}</span>
-          <span class="mt-3 block font-semibold text-ink-2">{t.hero.credential}</span>
+        <span class="floor-stripe story-stripe"></span>
+        <span class="story-name absolute inset-x-0 bottom-0 p-6 sm:p-8">
+          <span class="block font-display text-[clamp(2.5rem,9vw,3.75rem)] leading-[0.95] font-semibold">{site.founder[locale].full}</span>
+          <span class="mt-3 block font-semibold text-tile">{t.hero.credential}</span>
         </span>
       </MediaSlot>
     </div>
@@ -46,7 +50,7 @@ const f = t.founder;
               <span class="timeline-marker">
                 {item.age !== undefined ? (
                   <Fragment>
-                    <span class="block text-sm text-muted">{f.agePrefix}</span>
+                    <span class="block text-sm font-semibold text-muted">{f.agePrefix}</span>
                     <span class="timeline-age num block font-display">{item.age}</span>
                   </Fragment>
                 ) : (
@@ -55,7 +59,7 @@ const f = t.founder;
               </span>
               <span class="timeline-text">
                 {item.text}
-                {item.medal && <MedalEmblem disc class="timeline-medal" />}
+                {item.medal && <MedalEmblem disc uid="story" class="timeline-medal" />}
               </span>
             </li>
           ))
@@ -78,18 +82,46 @@ const f = t.founder;
       align-items: start;
     }
 
+    .story-portrait :global(.story-photo) {
+      aspect-ratio: 4 / 5 !important;
+    }
+
     .story-portrait {
       position: sticky;
       top: calc(var(--header-h) + var(--space-lg));
     }
   }
 
+  /* The fallback portrait is the deep end with her name on it; a real photo replaces the whole slot. */
+  .story-photo {
+    color: var(--color-light);
+    box-shadow: var(--shadow-deep);
+  }
+
+  .story-stripe {
+    inset-inline-start: 22%;
+    top: -1rem;
+    bottom: 42%;
+    background: color-mix(in oklab, var(--color-abyss) 70%, transparent);
+  }
+
+  .story-name {
+    background: linear-gradient(0deg, color-mix(in oklab, var(--color-abyss) 85%, transparent), transparent);
+    padding-top: var(--space-3xl);
+  }
+
   .story-lead {
     font-family: var(--font-display);
     font-size: var(--text-statement);
+    font-weight: 500;
     line-height: 1.3;
     letter-spacing: -0.015em;
     max-width: 30ch;
+    color: var(--color-ink);
+  }
+
+  .story-lead:lang(he) {
+    font-weight: 600;
   }
 
   .story-prose {
@@ -140,7 +172,8 @@ const f = t.founder;
 
   .timeline-age {
     font-size: 2.75rem;
-    font-weight: 300;
+    font-weight: 500;
+    color: var(--color-accent);
     line-height: 0.9;
     letter-spacing: -0.02em;
     white-space: nowrap;
@@ -152,6 +185,7 @@ const f = t.founder;
     gap: var(--space-md);
     padding-top: 1.25rem;
     font-size: 1.0625rem;
+    font-weight: 500;
   }
 
   .timeline-item--medal .timeline-age,

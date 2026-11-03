@@ -1,11 +1,13 @@
-/* Hallmark · shape: kept sequence, story chapter as Long Document (draw 8b154a dealt Long Document; the tracks, steps, FAQ and form the page must keep refuse a prose-only shape) · genre: atmospheric · theme: Refract (deal 1/3, seed boutique-swimming-school-israeli-a817·42694e3d·2026-11-01·r0) · redesign: full
- * hero: Poster, the head on plaster, the lit pool bleeding off the end edge with the three lanes floating in it · nav: edge-aligned, logo and five links, one WhatsApp action (swapped from slab: a heavy bar fights a calm lit page) · footer: mast, the name filling with water · imagery: none supplied; the light carries the page, photo slots wait for the founder portrait, the tracks and the pool · signature: sunlight moving on the pool floor, the three tracks lying in it as lanes · refract: water/pool
- * axes: light/grotesk-sans/cool · posture: restrained (accent on the WhatsApp action, focus and the present marker; WhatsApp green only inside its glyph disc and the floating action) · contrast: pass · fold: pass · v2.0.0 */
-/* Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V4 · weakest: E, no photographs yet; every slot falls back to lit water and the handoff asks for the portrait first */
+/* Hallmark · shape: kept sequence, story chapter as Long Document · genre: atmospheric · theme: Refract, deepened (deal 1/3, seed boutique-swimming-school-israeli-a817·42694e3d·2026-11-01·r0) · redesign: full (wow-mobile, 2026-11-03: contrast + phone-first)
+ * hero: Basin, the deep end at noon: a pool cut into the plaster, light type on deep water, the three tracks as lanes parted by lane ropes · nav: edge-aligned, logo, links, one WhatsApp action; on phones the accessibility button joins the bar so the thumb zone holds only the booking bar · footer: mast, the name filling with water · imagery: none supplied; the water carries the page, photo slots wait for the founder portrait, the tracks and the pool · signature: sunlight netting the deep end, the three tracks lying in it as lanes · refract: water/pool
+ * axes: light/grotesk-sans/cool, with two deep basins (hero, sign-up) and the deep lane as the page's dark anchors · posture: committed (pool-tile blue for the action on plaster, a white float for the action on deep water; WhatsApp green only inside its glyph disc; bronze only for the 2017 medal) · contrast: pass (body ink 16.8:1, secondary 12.5:1, muted 8:1 on plaster; light type 8.6:1+ on deep water; prefers-contrast: more mapped to the high-contrast tokens) · fold: pass at 390x844 and 1280x800 · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V5 · weakest: E, still no photographs; every slot falls back to deep or lit water and the handoff asks for the portrait first */
 /* Hallmark · waive 8 · kept sequence of the KAYA SWIM page (hero, honours, lanes, story, values, joining, voices, FAQ, pool, sign-up) in new compositions · KAYA SWIM keeps its own order: the tracks, then Katrin's story, then how to join on WhatsApp */
 /* Hallmark · waive 2b · single-hue water ramp from --color-shade to --color-deep (hue 208 to 236) clipped to the KAYA SWIM footer name · the name fills with pool water as the page ends */
 /* Hallmark · dismissed F5 · the WhatsApp contact row carries its green disc so visitors find WhatsApp at a glance; phone and email rows match its shape */
-/* Hallmark · dismissed 34 · BaseLayout imports this file, which sets overflow-x: clip on html and body */
+/* Hallmark · dismissed 34 · this file sets overflow-x: clip on html and body inside @layer base, which the linter does not read */
+/* Hallmark · dismissed 50 · the flagged "words" are Astro expressions ({t.footer.contactTitle} and the like), not rendered text; h1 to h3 carry overflow-wrap: break-word and min-width: 0 in @layer base */
+/* Hallmark · dismissed 26b · .btn styles :disabled (opacity and cursor) inside its @utility block */
 /* Hallmark · dismissed F8 · the header hairline is a state cue tied to scroll position, not choreography; the story timeline is the page's one scroll pattern */
 /* Hallmark · dismissed 49 · every .btn sets white-space: nowrap; the sr-only suffix is not painted */
 /* Hallmark · waive 47b · one frame, a WhatsApp thread with the real joining steps · no device bezel, the chat panel only */
@@ -16,26 +18,36 @@
    One water signal (accent) for the action and focus; bronze only for the
    2017 medal; WhatsApp green only inside its own glyph. */
 @theme static {
-  --color-paper: oklch(98.4% 0.005 95);
-  --color-paper-2: oklch(96.5% 0.007 95);
-  --color-paper-3: oklch(93.8% 0.009 95);
-  --color-ink: oklch(27% 0.055 242);
-  --color-ink-2: oklch(37% 0.045 240);
-  --color-muted: oklch(49% 0.03 238);
-  --color-rule: oklch(89.5% 0.01 225);
-  --color-rule-2: oklch(93.5% 0.008 225);
-  --color-accent: oklch(48% 0.1 228);
-  --color-accent-hi: oklch(42% 0.1 232);
+  /* Plaster: the warm white of the pool deck. */
+  --color-paper: oklch(98.5% 0.005 95);
+  --color-paper-2: oklch(96.2% 0.008 95);
+  --color-paper-3: oklch(93.2% 0.01 95);
+  /* Ink: the deep-end navy of the logo, pushed darker so body text reads at 12:1 and up. */
+  --color-ink: oklch(20% 0.06 248);
+  --color-ink-2: oklch(30% 0.055 244);
+  --color-muted: oklch(40% 0.045 240);
+  --color-rule: oklch(83% 0.022 230);
+  --color-rule-2: oklch(89.5% 0.014 228);
+  /* The action: pool-tile blue (white on it 8.6:1). */
+  --color-accent: oklch(40% 0.13 242);
+  --color-accent-hi: oklch(33% 0.12 246);
   --color-accent-ink: oklch(99% 0.004 95);
-  --color-accent-soft: oklch(94.5% 0.025 215);
-  --color-focus: oklch(55% 0.14 230);
-  --color-shade: oklch(87% 0.055 208);
-  --color-shade-2: oklch(76% 0.075 216);
+  --color-accent-soft: oklch(93% 0.035 220);
+  --color-focus: oklch(48% 0.2 258);
+  /* Water, shallow to abyss. */
+  --color-shade: oklch(87% 0.06 208);
+  --color-shade-2: oklch(76% 0.085 214);
+  --color-tile: oklch(86% 0.11 200);
+  --color-shallow: oklch(91% 0.05 212);
+  --color-sun: oklch(68% 0.11 208);
   --color-light: oklch(99.7% 0.004 95);
-  --color-deep: oklch(36% 0.07 236);
-  --color-abyss: oklch(25% 0.05 242);
-  --color-still: oklch(93% 0.022 178);
-  --color-still-2: oklch(85% 0.04 185);
+  --color-pool: oklch(46% 0.12 232);
+  --color-pool-2: oklch(38% 0.11 238);
+  --color-deep: oklch(30% 0.09 242);
+  --color-abyss: oklch(19% 0.055 248);
+  --color-still: oklch(93% 0.03 182);
+  --color-still-2: oklch(84% 0.05 186);
+  /* Bronze belongs to the 2017 medal and nothing else. */
   --color-bronze: oklch(50% 0.1 55);
   --color-bronze-light: oklch(80% 0.08 68);
   --color-bronze-1: oklch(88% 0.06 72);
@@ -43,9 +55,10 @@
   --color-bronze-3: oklch(40% 0.08 50);
   --color-wa: oklch(77% 0.19 150);
   --color-wa-ink: oklch(24% 0.05 160);
-  --color-error: oklch(50% 0.18 27);
+  --color-error: oklch(48% 0.19 27);
+  --color-error-on-dark: oklch(82% 0.11 30);
   --color-white: oklch(99.7% 0.004 95);
-  --color-black: oklch(18% 0.03 245);
+  --color-black: oklch(16% 0.03 248);
   --color-spec-1: oklch(80% 0.13 32);
   --color-spec-3: oklch(84% 0.12 175);
 
@@ -53,13 +66,13 @@
   --text-md: 1rem;
   --text-lg: 1.25rem;
   --text-xl: 1.5625rem;
-  --text-hero: clamp(3.25rem, 2rem + 6vw, 7.25rem);
-  --text-display: clamp(2.5rem, 1.6rem + 3.4vw, 4.5rem);
-  --text-section: clamp(2.125rem, 1.5rem + 2.2vw, 3.5rem);
-  --text-title: clamp(1.25rem, 0.875rem + 0.75vw, 1.625rem);
+  --text-hero: clamp(3.75rem, 2.4rem + 5.6vw, 6rem);
+  --text-display: clamp(2.5rem, 1.7rem + 3.2vw, 4.5rem);
+  --text-section: clamp(2.25rem, 1.6rem + 2.4vw, 3.75rem);
+  --text-title: clamp(1.375rem, 1rem + 0.75vw, 1.75rem);
   --text-lead: clamp(1.125rem, 1rem + 0.35vw, 1.375rem);
   --text-statement: clamp(1.375rem, 1.1rem + 0.9vw, 2.125rem);
-  --text-figure: clamp(3.75rem, 2.5rem + 4.5vw, 6.5rem);
+  --text-figure: clamp(4.5rem, 3rem + 5vw, 6rem);
 
   --radius-card: 22px;
   --radius-inner: 12px;
@@ -86,15 +99,23 @@
   --drop-shadow-medal: 0 8px 10px oklch(40% 0.08 55 / 0.3);
   --drop-shadow-pass: 0 30px 34px oklch(45% 0.1 215 / 0.35);
   --drop-shadow-pass-near: 0 2px 3px oklch(40% 0.06 230 / 0.12);
+  /* On deep water the shadow is the abyss itself, not a tint. */
+  --shadow-deep: 0 34px 60px -28px oklch(12% 0.05 248 / 0.75), 0 2px 4px oklch(12% 0.05 248 / 0.3);
+  --drop-shadow-deep: 0 28px 30px oklch(12% 0.05 248 / 0.5);
+  --radius-basin: 28px;
+  --shadow-bar: 0 -16px 30px -20px oklch(20% 0.06 248 / 0.35);
+  /* The white action on deep water: a lip of pool-tinted shade below, like a float. */
+  --shadow-buoy: inset 0 -3px 0 oklch(70% 0.06 220 / 0.55);
+  --shadow-buoy-pressed: inset 0 -1px 0 oklch(70% 0.06 220 / 0.55), 0 10px 20px -14px oklch(12% 0.05 248 / 0.7);
 
   /* High contrast (accessibility menu) and highlighted links. */
   --color-hc-paper: oklch(99.6% 0.004 95);
   --color-hc-paper-3: oklch(96.5% 0.006 95);
-  --color-hc-ink: oklch(14% 0.03 245);
-  --color-hc-accent: oklch(36% 0.09 230);
-  --color-hc-accent-hi: oklch(30% 0.09 230);
-  --color-hc-deep: oklch(25% 0.06 240);
-  --color-hc-abyss: oklch(15% 0.04 240);
+  --color-hc-ink: oklch(12% 0.03 248);
+  --color-hc-accent: oklch(32% 0.13 246);
+  --color-hc-accent-hi: oklch(26% 0.11 248);
+  --color-hc-deep: oklch(22% 0.07 244);
+  --color-hc-abyss: oklch(13% 0.04 248);
   --color-hc-bronze: oklch(38% 0.08 50);
   --color-mark: oklch(95% 0.1 100);
 }
@@ -174,7 +195,7 @@
     -webkit-tap-highlight-color: transparent;
     scroll-padding-top: calc(var(--header-h) + var(--space-lg));
     background: var(--color-paper);
-    scrollbar-color: var(--color-muted) var(--color-paper);
+    scrollbar-color: var(--color-accent) var(--color-paper-2);
     overflow-x: clip;
     interpolate-size: allow-keywords;
   }
@@ -203,7 +224,7 @@
   h2,
   h3 {
     font-family: var(--font-display);
-    font-weight: 400;
+    font-weight: 600;
     letter-spacing: var(--tracking-display);
     line-height: 1.04;
     text-wrap: balance;
@@ -214,6 +235,11 @@
   h3 {
     letter-spacing: -0.015em;
     line-height: 1.2;
+  }
+
+  /* Assistant draws thinner than Funnel at the same number: one step heavier keeps the two scripts matched. */
+  :where(h1, h2, h3):lang(he) {
+    font-weight: 700;
   }
 
   /* Hebrew letterforms close up on their own: keep tracking near zero. */
@@ -251,13 +277,15 @@
     font-size: max(16px, 1rem);
   }
 
+  /* Focus arrives instantly and never fades: a 3px ring in a blue no surface on the page uses. */
   :focus-visible {
-    outline: 2px solid var(--color-focus);
-    outline-offset: 3px;
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+    transition: none;
   }
 
   .on-dark :focus-visible {
-    outline-color: var(--color-light);
+    outline-color: var(--color-tile);
   }
 
   .on-dark .on-light :focus-visible {
@@ -265,7 +293,7 @@
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--color-accent) 24%, transparent);
+    background: var(--color-tile);
     color: var(--color-ink);
   }
 
@@ -352,8 +380,10 @@
     }
   }
 
+  /* Pressed on pointer-down, so a tap answers before the finger lifts. */
   &:active:not(:disabled) {
     transform: translateY(1px) scale(0.97);
+    transition-duration: 60ms;
   }
 
   &:disabled {
@@ -384,32 +414,57 @@
   &:active {
     box-shadow: var(--shadow-pressed);
   }
+
+  /* On deep water the action turns to sunlight: a white pill with ink, the green kept in its disc. */
+  :where(.on-dark) & {
+    background: var(--color-light);
+    color: var(--color-ink);
+    box-shadow: var(--shadow-buoy), var(--shadow-deep);
+
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background: var(--color-white);
+        color: var(--color-accent-hi);
+      }
+    }
+
+    &:active {
+      box-shadow: var(--shadow-buoy-pressed);
+    }
+  }
+
+  :where(.on-dark .on-light) & {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+    box-shadow: var(--shadow-press), var(--shadow-card);
+  }
 }
 
-/* Secondary on paper or light: a clear pill. */
+/* Secondary on paper or light: a white pill with a drawn edge (3:1 against the plaster). */
 @utility btn-clear {
-  background: color-mix(in oklab, var(--color-light) 80%, transparent);
+  background: var(--color-light);
   color: var(--color-ink);
   box-shadow:
-    var(--edge-light),
-    0 0 0 1px var(--color-rule),
+    inset 0 0 0 1.5px color-mix(in oklab, var(--color-accent) 55%, var(--color-paper)),
     var(--shadow-soft);
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
-      background: var(--color-light);
       box-shadow:
-        var(--edge-light),
-        0 0 0 1px var(--color-shade-2),
+        inset 0 0 0 1.5px var(--color-accent),
         var(--shadow-soft-hi);
     }
+  }
+
+  &:active {
+    background: var(--color-accent-soft);
   }
 }
 
 /* Secondary on dark water. */
 @utility btn-outline {
   color: inherit;
-  box-shadow: inset 0 0 0 1.5px color-mix(in oklab, currentColor 40%, transparent);
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklab, currentColor 60%, transparent);
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
@@ -600,6 +655,21 @@
 
 .water-toggle:active {
   transform: scale(0.94);
+  transition-duration: 60ms;
+}
+
+/* On deep water the control is a darker disc of the same water, its glyph in light. */
+.on-dark .water-toggle {
+  color: var(--color-light);
+  background: color-mix(in oklab, var(--color-abyss) 55%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--color-light) 22%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .water-toggle:hover {
+    background: var(--color-light);
+    color: var(--color-ink);
+  }
 }
 
 .water-toggle .icon-play,
@@ -650,29 +720,30 @@ html.a11y-still .water-toggle {
   filter: none;
 }
 
-/* Water depth tells the audiences apart: shallow (first steps), deep (competitive), still (calm). */
+/* Water depth tells the audiences apart: shallow (first steps), deep (competitive), still (calm).
+   Light water carries full ink; the deep end carries light type and a tile-blue net. */
 .depth-shallow {
-  background: linear-gradient(170deg, var(--color-accent-soft), var(--color-shade));
+  background: linear-gradient(170deg, var(--color-shallow), var(--color-shade-2));
   color: var(--color-ink);
   --caustic-color: var(--color-light);
-  --caustic-a: 0.55;
-  --caustic-b: 0.3;
+  --caustic-a: 0.6;
+  --caustic-b: 0.34;
 }
 
 .depth-deep {
-  background: linear-gradient(170deg, var(--color-deep), var(--color-abyss));
+  background: linear-gradient(170deg, var(--color-pool-2), var(--color-deep) 45%, var(--color-abyss));
   color: var(--color-light);
-  --caustic-color: var(--color-shade);
-  --caustic-a: 0.14;
-  --caustic-b: 0.07;
+  --caustic-color: var(--color-tile);
+  --caustic-a: 0.22;
+  --caustic-b: 0.12;
 }
 
 .depth-still {
   background: linear-gradient(170deg, var(--color-still), var(--color-still-2));
   color: var(--color-ink);
   --caustic-color: var(--color-light);
-  --caustic-a: 0.4;
-  --caustic-b: 0.2;
+  --caustic-a: 0.5;
+  --caustic-b: 0.26;
 }
 
 /* ───────────────────────── Contact rows and icon links ───────────────────────── */
@@ -684,9 +755,9 @@ html.a11y-still .water-toggle {
   min-height: 4rem;
   padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-inner);
-  background: color-mix(in oklab, var(--color-light) 80%, transparent);
+  background: var(--color-light);
   color: var(--color-ink);
-  box-shadow: var(--edge-light), var(--shadow-row);
+  box-shadow: inset 0 0 0 1px var(--color-rule-2), var(--shadow-row);
   transition:
     background-color var(--dur-short) var(--ease-out),
     transform var(--dur-micro) var(--ease-out);
@@ -694,12 +765,17 @@ html.a11y-still .water-toggle {
 
 .contact-row:active {
   transform: scale(0.98);
+  transition-duration: 60ms;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .contact-row:hover {
-    background: var(--color-light);
+    background: var(--color-accent-soft);
   }
+}
+
+.on-dark .contact-row {
+  box-shadow: var(--shadow-deep);
 }
 
 .contact-icon {
@@ -913,6 +989,8 @@ html[data-text-size="2"] {
   font-size: 130%;
 }
 
+/* High contrast: the accessibility menu's switch, and the system "increase contrast" setting.
+   Water flattens to plain fields, the light net goes, every edge is drawn in ink. */
 html.a11y-contrast {
   --color-paper: var(--color-hc-paper);
   --color-paper-2: var(--color-hc-paper);
@@ -925,12 +1003,54 @@ html.a11y-contrast {
   --color-accent-hi: var(--color-hc-accent-hi);
   --color-shade: var(--color-hc-paper);
   --color-shade-2: var(--color-hc-paper);
+  --color-shallow: var(--color-hc-paper);
+  --color-tile: var(--color-hc-paper);
   --color-accent-soft: var(--color-hc-paper);
   --color-still: var(--color-hc-paper);
   --color-still-2: var(--color-hc-paper);
+  --color-sun: var(--color-hc-deep);
+  --color-pool: var(--color-hc-deep);
+  --color-pool-2: var(--color-hc-deep);
   --color-deep: var(--color-hc-deep);
   --color-abyss: var(--color-hc-abyss);
   --color-bronze: var(--color-hc-bronze);
+}
+
+@media (prefers-contrast: more) {
+  html {
+    --color-paper: var(--color-hc-paper);
+    --color-paper-2: var(--color-hc-paper);
+    --color-paper-3: var(--color-hc-paper-3);
+    --color-ink: var(--color-hc-ink);
+    --color-ink-2: var(--color-hc-ink);
+    --color-muted: var(--color-hc-ink);
+    --color-rule: var(--color-hc-ink);
+    --color-accent: var(--color-hc-accent);
+    --color-accent-hi: var(--color-hc-accent-hi);
+    --color-shade: var(--color-hc-paper);
+    --color-shade-2: var(--color-hc-paper);
+    --color-shallow: var(--color-hc-paper);
+    --color-tile: var(--color-hc-paper);
+    --color-accent-soft: var(--color-hc-paper);
+    --color-still: var(--color-hc-paper);
+    --color-still-2: var(--color-hc-paper);
+    --color-sun: var(--color-hc-deep);
+    --color-pool: var(--color-hc-deep);
+    --color-pool-2: var(--color-hc-deep);
+    --color-deep: var(--color-hc-deep);
+    --color-abyss: var(--color-hc-abyss);
+    --color-bronze: var(--color-hc-bronze);
+  }
+
+  .caustics,
+  .decor {
+    display: none;
+  }
+
+  .contrast-border,
+  .clear {
+    border: 2px solid currentColor;
+  }
 }
 
 html.a11y-contrast .caustics,

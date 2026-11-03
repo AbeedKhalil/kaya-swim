@@ -27,7 +27,7 @@ const j = getCopy(locale).journey;
                 {index + 1}
               </span>
               <span>
-                <span class="block font-display text-title leading-tight">{step.title}</span>
+                <span class="block font-display text-title leading-tight font-semibold">{step.title}</span>
                 <span class="mt-2 block max-w-[44ch] text-ink-2">{step.text}</span>
               </span>
             </li>
@@ -49,7 +49,7 @@ const j = getCopy(locale).journey;
   }
 
   .steps {
-    border-top: 1px solid var(--color-rule);
+    border-top: 1.5px solid var(--color-ink);
   }
 
   .step {
@@ -62,8 +62,8 @@ const j = getCopy(locale).journey;
 
   .step-num {
     font-variant-numeric: tabular-nums;
-    font-size: 2.5rem;
-    font-weight: 300;
+    font-size: 2.75rem;
+    font-weight: 500;
     line-height: 0.9;
     color: var(--color-accent);
   }

@@ -64,7 +64,7 @@ const items = track ? faq.items.filter((item) => !item.tracks || item.tracks.inc
   }
 
   .faq-list {
-    border-top: 1px solid var(--color-rule);
+    border-top: 1.5px solid var(--color-ink);
   }
 
   .faq-item {
@@ -107,7 +107,12 @@ const items = track ? faq.items.filter((item) => !item.tracks || item.tracks.inc
     color: var(--color-accent-hi);
     transition:
       rotate var(--dur-short) var(--ease-out),
+      scale var(--dur-micro) var(--ease-out),
       background-color var(--dur-short) var(--ease-out);
+  }
+
+  .faq-q:active .faq-icon {
+    scale: 0.9;
   }
 
   details[open] .faq-icon {
