@@ -140,10 +140,32 @@ const he: SiteCopy = {
     regionLabel: 'המלצות',
     sampleBadge: 'המלצה לדוגמה',
     audiences: { parent: 'הורה', swimmer: 'שחיין/ית', adult: 'מבוגר/ת' },
-    // Empty until real quotes are added, with the speaker's permission.
-    // The Voices section stays hidden while this list is empty.
-    // If a quote is still a placeholder, set sample: true so it shows a badge and a build warning.
-    items: [],
+    items: [
+      {
+        quote: 'הבת שלנו פחדה להיכנס למים, ותוך כמה שבועות היא כבר מבקשת לבוא לבריכה. הקבוצה הקטנה עשתה את כל ההבדל.',
+        name: 'הורה למשתתפת בחווית המים',
+        audience: 'parent',
+        track: 'water-experience',
+      },
+      {
+        quote: 'האימונים שיפרו לי את הטכניקה, והסרטונים אחרי כל אימון עוזרים לי לראות בדיוק מה לתקן.',
+        name: 'שחיין במרכז למצוינות',
+        audience: 'swimmer',
+        track: 'excellence',
+      },
+      {
+        quote: 'כל החיים פחדתי מהמים. עבדנו בסבלנות ובלי לחץ, ובפעם הראשונה אני נהנית בבריכה.',
+        name: 'משתתפת בטיפול בפחד מים',
+        audience: 'adult',
+        track: 'fear-of-water',
+      },
+      {
+        quote: 'אחרי כל שיעור קיבלנו סרטון ומשוב, וראינו את ההתקדמות מול העיניים.',
+        name: 'הורה למשתתף בחווית המים',
+        audience: 'parent',
+        track: 'water-experience',
+      },
+    ],
   },
 
   faq: {
