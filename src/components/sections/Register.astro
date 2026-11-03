@@ -19,8 +19,8 @@ const t = getCopy(locale);
 const r = t.register;
 ---
 
-<!-- The close: the lit water again, the sign-up as a pass lying in it, direct lines beside. -->
-<section id="register" class="pool pool--live register section-pad relative" aria-labelledby="register-title">
+<!-- The close: the deep end again, the sign-up as a white pass floating in it, direct lines beside. -->
+<section id="register" class="pool pool--live register on-dark section-pad relative" aria-labelledby="register-title">
   <span class="caustics" aria-hidden="true"></span>
   <span class="caustics caustics--spec-cool" aria-hidden="true"></span>
 
@@ -108,7 +108,7 @@ const r = t.register;
     </div>
 
     <div class="reveal" style="--reveal-at: 10%">
-      <h3 class="font-display text-title">{r.direct}</h3>
+      <h3 class="font-display text-title font-semibold text-light">{r.direct}</h3>
       <ul class="mt-6 grid gap-3">
         <li>
           <a href={waLink(t.whatsapp.general)} target="_blank" rel="noopener" data-cta="register-direct" class="contact-row">
@@ -147,16 +147,38 @@ const r = t.register;
 </section>
 
 <style>
+  /* The pool closes the page as it opened it: sunlit water at the top, the deep end below. */
   .register {
+    background:
+      radial-gradient(60% 40% at 50% 0%, color-mix(in oklab, var(--color-sun) 50%, transparent), transparent 70%),
+      linear-gradient(180deg, var(--color-pool) 0%, var(--color-pool-2) 35%, var(--color-deep) 75%, var(--color-abyss) 100%);
+    color: var(--color-light);
+    /* The second basin of the page, cut into the plaster like the hero's. */
+    margin-inline: var(--space-sm);
+    margin-bottom: var(--space-sm);
+    border-radius: var(--radius-basin);
     --tile-a: 20rem;
     --tile-b: 32rem;
-    --caustic-a: 0.6;
-    --caustic-b: 0.32;
+    --caustic-color: var(--color-tile);
+    --caustic-a: 0.3;
+    --caustic-b: 0.16;
   }
 
   .register-grid {
     display: grid;
     gap: var(--space-2xl);
+    padding-inline: max(var(--space-sm), calc(var(--gutter) - var(--space-sm)));
+  }
+
+  @media (width >= 30rem) {
+    .register {
+      margin-inline: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .register-grid {
+      padding-inline: max(var(--space-sm), calc(var(--gutter) - var(--space-md)));
+    }
   }
 
   @media (width >= 64rem) {
@@ -170,12 +192,12 @@ const r = t.register;
   /* A pass lying in the water: the fields, then a stub torn along a perforation.
      The notches are cut with masks, so the shadow comes from a drop-shadow on the whole pass. */
   .pass {
-    filter: drop-shadow(var(--drop-shadow-pass)) drop-shadow(var(--drop-shadow-pass-near));
+    filter: drop-shadow(var(--drop-shadow-deep)) drop-shadow(var(--drop-shadow-pass-near));
   }
 
   .pass-main,
   .pass-stub {
-    background: color-mix(in oklab, var(--color-light) 94%, transparent);
+    background: var(--color-light);
     color: var(--color-ink);
   }
 
@@ -238,7 +260,7 @@ const r = t.register;
     width: 100%;
     min-height: 3.5rem;
     padding: var(--space-sm) var(--space-md);
-    border: 1px solid var(--color-muted);
+    border: 1.5px solid var(--color-muted);
     border-radius: var(--radius-inner);
     background: var(--color-light);
     color: var(--color-ink);
@@ -247,13 +269,16 @@ const r = t.register;
     transition: border-color var(--dur-short) var(--ease-out);
   }
 
-  .field-input:hover {
-    border-color: var(--color-ink-2);
+  @media (hover: hover) and (pointer: fine) {
+    .field-input:hover {
+      border-color: var(--color-ink-2);
+    }
   }
 
   .field-input:focus-visible {
-    outline: 2px solid var(--color-focus);
-    outline-offset: -2px;
+    outline: 3px solid var(--color-focus);
+    outline-offset: -1px;
+    border-color: var(--color-focus);
   }
 
   .field-input[aria-invalid='true'] {
@@ -267,10 +292,11 @@ const r = t.register;
   }
 
   /* Bottom right in both languages: the accessibility button holds bottom left. */
+  /* Top end corner, clear of the accessibility button and the booking bar. */
   :global(.register-toggle) {
     position: absolute;
-    right: var(--space-md);
-    bottom: var(--space-md);
+    top: var(--space-md);
+    inset-inline-end: var(--space-md);
   }
 </style>
 

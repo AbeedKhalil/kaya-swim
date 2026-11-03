@@ -36,7 +36,7 @@ const t = getCopy(Astro.props.locale);
     background: var(--color-paper);
     box-shadow:
       0 -1px 0 var(--color-rule),
-      0 -16px 30px -20px oklch(20% 0.06 248 / 0.35);
+      var(--shadow-bar);
     transition:
       translate var(--dur-short) var(--ease-out),
       opacity var(--dur-short) var(--ease-out),

@@ -36,6 +36,8 @@
   --color-shade: oklch(87% 0.06 208);
   --color-shade-2: oklch(76% 0.085 214);
   --color-tile: oklch(86% 0.11 200);
+  --color-shallow: oklch(91% 0.05 212);
+  --color-sun: oklch(68% 0.11 208);
   --color-light: oklch(99.7% 0.004 95);
   --color-pool: oklch(46% 0.12 232);
   --color-pool-2: oklch(38% 0.11 238);
@@ -99,6 +101,10 @@
   --shadow-deep: 0 34px 60px -28px oklch(12% 0.05 248 / 0.75), 0 2px 4px oklch(12% 0.05 248 / 0.3);
   --drop-shadow-deep: 0 28px 30px oklch(12% 0.05 248 / 0.5);
   --radius-basin: 28px;
+  --shadow-bar: 0 -16px 30px -20px oklch(20% 0.06 248 / 0.35);
+  /* The white action on deep water: a lip of pool-tinted shade below, like a float. */
+  --shadow-buoy: inset 0 -3px 0 oklch(70% 0.06 220 / 0.55);
+  --shadow-buoy-pressed: inset 0 -1px 0 oklch(70% 0.06 220 / 0.55), 0 10px 20px -14px oklch(12% 0.05 248 / 0.7);
 
   /* High contrast (accessibility menu) and highlighted links. */
   --color-hc-paper: oklch(99.6% 0.004 95);
@@ -411,9 +417,7 @@
   :where(.on-dark) & {
     background: var(--color-light);
     color: var(--color-ink);
-    box-shadow:
-      inset 0 -3px 0 oklch(70% 0.06 220 / 0.55),
-      var(--shadow-deep);
+    box-shadow: var(--shadow-buoy), var(--shadow-deep);
 
     @media (hover: hover) and (pointer: fine) {
       &:hover {
@@ -423,7 +427,7 @@
     }
 
     &:active {
-      box-shadow: inset 0 -1px 0 oklch(70% 0.06 220 / 0.55), 0 10px 20px -14px oklch(12% 0.05 248 / 0.7);
+      box-shadow: var(--shadow-buoy-pressed);
     }
   }
 
@@ -656,7 +660,7 @@
 .on-dark .water-toggle {
   color: var(--color-light);
   background: color-mix(in oklab, var(--color-abyss) 55%, transparent);
-  box-shadow: inset 0 0 0 1px oklch(100% 0 0 / 0.22);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--color-light) 22%, transparent);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -717,7 +721,7 @@ html.a11y-still .water-toggle {
 /* Water depth tells the audiences apart: shallow (first steps), deep (competitive), still (calm).
    Light water carries full ink; the deep end carries light type and a tile-blue net. */
 .depth-shallow {
-  background: linear-gradient(170deg, oklch(91% 0.05 212), var(--color-shade-2));
+  background: linear-gradient(170deg, var(--color-shallow), var(--color-shade-2));
   color: var(--color-ink);
   --caustic-color: var(--color-light);
   --caustic-a: 0.6;
@@ -749,9 +753,9 @@ html.a11y-still .water-toggle {
   min-height: 4rem;
   padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-inner);
-  background: color-mix(in oklab, var(--color-light) 80%, transparent);
+  background: var(--color-light);
   color: var(--color-ink);
-  box-shadow: var(--edge-light), var(--shadow-row);
+  box-shadow: inset 0 0 0 1px var(--color-rule-2), var(--shadow-row);
   transition:
     background-color var(--dur-short) var(--ease-out),
     transform var(--dur-micro) var(--ease-out);
@@ -759,12 +763,17 @@ html.a11y-still .water-toggle {
 
 .contact-row:active {
   transform: scale(0.98);
+  transition-duration: 60ms;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .contact-row:hover {
-    background: var(--color-light);
+    background: var(--color-accent-soft);
   }
+}
+
+.on-dark .contact-row {
+  box-shadow: var(--shadow-deep);
 }
 
 .contact-icon {
@@ -978,6 +987,8 @@ html[data-text-size="2"] {
   font-size: 130%;
 }
 
+/* High contrast: the accessibility menu's switch, and the system "increase contrast" setting.
+   Water flattens to plain fields, the light net goes, every edge is drawn in ink. */
 html.a11y-contrast {
   --color-paper: var(--color-hc-paper);
   --color-paper-2: var(--color-hc-paper);
@@ -990,12 +1001,54 @@ html.a11y-contrast {
   --color-accent-hi: var(--color-hc-accent-hi);
   --color-shade: var(--color-hc-paper);
   --color-shade-2: var(--color-hc-paper);
+  --color-shallow: var(--color-hc-paper);
+  --color-tile: var(--color-hc-paper);
   --color-accent-soft: var(--color-hc-paper);
   --color-still: var(--color-hc-paper);
   --color-still-2: var(--color-hc-paper);
+  --color-sun: var(--color-hc-deep);
+  --color-pool: var(--color-hc-deep);
+  --color-pool-2: var(--color-hc-deep);
   --color-deep: var(--color-hc-deep);
   --color-abyss: var(--color-hc-abyss);
   --color-bronze: var(--color-hc-bronze);
+}
+
+@media (prefers-contrast: more) {
+  html {
+    --color-paper: var(--color-hc-paper);
+    --color-paper-2: var(--color-hc-paper);
+    --color-paper-3: var(--color-hc-paper-3);
+    --color-ink: var(--color-hc-ink);
+    --color-ink-2: var(--color-hc-ink);
+    --color-muted: var(--color-hc-ink);
+    --color-rule: var(--color-hc-ink);
+    --color-accent: var(--color-hc-accent);
+    --color-accent-hi: var(--color-hc-accent-hi);
+    --color-shade: var(--color-hc-paper);
+    --color-shade-2: var(--color-hc-paper);
+    --color-shallow: var(--color-hc-paper);
+    --color-tile: var(--color-hc-paper);
+    --color-accent-soft: var(--color-hc-paper);
+    --color-still: var(--color-hc-paper);
+    --color-still-2: var(--color-hc-paper);
+    --color-sun: var(--color-hc-deep);
+    --color-pool: var(--color-hc-deep);
+    --color-pool-2: var(--color-hc-deep);
+    --color-deep: var(--color-hc-deep);
+    --color-abyss: var(--color-hc-abyss);
+    --color-bronze: var(--color-hc-bronze);
+  }
+
+  .caustics,
+  .decor {
+    display: none;
+  }
+
+  .contrast-border,
+  .clear {
+    border: 2px solid currentColor;
+  }
 }
 
 html.a11y-contrast .caustics,

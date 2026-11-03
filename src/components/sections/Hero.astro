@@ -101,7 +101,7 @@ const portrait = getPhoto('founder-portrait');
 <style>
   .hero {
     padding-inline: var(--basin-inset);
-    --basin-inset: 10px;
+    --basin-inset: var(--space-sm);
   }
 
   /* The basin: painted deep from the first frame (so the light type is never on plaster),
@@ -115,8 +115,8 @@ const portrait = getPhoto('founder-portrait');
       linear-gradient(180deg, var(--color-pool) 0%, var(--color-pool-2) 42%, var(--color-deep) 78%, color-mix(in oklab, var(--color-deep) 70%, var(--color-abyss)) 100%);
     color: var(--color-light);
     box-shadow:
-      inset 0 0 0 1px oklch(100% 0 0 / 0.12),
-      inset 0 18px 30px -18px oklch(12% 0.05 248 / 0.55);
+      inset 0 0 0 1px color-mix(in oklab, var(--color-light) 12%, transparent),
+      inset 0 18px 30px -18px color-mix(in oklab, var(--color-abyss) 55%, transparent);
   }
 
   .hero-water {
@@ -135,17 +135,17 @@ const portrait = getPhoto('founder-portrait');
   .hero-sun {
     position: absolute;
     inset: 0;
-    background: radial-gradient(70% 55% at 88% 0%, oklch(68% 0.11 208 / 0.55), transparent 70%);
+    background: radial-gradient(70% 55% at 88% 0%, color-mix(in oklab, var(--color-sun) 55%, transparent), transparent 70%);
   }
 
   :global([dir='rtl']) .hero-sun {
-    background: radial-gradient(70% 55% at 12% 0%, oklch(68% 0.11 208 / 0.55), transparent 70%);
+    background: radial-gradient(70% 55% at 12% 0%, color-mix(in oklab, var(--color-sun) 55%, transparent), transparent 70%);
   }
 
   /* Calm water behind the words: the light net thins where the copy sits and runs full in the lanes. */
   .hero-caustics {
-    -webkit-mask-image: linear-gradient(180deg, oklch(0% 0 0 / 0.4) 0%, oklch(0% 0 0 / 0.3) 45%, oklch(0% 0 0) 85%);
-    mask-image: linear-gradient(180deg, oklch(0% 0 0 / 0.4) 0%, oklch(0% 0 0 / 0.3) 45%, oklch(0% 0 0) 85%);
+    -webkit-mask-image: linear-gradient(180deg, color-mix(in oklab, var(--color-black) 40%, transparent) 0%, color-mix(in oklab, var(--color-black) 30%, transparent) 45%, var(--color-black) 85%);
+    mask-image: linear-gradient(180deg, color-mix(in oklab, var(--color-black) 40%, transparent) 0%, color-mix(in oklab, var(--color-black) 30%, transparent) 45%, var(--color-black) 85%);
   }
 
   .hero-stripe {
@@ -161,7 +161,7 @@ const portrait = getPhoto('founder-portrait');
     display: grid;
     gap: var(--space-xl);
     padding-block: var(--space-xl) var(--space-lg);
-    padding-inline: calc(var(--gutter) - var(--basin-inset));
+    padding-inline: max(var(--space-lg), calc(var(--gutter) - var(--basin-inset)));
   }
 
   .hero-title {
@@ -201,6 +201,23 @@ const portrait = getPhoto('founder-portrait');
     color: var(--color-light);
   }
 
+  /* Phones: one action owns the row; the way down to the lanes is a quiet underlined link. */
+  @media (width < 40rem) {
+    .hero-actions :global(.hero-cta) {
+      flex-basis: 100%;
+    }
+
+    .hero-more {
+      min-height: 2.75rem;
+      padding-inline: var(--space-xs);
+      box-shadow: none;
+      font-size: 1rem;
+      text-decoration: underline;
+      text-decoration-color: color-mix(in oklab, var(--color-light) 45%, transparent);
+      text-underline-offset: 0.3em;
+    }
+  }
+
   /* The lanes: a panel of deep, still water so the light type reads at full strength. */
   .hero-lanes {
     width: 100%;
@@ -208,7 +225,7 @@ const portrait = getPhoto('founder-portrait');
     border-radius: 20px;
     background: color-mix(in oklab, var(--color-abyss) 62%, transparent);
     box-shadow:
-      inset 0 0 0 1px oklch(100% 0 0 / 0.1),
+      inset 0 0 0 1px color-mix(in oklab, var(--color-light) 10%, transparent),
       var(--shadow-deep);
   }
 
@@ -235,7 +252,7 @@ const portrait = getPhoto('founder-portrait');
   .hero-rope {
     --bead: 0.5rem;
     --rope-a: var(--color-tile);
-    --rope-b: oklch(100% 0 0 / 0.85);
+    --rope-b: color-mix(in oklab, var(--color-light) 85%, transparent);
     filter: none;
   }
 
@@ -254,8 +271,8 @@ const portrait = getPhoto('founder-portrait');
 
   .hero-lane-ages {
     flex-shrink: 0;
-    min-width: 5.4ch;
-    font-size: 2.25rem;
+    min-width: 5.2ch;
+    font-size: clamp(1.875rem, 1.2rem + 2.4vw, 2.25rem);
     font-weight: 500;
     line-height: 1;
     letter-spacing: -0.03em;
@@ -269,7 +286,7 @@ const portrait = getPhoto('founder-portrait');
     width: 2.25rem;
     height: 2.25rem;
     border-radius: var(--radius-pill);
-    background: oklch(100% 0 0 / 0.12);
+    background: color-mix(in oklab, var(--color-light) 12%, transparent);
     color: var(--color-light);
     transition:
       translate var(--dur-short) var(--ease-out),
@@ -278,7 +295,7 @@ const portrait = getPhoto('founder-portrait');
 
   @media (hover: hover) and (pointer: fine) {
     .hero-lane:hover {
-      background: oklch(100% 0 0 / 0.08);
+      background: color-mix(in oklab, var(--color-light) 8%, transparent);
     }
 
     .hero-lane:hover .hero-lane-go {
@@ -290,7 +307,7 @@ const portrait = getPhoto('founder-portrait');
 
   /* Touch: the lane answers on pointer-down. */
   .hero-lane:active {
-    background: oklch(100% 0 0 / 0.14);
+    background: color-mix(in oklab, var(--color-light) 14%, transparent);
     transform: scale(0.985);
     transition-duration: 60ms;
   }
@@ -301,7 +318,7 @@ const portrait = getPhoto('founder-portrait');
     gap: var(--space-xs);
     margin-top: var(--space-2xs);
     padding-top: var(--space-sm);
-    border-top: 1px solid oklch(100% 0 0 / 0.16);
+    border-top: 1px solid color-mix(in oklab, var(--color-light) 16%, transparent);
     font-size: 0.9375rem;
     color: var(--color-shade);
   }
@@ -315,7 +332,7 @@ const portrait = getPhoto('founder-portrait');
 
   @media (width >= 30rem) {
     .hero {
-      --basin-inset: 14px;
+      --basin-inset: var(--space-md);
     }
   }
 
@@ -362,13 +379,13 @@ const portrait = getPhoto('founder-portrait');
     }
 
     .hero-caustics {
-      -webkit-mask-image: linear-gradient(90deg, oklch(0% 0 0 / 0.3) 0%, oklch(0% 0 0 / 0.35) 45%, oklch(0% 0 0) 70%);
-      mask-image: linear-gradient(90deg, oklch(0% 0 0 / 0.3) 0%, oklch(0% 0 0 / 0.35) 45%, oklch(0% 0 0) 70%);
+      -webkit-mask-image: linear-gradient(90deg, color-mix(in oklab, var(--color-black) 30%, transparent) 0%, color-mix(in oklab, var(--color-black) 35%, transparent) 45%, var(--color-black) 70%);
+      mask-image: linear-gradient(90deg, color-mix(in oklab, var(--color-black) 30%, transparent) 0%, color-mix(in oklab, var(--color-black) 35%, transparent) 45%, var(--color-black) 70%);
     }
 
     :global([dir='rtl']) .hero-caustics {
-      -webkit-mask-image: linear-gradient(270deg, oklch(0% 0 0 / 0.3) 0%, oklch(0% 0 0 / 0.35) 45%, oklch(0% 0 0) 70%);
-      mask-image: linear-gradient(270deg, oklch(0% 0 0 / 0.3) 0%, oklch(0% 0 0 / 0.35) 45%, oklch(0% 0 0) 70%);
+      -webkit-mask-image: linear-gradient(270deg, color-mix(in oklab, var(--color-black) 30%, transparent) 0%, color-mix(in oklab, var(--color-black) 35%, transparent) 45%, var(--color-black) 70%);
+      mask-image: linear-gradient(270deg, color-mix(in oklab, var(--color-black) 30%, transparent) 0%, color-mix(in oklab, var(--color-black) 35%, transparent) 45%, var(--color-black) 70%);
     }
 
     .hero-lanes {
