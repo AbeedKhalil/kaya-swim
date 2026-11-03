@@ -22,7 +22,10 @@ const links = [
   { href: localizePath('/#tracks', locale), label: t.nav.tracks },
   { href: localizePath('/#story', locale), label: t.nav.story },
   { href: localizePath('/#how', locale), label: t.nav.how },
-  { href: localizePath('/#testimonials', locale), label: t.nav.testimonials },
+  // Hidden with the section while there are no quotes, so the bar does not link to a missing anchor.
+  ...(t.testimonials.items.length > 0
+    ? [{ href: localizePath('/#testimonials', locale), label: t.nav.testimonials }]
+    : []),
   { href: localizePath('/#faq', locale), label: t.nav.faq },
   { href: localizePath('/#register', locale), label: t.nav.contact },
 ];
@@ -293,7 +296,7 @@ const switchHref = localizePath(path, other);
     scale: 1 1;
   }
 
-  /* At the largest text size, phones keep the Instagram icon in the menu only. */
+  /* At the largest text size, phones keep header social icons in the menu only. */
   @media (width < 30rem) {
     :global(html[data-text-size='2'] .header-links) {
       display: none;

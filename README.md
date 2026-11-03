@@ -28,8 +28,8 @@ Requires Node 22.12 or newer.
 2. **Logos** — done: `logo-main` (header, menu, adults board) and `logo-kids` are in `src/assets/logos/`.
    To replace one, save the new file under the same name (see the README there).
 3. **Photos** — add the photos listed in `src/assets/images/README.md`.
-4. **Testimonials** — the site ships with clearly labeled *sample* testimonials. Replace them with real ones
-   (with the person's permission) in `src/i18n/he.ts` and `src/i18n/en.ts`, and delete `sample: true`.
+4. **Testimonials** — the Voices section is hidden until real quotes (with the person's permission) are added
+   in `src/i18n/he.ts` and `src/i18n/en.ts`. If a quote is still a placeholder, keep `sample: true`.
 5. **Email** — the brief listed `KAYA SWIM@gmail.com`, which isn't a valid address. The site uses
    `kayaswim@gmail.com`; confirm or change it in `src/config/site.ts`.
 6. **Founder name** — confirm the Hebrew spelling `קטרין שפיר` in `src/config/site.ts`.
@@ -38,8 +38,8 @@ Requires Node 22.12 or newer.
 8. **Accessibility statement** — fill in `poolArrangements` (parking, entrance, pool access) and review the
    statement text; update `lastReviewed`. Israeli law requires the statement — have it checked by someone
    qualified.
-9. **Instagram** — the icon currently links to instagram.com's home page. Put the profile URL into `links`
-   in `src/config/site.ts`, add the `handle`, and delete `placeholder: true`.
+9. **Instagram** — no profile is linked. When you have the URL, uncomment the Instagram example in `links`
+   in `src/config/site.ts`, set the profile URL and `handle`. Do not point it at instagram.com's home page.
 10. **Social preview images** — after changing the hero text, run `npm run og` (needs Chrome or Edge).
 
 ## Where things live

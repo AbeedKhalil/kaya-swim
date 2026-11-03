@@ -74,15 +74,16 @@ export interface SiteLink {
 }
 
 export const links: readonly SiteLink[] = [
-  {
-    id: 'instagram',
-    icon: 'instagram',
-    label: 'Instagram',
-    // Replace with the profile, e.g. 'https://www.instagram.com/<handle>/', add `handle`, and delete `placeholder`.
-    url: 'https://www.instagram.com/',
-    show: ['header', 'menu', 'footer', 'contact'],
-    placeholder: true,
-  },
+  // Instagram — uncomment when you have the real profile. Do not link to instagram.com's home page.
+  // Replace the URL, add `handle`, and leave `placeholder` off once the URL is real.
+  // {
+  //   id: 'instagram',
+  //   icon: 'instagram',
+  //   label: 'Instagram',
+  //   url: 'https://www.instagram.com/<handle>/',
+  //   handle: '@<handle>',
+  //   show: ['header', 'menu', 'footer', 'contact'],
+  // },
   // More examples — uncomment and fill in:
   // { id: 'facebook', icon: 'facebook', label: 'Facebook', url: 'https://www.facebook.com/…', show: ['footer', 'contact'] },
   // { id: 'tiktok', icon: 'tiktok', label: 'TikTok', url: 'https://www.tiktok.com/@…', show: ['menu', 'footer'] },
