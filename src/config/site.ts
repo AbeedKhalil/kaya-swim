@@ -78,8 +78,8 @@ export const links: readonly SiteLink[] = [
     id: 'instagram',
     icon: 'instagram',
     label: 'Instagram',
-    url: 'https://www.instagram.com/Katrinshaphir24/',
-    handle: '@Katrinshaphir24',
+    url: 'https://www.instagram.com/Katrinshafir24/',
+    handle: '@Katrinshafir24',
     show: ['header', 'menu', 'footer', 'contact'],
   },
   // More examples — uncomment and fill in:
